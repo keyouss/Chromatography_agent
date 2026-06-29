@@ -1,0 +1,12 @@
+{
+  "model_type": "tlc_ann",
+  "source": "ML-Prediction-for-Rf-values-main/Rf_prediction.py ANN architecture",
+  "input_dim": 184,
+  "hidden_dim": 128,
+  "feature_version": "tlc_maccs_descriptor_v1",
+  "best_epoch": 300,
+  "validation_mae": 0.052615199238061905,
+  "test_mae": 0.04642786458134651,
+  "test_rmse": 0.07174048482957059,
+  "seed": 324
+}
