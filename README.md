@@ -272,8 +272,6 @@ Set-Location -LiteralPath 'D:\Jupyter\Chromatography_agent'
 
 ## GitHub 发布建议
 
-当前建议把 `D:\Jupyter\Chromatography_agent` 作为独立仓库发布，不要把 `D:\Jupyter` 父目录下其它项目一起提交。
-
 发布前应保证：
 
 - `.env` 不进入版本控制
