@@ -15,6 +15,7 @@ from langchain_core.callbacks import BaseCallbackHandler
 from tlc_tool import PredictTLCValue      # 薄层色谱 Rf 值预测
 from cc_tool import PredictCCValue        # 柱色谱分离预测
 from hplc_tool import PredictHPLCValue    # 高效液相色谱保留时间预测
+from rag_tool import KnowledgeBaseSearchTool
 
 from config import config                  # 项目配置单例
 
@@ -28,13 +29,16 @@ load_dotenv()
 
 
 AGENT_PROMPT_PREFIX = """You are a chromatography prediction assistant.
-Choose exactly one tool when the user asks for model prediction.
+Choose exactly one prediction tool when the user asks for model prediction.
 Routing:
 - TLC, thin-layer chromatography, or Rf -> TLC_Predictor.
 - Column chromatography, CC, silica column, PE/EA separation -> CC_Predictor.
 - HPLC, chiral separation, retention time, Sp, ADH, IA, IB, IC, OD, ODH, OJ, OJH -> HPLC_Retention_Time_Predictor.
+- Literature, methodology, project background, migration, context engineering, or citation-backed explanation -> Knowledge_Base_Search.
 For HPLC, extract two comma-separated SMILES, eluent ratio, flow speed, and candidate columns. Do not invent missing numeric values.
-After observing a tool result, answer in Chinese and summarize the predicted values."""
+If a question asks for both prediction and citation-backed explanation, call the prediction tool first, then Knowledge_Base_Search.
+After observing a prediction tool result, answer in Chinese and summarize the predicted values.
+After observing a knowledge-base result, cite returned sources as [doc_id]. Do not cite sources that were not returned."""
 
 AGENT_FORMAT_INSTRUCTIONS = """Return one JSON action only:
 ```json
@@ -219,6 +223,7 @@ class ChemistryAgent:
         - qianfan:      百度千帆 (ERNIE)
         - dashscope:    阿里通义千问
         - siliconflow:  SiliconFlow（DeepSeek 等开源模型）
+        - ollama:       本地 Ollama（OpenAI-compatible /v1 接口）
 
         各提供商需要对应配置 API 密钥，请在 .env 中设置。
 
@@ -269,6 +274,17 @@ class ChemistryAgent:
                 request_timeout=120
             )
 
+        # ---------- 本地 Ollama ----------
+        elif llm_type == "ollama":
+            from langchain_openai import ChatOpenAI
+            return ChatOpenAI(
+                openai_api_key=config.OLLAMA_API_KEY,
+                model_name=config.OLLAMA_MODEL_ID,
+                temperature=temperature,
+                openai_api_base=config.OLLAMA_API_BASE,
+                request_timeout=300
+            )
+
         else:
             raise ValueError(f"不支持的LLM类型: {llm_type}")
 
@@ -287,7 +303,8 @@ class ChemistryAgent:
         return [
             PredictTLCValue(),      # TLC 薄层色谱 Rf 值预测
             PredictCCValue(),       # CC 柱色谱分离预测
-            PredictHPLCValue()      # HPLC 高效液相色谱预测
+            PredictHPLCValue(),     # HPLC 高效液相色谱预测
+            KnowledgeBaseSearchTool()  # 本地知识库检索
         ]
 
     def _init_agent(self):

@@ -9,6 +9,7 @@ from langchain_core.tools import BaseTool
 from typing import Type
 from pydantic import BaseModel, Field
 from config import config
+from tool_response import tool_response
 
 
 class PredictCCInput(BaseModel):
@@ -83,15 +84,70 @@ class PredictCCValue(BaseTool):
             response.raise_for_status()  # 检查HTTP错误
             result = response.json()
             
-            # 返回格式化的预测结果
-            return f"Prediction successful: {json.dumps(result, ensure_ascii=False, indent=2)}"
+            normalized = {
+                "compound1": result.get("compound1", smiles_compound1),
+                "compound2": result.get("compound2", smiles_compound2),
+                "eluent_system": result.get("eluent_system", eluent_system),
+                "separation_factor": result.get("separation_factor"),
+                "retention_times": [
+                    result.get("peak1_retention_time"),
+                    result.get("peak2_retention_time"),
+                ],
+                "separation_probability": result.get("separation_probability"),
+                "prediction": result.get("prediction"),
+                "model_used": result.get("model_used", ""),
+                "ignored_model_path": result.get("ignored_model_path"),
+            }
+            return tool_response(
+                ok=bool(result.get("success", True)),
+                tool=self.name,
+                input_data={
+                    "smiles_compound1": smiles_compound1,
+                    "smiles_compound2": smiles_compound2,
+                    "eluent_system": eluent_system,
+                    "m_param": m_param,
+                    "speed": speed,
+                    "model_path": model_path,
+                },
+                result=normalized,
+                summary=(
+                    "CC prediction succeeded. "
+                    f"Separation factor={normalized['separation_factor']}, "
+                    f"probability={normalized['separation_probability']}, "
+                    f"judgement={normalized['prediction']}."
+                ),
+            )
         
         # 处理网络连接错误
         except requests.exceptions.RequestException as e:
-            return f"An error occurred while calling the CC API ({api_url}): {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={
+                    "smiles_compound1": smiles_compound1,
+                    "smiles_compound2": smiles_compound2,
+                    "eluent_system": eluent_system,
+                    "m_param": m_param,
+                    "speed": speed,
+                    "model_path": model_path,
+                },
+                error=f"Could not connect to the CC prediction API ({api_url}): {e}",
+            )
         # 处理其他未知错误
         except Exception as e:
-            return f"An unexpected error occurred: {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={
+                    "smiles_compound1": smiles_compound1,
+                    "smiles_compound2": smiles_compound2,
+                    "eluent_system": eluent_system,
+                    "m_param": m_param,
+                    "speed": speed,
+                    "model_path": model_path,
+                },
+                error=f"Unexpected CC tool error: {e}",
+            )
     
     def _arun(self, smiles_compound1: str, smiles_compound2: str, eluent_system: str, m_param: float, speed: float, model_path: str = ""):
         """异步执行方法，直接调用同步方法"""

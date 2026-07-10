@@ -16,6 +16,7 @@ import gradio as gr
 import requests
 
 from chemistry_agent import ChemistryAgent
+from config import config
 
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -23,9 +24,9 @@ DEFAULT_SERVICE_PYTHON = Path(sys.executable)
 PYTHON_EXE = Path(os.getenv("CHROMA_SERVICE_PYTHON", str(DEFAULT_SERVICE_PYTHON)))
 
 SERVICE_HEALTH_URLS = [
-    "http://127.0.0.1:8000/health",
-    "http://127.0.0.1:8001/health",
-    "http://127.0.0.1:8002/health",
+    f"http://{config.SERVICE_HOST}:{config.TLC_SERVICE_PORT}/health",
+    f"http://{config.SERVICE_HOST}:{config.CC_SERVICE_PORT}/health",
+    f"http://{config.SERVICE_HOST}:{config.HPLC_SERVICE_PORT}/health",
 ]
 
 

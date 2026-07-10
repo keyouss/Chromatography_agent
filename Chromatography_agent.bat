@@ -44,8 +44,8 @@ if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 echo Starting chromatography services with DE environment...
 start "Chromatography Services (DE)" "%PS_EXE%" -NoProfile -ExecutionPolicy Bypass -NoExit -File "%LAUNCHER%" -ComponentName "Chromatography Services (DE)" -PythonExe "%DE_PY%" -ScriptPath "%ROOT%\start_services.py" -ProjectRoot "%ROOT%" -StdoutLog "%LOG_DIR%\services.log" -StderrLog "%LOG_DIR%\services.err.log"
 
-echo Waiting for services on ports 8000, 8001, and 8002...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$urls=@('http://127.0.0.1:8000/health','http://127.0.0.1:8001/health','http://127.0.0.1:8002/health'); $deadline=(Get-Date).AddSeconds(180); do { $allOk=$true; foreach ($url in $urls) { try { $r=Invoke-RestMethod -Uri $url -TimeoutSec 3; if (-not $r.ok) { $allOk=$false } } catch { $allOk=$false } }; if ($allOk) { exit 0 }; Start-Sleep -Seconds 2 } while ((Get-Date) -lt $deadline); exit 1"
+echo Waiting for services on ports 8010, 8011, and 8012...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$urls=@('http://127.0.0.1:8010/health','http://127.0.0.1:8011/health','http://127.0.0.1:8012/health'); $deadline=(Get-Date).AddSeconds(180); do { $allOk=$true; foreach ($url in $urls) { try { $r=Invoke-RestMethod -Uri $url -TimeoutSec 3; if (-not $r.ok) { $allOk=$false } } catch { $allOk=$false } }; if ($allOk) { exit 0 }; Start-Sleep -Seconds 2 } while ((Get-Date) -lt $deadline); exit 1"
 
 if errorlevel 1 (
     echo [ERROR] Services did not become healthy within 180 seconds.

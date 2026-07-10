@@ -20,7 +20,7 @@ class Config:
     """
 
     # ==================== LLM配置 ====================
-    # 支持的LLM类型: openai, qianfan(百度), dashscope(阿里), zhipu(智谱), moonshot(月之暗面), siliconflow
+    # 支持的LLM类型: openai, qianfan(百度), dashscope(阿里), zhipu(智谱), moonshot(月之暗面), siliconflow, ollama
     LLM_TYPE = os.getenv("LLM_TYPE", "siliconflow")
 
     # ---------- SiliconFlow配置（优先使用） ----------
@@ -37,6 +37,12 @@ class Config:
     OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "https://api.nuwaapi.com/v1")
     # 通用模型ID，可被其他提供商复用
     MODEL_ID = os.getenv("MODEL_ID", "")
+
+    # ---------- Ollama 本地模型配置 ----------
+    # Ollama 默认提供 OpenAI-compatible API: http://127.0.0.1:11434/v1
+    OLLAMA_API_BASE = os.getenv("OLLAMA_API_BASE", "http://127.0.0.1:11434/v1")
+    OLLAMA_MODEL_ID = os.getenv("OLLAMA_MODEL_ID", os.getenv("MODEL_ID", "deepseek-r1:8b"))
+    OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "ollama")
 
     # ---------- 百度千帆配置 ----------
     QIANFAN_AK = os.getenv("QIANFAN_AK", "")
@@ -58,17 +64,33 @@ class Config:
     SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY", "")
 
     # ==================== 色谱预测服务API配置 ====================
+    SERVICE_HOST = os.getenv("CHROMA_SERVICE_HOST", "127.0.0.1")
+    TLC_SERVICE_PORT = int(os.getenv("TLC_SERVICE_PORT", "8010"))
+    CC_SERVICE_PORT = int(os.getenv("CC_SERVICE_PORT", "8011"))
+    HPLC_SERVICE_PORT = int(os.getenv("HPLC_SERVICE_PORT", "8012"))
+
     # TLC（薄层色谱）Rf值预测服务地址
     # 由 Services/tlc_server.py 提供
-    TLC_API_URL = os.getenv("TLC_API_URL", "http://127.0.0.1:8000/predict")
+    TLC_API_URL = os.getenv("TLC_API_URL", f"http://{SERVICE_HOST}:{TLC_SERVICE_PORT}/predict")
 
     # CC（柱色谱）分离预测服务地址
     # 由 Services/cc_server.py 提供
-    CC_API_URL = os.getenv("CC_API_URL", "http://127.0.0.1:8001/predict")
+    CC_API_URL = os.getenv("CC_API_URL", f"http://{SERVICE_HOST}:{CC_SERVICE_PORT}/predict")
 
     # HPLC（高效液相色谱）保留时间预测服务地址
     # 由 Services/hplc_server.py 提供
-    HPLC_API_URL = os.getenv("HPLC_API_URL", "http://127.0.0.1:8002/predict")
+    HPLC_API_URL = os.getenv("HPLC_API_URL", f"http://{SERVICE_HOST}:{HPLC_SERVICE_PORT}/predict")
+
+    # ==================== 本地知识库 / RAG 配置 ====================
+    KNOWLEDGE_BASE_DIR = os.getenv("KNOWLEDGE_BASE_DIR", "knowledge_base")
+    RAG_CHROMA_DIR = os.getenv("RAG_CHROMA_DIR", "") or os.path.join(
+        os.getenv("TEMP", "."),
+        "Chromatography_agent",
+        "chroma",
+    )
+    RAG_COLLECTION_NAME = os.getenv("RAG_COLLECTION_NAME", "chromatography_agent_kb")
+    RAG_TOP_K = int(os.getenv("RAG_TOP_K", "4"))
+    RAG_MAX_SNIPPET_CHARS = int(os.getenv("RAG_MAX_SNIPPET_CHARS", "700"))
 
     # ==================== Agent运行配置 ====================
     # Agent最大迭代次数：防止工具调用进入死循环

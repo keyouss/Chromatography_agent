@@ -1,0 +1,197 @@
+{
+  "collection": "chromatography_agent_kb",
+  "sources": [
+    {
+      "doc_id": "PAPER-AI-CHROM-2026",
+      "title": "Automation and AI-Powered Prediction in Chromatographic Separation",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\825\\Liu和Mo - 2026 - Automation and AI-Powered Prediction in Chromatographic Separation.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-AI-CHROM-2026.md",
+      "tags": [
+        "chromatography",
+        "automation",
+        "AI prediction",
+        "portfolio"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-CC-2025",
+      "title": "Intelligent column chromatography prediction model based on automation and machine learning",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\335\\Wu 等 - 2025 - Intelligent column chromatography prediction model based on automation and machine learning.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-CC-2025.md",
+      "tags": [
+        "column chromatography",
+        "CC",
+        "machine learning",
+        "automation"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-TLC-CC-2025",
+      "title": "Explicit relation between thin film chromatography and column chromatography conditions",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\345\\Xu 等 - 2025 - Explicit relation between thin film chromatography and column chromatography conditions from statist.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-TLC-CC-2025.md",
+      "tags": [
+        "TLC",
+        "CC",
+        "condition transfer",
+        "separation"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-TLC-AUTO-2022",
+      "title": "High-throughput automated platform for thin layer chromatography analysis",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\349\\Xu 等 - 2022 - High-throughput automated platform for thin layer chromatography analysis.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-TLC-AUTO-2022.md",
+      "tags": [
+        "TLC",
+        "automation",
+        "Rf",
+        "high-throughput"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-TLC-POLARITY-2022",
+      "title": "High-throughput discovery of chemical structure-polarity relationships",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\351\\Xu 等 - 2022 - High-throughput discovery of chemical structure-polarity relationships combining automation and mach.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-TLC-POLARITY-2022.md",
+      "tags": [
+        "TLC",
+        "polarity",
+        "structure-property",
+        "machine learning"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-HPLC-QGEOGNN-2023",
+      "title": "Retention time prediction for chromatographic enantioseparation by quantile geometry-enhanced graph",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\245\\Xu 等 - 2023 - Retention time prediction for chromatographic enantioseparation by quantile geometry-enhanced graph.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-HPLC-QGEOGNN-2023.md",
+      "tags": [
+        "HPLC",
+        "enantioseparation",
+        "GeoGNN",
+        "retention time"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-GC-MM-2025",
+      "title": "Multimodal learning in synthetic chemistry applications gas chromatography retention time prediction",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\672\\Lin 等 - 2025 - Multimodal learning in synthetic chemistry applications gas chromatography retention time predictio.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-GC-MM-2025.md",
+      "tags": [
+        "GC",
+        "retention time",
+        "multimodal learning",
+        "chemistry"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-CHEM-AI-2023",
+      "title": "Transforming organic chemistry research paradigms",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\353\\Liu 等 - 2023 - Transforming organic chemistry research paradigms Moving from manual efforts to the intersection of.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-CHEM-AI-2023.md",
+      "tags": [
+        "chemistry AI",
+        "automation",
+        "research paradigm"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-AI-SYNTH-2024",
+      "title": "AI for organic and polymer synthesis",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\343\\Hong 等 - 2024 - AI for organic and polymer synthesis.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-AI-SYNTH-2024.md",
+      "tags": [
+        "AI chemistry",
+        "synthesis",
+        "review"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PAPER-INTELLIGENT-ALG-2024",
+      "title": "Empowering research in chemistry and materials science through intelligent algorithms",
+      "source_path": "C:\\Users\\13459\\Documents\\发表\\347\\Lin和Mo - 2024 - Empowering research in chemistry and materials science through intelligent algorithms.pdf",
+      "doc_path": "knowledge_base\\docs\\PAPER-INTELLIGENT-ALG-2024.md",
+      "tags": [
+        "intelligent algorithms",
+        "chemistry",
+        "materials"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "SERVICE-TLC-MODEL",
+      "title": "Local TLC Rf model service and dataset implementation",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\Services\\ML-Prediction-for-Rf-values-main\\README.md",
+      "doc_path": "knowledge_base\\docs\\SERVICE-TLC-MODEL.md",
+      "tags": [
+        "project",
+        "TLC",
+        "Rf model",
+        "service"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "SERVICE-CC-MODEL",
+      "title": "Local column chromatography GeoGNN service and dataset organization",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\Services\\column_chromatography_prediction-main\\README.md",
+      "doc_path": "knowledge_base\\docs\\SERVICE-CC-MODEL.md",
+      "tags": [
+        "project",
+        "CC",
+        "GeoGNN",
+        "service"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "SERVICE-CC-DATASET",
+      "title": "Column chromatography dataset organization",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\Services\\column_chromatography_prediction-main\\dataset\\README.md",
+      "doc_path": "knowledge_base\\docs\\SERVICE-CC-DATASET.md",
+      "tags": [
+        "project",
+        "CC",
+        "dataset",
+        "eluent"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "SERVICE-HPLC-MODEL",
+      "title": "Local HPLC enantioseparation retention-time model service",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\Services\\Retention-Time-Prediction-for-Chromatographic-Enantioseparation-main\\README.md",
+      "doc_path": "knowledge_base\\docs\\SERVICE-HPLC-MODEL.md",
+      "tags": [
+        "project",
+        "HPLC",
+        "enantioseparation",
+        "service"
+      ],
+      "status": "ok"
+    },
+    {
+      "doc_id": "PROJECT-AGENT-ARCHITECTURE",
+      "title": "Chromatography Agent architecture and migration framing",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\README.md",
+      "doc_path": "knowledge_base\\docs\\PROJECT-AGENT-ARCHITECTURE.md",
+      "tags": [
+        "project",
+        "agent",
+        "tool calling",
+        "migration"
+      ],
+      "status": "ok"
+    }
+  ]
+}

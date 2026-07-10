@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 import requests
 import json
 from config import config
+from tool_response import tool_response
 
 
 class HPLCInputSchema(BaseModel):
@@ -79,33 +80,67 @@ class PredictHPLCValue(BaseTool):
             response.raise_for_status()  # 检查HTTP错误
             result = response.json()
             
-            # 构建输出结果
-            output_parts = [
-                f"根据预测，对于 SMILES '{smiles}'，在流动相比例 {eluent} 和流速 {speed} 的条件下：",
-                f"**推荐的最佳色谱柱是: {result['recommend']}**，其分离概率(Sp)为: {result['max_sp']:.4f}。",
-                "\n详细预测结果如下:",
-            ]
-            
-            # 遍历所有色谱柱，输出各自的预测结果
-            for i, col_name in enumerate(result['columns']):
-                sp_value = result['sp_list'][i]  # 分离概率
-                rt_values = result['rt_list'][i]  # 两个化合物的保留时间
-                output_parts.append(f"- 色谱柱 '{col_name}': 分离概率 (Sp) = {sp_value:.4f}, 保留时间 (RTs) = {rt_values[0]:.2f}, {rt_values[1]:.2f}")
-            
-            # 添加图表保存路径信息
-            output_parts.append(f"\n结果图表已保存在服务器路径: {result['plot_path']}")
-            
-            return "\n".join(output_parts)
+            column_results = []
+            for i, col_name in enumerate(result["columns"]):
+                column_results.append({
+                    "column": col_name,
+                    "sp": result["sp_list"][i],
+                    "retention_times": result["rt_list"][i],
+                })
+
+            return tool_response(
+                ok=bool(result.get("success", True)),
+                tool=self.name,
+                input_data={
+                    "smiles": smiles,
+                    "eluent": eluent,
+                    "speed": speed,
+                    "columns": columns,
+                    "device": device,
+                },
+                result={
+                    "smiles": result.get("smiles", smiles),
+                    "eluent": result.get("eluent", eluent),
+                    "speed": result.get("speed", speed),
+                    "recommend": result.get("recommend"),
+                    "max_sp": result.get("max_sp"),
+                    "columns": column_results,
+                    "model_used": result.get("model_used", ""),
+                    "surrogate_only": result.get("surrogate_only", False),
+                    "plot_path": result.get("plot_path", ""),
+                },
+                summary=(
+                    "HPLC prediction succeeded. "
+                    f"Recommended column={result.get('recommend')}, "
+                    f"max Sp={result.get('max_sp')}."
+                ),
+                warnings=["HPLC service is using surrogate prediction."] if result.get("surrogate_only") else [],
+            )
         
         # 处理网络连接错误
         except requests.exceptions.RequestException as e:
-            return f"API请求失败 ({api_url}): {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent": eluent, "speed": speed, "columns": columns, "device": device},
+                error=f"Could not connect to the HPLC prediction API ({api_url}): {e}",
+            )
         # 处理JSON解析错误
         except json.JSONDecodeError:
-            return "API返回的不是有效的JSON格式。"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent": eluent, "speed": speed, "columns": columns, "device": device},
+                error="HPLC API did not return valid JSON.",
+            )
         # 处理其他未知错误
         except Exception as e:
-            return f"处理API响应时发生未知错误: {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent": eluent, "speed": speed, "columns": columns, "device": device},
+                error=f"Unexpected HPLC tool error: {e}",
+            )
     
     async def _arun(self, smiles: str, eluent: float, speed: float, columns: str, device: int = 0) -> str:
         """异步执行方法，直接调用同步方法"""

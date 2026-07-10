@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 ## 基本要求
 
@@ -16,6 +16,10 @@
 - `UI_app.py`：Gradio 聊天入口。
 - `chemistry_agent.py`：LLM、LangChain 工具注册、Agent 执行与 trace 逻辑。不要新增独立 `agent_trace.py`。
 - `tlc_tool.py`、`cc_tool.py`、`hplc_tool.py`：工具层，只调用 `config.py` 中的 API URL。
+- `rag_tool.py`：本地 Chroma RAG 检索工具，返回可引用来源。
+- `tool_response.py`：工具层统一 JSON 返回 envelope。
+- `knowledge_base/`：RAG 知识卡片、来源清单和构建脚本；Chroma 索引默认在 `%TEMP%\Chromatography_agent\chroma`。
+- `eval/rag_eval_questions.jsonl`：RAG / Tool Calling 评测问题。
 - `start_services.py`：启动真实 FastAPI 服务。
 - `test_services.py`：服务连通性测试。
 - `Chromatography_agent.bat`：一键启动，DE 启动服务，LR 启动 UI。
@@ -23,9 +27,9 @@
 
 固定服务端口：
 
-- TLC: `127.0.0.1:8000`
-- CC: `127.0.0.1:8001`
-- HPLC: `127.0.0.1:8002`
+- TLC: `127.0.0.1:8010`
+- CC: `127.0.0.1:8011`
+- HPLC: `127.0.0.1:8012`
 - UI: `127.0.0.1:7860`
 
 ## 本机环境
@@ -92,9 +96,9 @@ $env:CHROMA_SERVICE_PYTHON='D:\Anaconda\envs\DE\python.exe'
 健康检查：
 
 ```powershell
-Invoke-RestMethod -Uri 'http://127.0.0.1:8000/health'
-Invoke-RestMethod -Uri 'http://127.0.0.1:8001/health'
-Invoke-RestMethod -Uri 'http://127.0.0.1:8002/health'
+Invoke-RestMethod -Uri 'http://127.0.0.1:8010/health'
+Invoke-RestMethod -Uri 'http://127.0.0.1:8011/health'
+Invoke-RestMethod -Uri 'http://127.0.0.1:8012/health'
 ```
 
 服务测试：
@@ -115,6 +119,7 @@ Set-Location -LiteralPath 'D:\Jupyter\Chromatography_agent'
 
 - 服务端改动：同步考虑 `Services/*_server.py`、`Services/model_service_utils.py`、`start_services.py`、`test_services.py`。
 - Agent/UI 改动：同步考虑 `chemistry_agent.py`、`UI_app.py`、三个 `*_tool.py`、`config.py`。
+- RAG 改动：同步考虑 `rag_tool.py`、`tool_response.py`、`knowledge_base/build_knowledge_base.py`、`eval/rag_eval_questions.jsonl`、`README.md`。
 - HPLC 改动：至少确认 `/health` 的 `ok=True`、`surrogate_only=False`、`inference_device="cpu"`，并跑一次 `/predict` 或 `test_services.py`。
 - 启动逻辑改动：测试端口已占用时不会重复启动服务。
 - 完成后按改动范围更新 `README.md`。

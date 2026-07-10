@@ -20,3 +20,4 @@ conform.mol
 Services/.service_pids
 Services/**/dataset_save/
 Services/**/saves/
+knowledge_base/chroma/

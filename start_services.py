@@ -30,9 +30,9 @@ PID_FILE = SERVICES_DIR / ".service_pids"
 
 # 服务定义列表：(显示名称, uvicorn应用路径, 端口号)
 SERVICES = [
-    ("TLC",  "tlc_server:app",  8000),   # 薄层色谱 Rf值预测
-    ("CC",   "cc_server:app",   8001),   # 柱色谱分离预测
-    ("HPLC", "hplc_server:app", 8002),   # 高效液相色谱预测
+    ("TLC",  "tlc_server:app",  int(os.getenv("TLC_SERVICE_PORT", "8010"))),   # 薄层色谱 Rf值预测
+    ("CC",   "cc_server:app",   int(os.getenv("CC_SERVICE_PORT", "8011"))),   # 柱色谱分离预测
+    ("HPLC", "hplc_server:app", int(os.getenv("HPLC_SERVICE_PORT", "8012"))),   # 高效液相色谱预测
 ]
 
 
@@ -69,11 +69,11 @@ def _build_log_config(name: str, port: int) -> dict:
     默认 uvicorn 输出格式：
         INFO:     127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
     自定义后输出格式：
-        [TLC:8000]   2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
-        [CC:8001]    2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
-        [HPLC:8002]  2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
+        [TLC:8010]   2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
+        [CC:8011]    2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
+        [HPLC:8012]  2026-06-27 10:30:45 | 127.0.0.1:58165 - "POST /predict HTTP/1.1" 200 OK
     """
-    # 计算对齐宽度：最长服务名+端口格式为 HPLC:8002，共8字符，加2个方括号共10字符
+    # 计算对齐宽度：最长服务名+端口格式为 HPLC:8012，共8字符，加2个方括号共10字符
     prefix = f"[{name}:{port}]"
     # 使用制表符或空格进行对齐，这里使用空格对齐到12字符宽度
     padding = " " * (12 - len(prefix))

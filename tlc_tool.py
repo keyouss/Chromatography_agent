@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from typing import Type, List, Optional
 import re
 from config import config
+from tool_response import tool_response
 
 
 class PredictTLCInput(BaseModel):
@@ -133,7 +134,13 @@ class PredictTLCValue(BaseTool):
         try:
             eluent_ratios_list = self._parse_eluent_system(eluent_system)
         except ValueError as e:
-            return f"Error parsing eluent system: {e}. Please provide a valid eluent string like 'Hexane/EtOAc 9:1'."
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent_system": eluent_system},
+                error=f"Error parsing eluent system: {e}",
+                warnings=["Please provide a valid eluent string like 'Hexane/Ethyl Acetate 9:1'."],
+            )
         
         # 构建API请求载荷
         payload = {
@@ -147,19 +154,42 @@ class PredictTLCValue(BaseTool):
             response.raise_for_status()  # 检查HTTP错误
             result = response.json()
             
-            # 返回格式化的预测结果
-            return (
-                f"Successfully predicted the Rf value for SMILES '{result['smiles']}' "
-                f"with eluent system '{eluent_system}'. "
-                f"The predicted Rf value is: {result['predicted_rf']:.4f}"
+            predicted_rf = float(result["predicted_rf"])
+            return tool_response(
+                ok=True,
+                tool=self.name,
+                input_data={
+                    "smiles": smiles,
+                    "eluent_system": eluent_system,
+                    "eluent_ratios": eluent_ratios_list,
+                },
+                result={
+                    "smiles": result.get("smiles", smiles),
+                    "predicted_rf": round(predicted_rf, 4),
+                    "model_used": result.get("model_used", ""),
+                },
+                summary=(
+                    f"TLC Rf prediction succeeded. Predicted Rf={predicted_rf:.4f} "
+                    f"for {smiles} under {eluent_system}."
+                ),
             )
         
         # 处理网络连接错误
         except requests.exceptions.RequestException as e:
-            return f"Error: Could not connect to the TLC prediction API ({api_url}). Please ensure the API server is running. Details: {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent_system": eluent_system},
+                error=f"Could not connect to the TLC prediction API ({api_url}): {e}",
+            )
         # 处理其他未知错误
         except Exception as e:
-            return f"An unexpected error occurred while using the TLC tool: {e}"
+            return tool_response(
+                ok=False,
+                tool=self.name,
+                input_data={"smiles": smiles, "eluent_system": eluent_system},
+                error=f"Unexpected TLC tool error: {e}",
+            )
     
     def _arun(self, *args, **kwargs):
         """异步执行方法（暂未实现）"""
