@@ -149,7 +149,7 @@ Assert-True ($runLocalText.Contains("'chrom-platform-data-accept-20261026'")) 'F
 Assert-True ($runLocalText.Contains("'chrom_data_accept_20261026'")) 'Fixed data schema changed'
 Assert-True ($runLocalText.Contains("'project_data_accept_20261026'")) 'Fixed data project scope changed'
 Assert-True ($runLocalText.Contains('Data acceptance start/stop is available only through start-platform.ps1')) 'Bare data run-local start/stop remains available'
-Assert-True ($runLocalText.Contains('backend-runtime-package-data-window-08\data-center-invalid-window-20261026')) 'Data profile is not pinned to its physical backend package'
+Assert-True ($runLocalText.Contains("deploy\local-packages\data-center-invalid-window-20261026")) 'Data profile is not pinned to its local candidate package'
 Assert-True ($runLocalText.Contains('chrom_data_accept_runtime')) 'Data DB URL does not require the dedicated runtime principal'
 Assert-True ($runLocalText.Contains('Set-PythonBytecodePolicy $DataAcceptanceMode')) 'Data-only no-bytecode process policy is not wired'
 Assert-True ($runLocalText.Contains('Data acceptance backend package contains science adapters')) 'Science adapters are not excluded from the package'

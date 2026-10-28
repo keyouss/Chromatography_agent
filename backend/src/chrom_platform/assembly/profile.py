@@ -820,7 +820,9 @@ def _trim_prediction_api_registry(source: str, selected: set[str]) -> str:
     return ast.unparse(pruned) + "\n"
 
 
-def _trim_app_source(source: str, selected: set[str], *, batch_enabled: bool) -> str:
+def _trim_app_source(
+    source: str, selected: set[str], *, batch_enabled: bool, datasets_enabled: bool = False,
+) -> str:
     profile_refs = {
         "tlc": '("#/components/schemas/TlcPredictionCreate",)',
         "cc": '("#/components/schemas/CcPredictionCreate",)',
@@ -900,6 +902,8 @@ def _trim_app_source(source: str, selected: set[str], *, batch_enabled: bool) ->
     if not batch_enabled:
         source = re.sub(r"\n\s*batch_enabled=any\(\"batch\" in tools for tools in manifest\.prediction_tools\.values\(\)\),", "", source, count=1)
         source = re.sub(r"\n\s*enabled_batch_types=frozenset\(kind for kind, tools in manifest\.prediction_tools\.items\(\) if \"batch\" in tools\),", "", source, count=1)
+    if not datasets_enabled:
+        source = re.sub(r"\n\s*data_csv_window=data_csv_window,", "", source, count=1)
     return source
 
 
@@ -1951,7 +1955,9 @@ def _copy_tree(source_root: Path, target_root: Path, manifest: BuildManifest) ->
         for path in (source_root / "chrom_platform" / directory).rglob("*.py"):
             if directory == "artifact_core" and path.name == "batch_csv_window.py" and not batch_enabled:
                 continue
-            if directory == "artifact_core" and path.name == "data_csv_window.py" and "datasets" not in modules:
+            if directory == "artifact_core" and path.name == "data_csv_window.py" and (
+                manifest.build_id != "data-center-invalid-window-20261026" or modules != {"datasets"}
+            ):
                 continue
             if directory == "artifact_core" and path.name == "dataset_csv_elevated_runner.py" and (
                 manifest.build_id != "data-center-invalid-window-20261026" or modules != {"datasets"}
@@ -2030,6 +2036,23 @@ def _copy_tree(source_root: Path, target_root: Path, manifest: BuildManifest) ->
                 str(path.relative_to(source_root)).replace("\\", "/")
                 for path in selected_dir.rglob("*.py")
             )
+        selected_resources = {
+            "gc": {"gc-reference-preprocessing-v2.json"},
+            "sfc": {
+                "sfc-full-reference.json",
+                "sfc-rs12-full-column-reference-coupled-20261020-v2.json",
+                "sfc-single-reference-2p5-warning-v3.json",
+                "sfc-single-reference.json",
+            },
+            "tlc": {"tlc.smoke.json"},
+        }
+        for kind in manifest.chromatography_types:
+            relative_files.update(
+                f"chrom_platform/resources/{name}"
+                for name in selected_resources.get(kind, set())
+            )
+    if batch_enabled:
+        relative_files.add("chrom_platform/resources/batch-scan-manifest.json")
     # GC source bytes must pass the build-owned inventory before any profile
     # files are copied.  The build-only verifier is loaded only for GC.
     gc_source_integrity = None
@@ -2264,6 +2287,7 @@ def _copy_tree(source_root: Path, target_root: Path, manifest: BuildManifest) ->
             app.read_text(encoding="utf-8"),
             set(manifest.chromatography_types),
             batch_enabled=batch_enabled,
+            datasets_enabled="datasets" in modules,
         ),
         encoding="utf-8",
     )

@@ -53,7 +53,7 @@ _HASH_CACHE: dict[str, tuple[int, int, int, int, str]] = {}
 
 def _startup_reference_paths() -> dict[str, Path]:
     # Match assembly.prediction's fixed consumer paths in both source and packages.
-    fixtures = Path(__file__).resolve().parents[4] / "testing/fixtures/priority-launch"
+    fixtures = Path(__file__).resolve().parents[1] / "resources"
     return {
         "gc": fixtures / "gc-reference-preprocessing-v2.json",
         "sfc": fixtures / "sfc-single-reference-2p5-warning-v3.json",

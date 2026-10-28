@@ -57,10 +57,8 @@ from chrom_platform.adapters.tlc.service import TlcPredictionService
 
 SFC_FULL_REFERENCE_SHA256 = "b317a88d05d1aedb165adbcf1353b0775bb5f5e171e43a763db2a962e5c9e246"
 SFC_SINGLE_REFERENCE_SHA256 = "2d7236cff2bb095fec358902ee71aef0a95121b170d57aaf940dae535d122538"
-SFC_SINGLE_REFERENCE_PATH = (
-    Path(__file__).resolve().parents[4]
-    / "testing" / "fixtures" / "priority-launch" / "sfc-single-reference-2p5-warning-v3.json"
-)
+_PACKAGE_RESOURCES = Path(__file__).resolve().parents[1] / "resources"
+SFC_SINGLE_REFERENCE_PATH = _PACKAGE_RESOURCES / "sfc-single-reference-2p5-warning-v3.json"
 SFC_RS12_FULL_MODEL_ID = "rs12-extra-trees-s80-seed42"
 SFC_RS12_FULL_MODEL_VERSION = "1"
 SFC_RS12_FULL_FIXTURE_VERSION = "sfc-rs12-full-column-reference-v2"
@@ -693,7 +691,7 @@ def _verification_result(
             fixture_path = (
                 Path(reference_path)
                 if reference_path is not None
-                else Path(__file__).resolve().parents[4] / "testing" / "fixtures" / "priority-launch" / "sfc-full-reference.json"
+                else _PACKAGE_RESOURCES / "sfc-full-reference.json"
             )
             if not fixture_path.is_absolute():
                 return base
@@ -891,7 +889,7 @@ def _register_verified_tlc(registry: CapabilityRegistry, *, session_factory: Cal
         environment = torch.__version__ == "2.6.0+cu124"
         fixture_path = Path(
             _env("CHROM_TLC_GOLDEN_FIXTURE")
-            or (Path(__file__).resolve().parents[3] / ".generated/priority-launch-evidence/four-model-inventory/tlc.smoke.json")
+            or (_PACKAGE_RESOURCES / "tlc.smoke.json")
         )
         if not fixture_path.is_absolute():
             fixture_path = Path.cwd() / fixture_path
@@ -1002,10 +1000,7 @@ def _register_optional_adapters(
         try:
             from chrom_platform.adapters.gc.adapter import build_gc_adapter
 
-            gc_golden_fixture = (
-                Path(__file__).resolve().parents[4]
-                / "testing" / "fixtures" / "priority-launch" / "gc-reference-preprocessing-v2.json"
-            )
+            gc_golden_fixture = _PACKAGE_RESOURCES / "gc-reference-preprocessing-v2.json"
             gc_adapter = build_gc_adapter(
                 registry_root=gc_root, model_root=gc_root,
                 structure_resolver=resolver or {}, golden_fixture=gc_golden_fixture,

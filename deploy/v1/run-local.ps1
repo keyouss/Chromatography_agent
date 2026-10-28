@@ -27,7 +27,7 @@ $acceptanceRoot = [IO.Path]::GetFullPath((Join-Path $localRuntimeBase $acceptanc
 $acceptanceConfig = [IO.Path]::GetFullPath((Join-Path $acceptanceRoot 'runtime.json'))
 $dataManifest = [IO.Path]::GetFullPath((Join-Path $repo 'builds\candidates\data-center-invalid-window-20261026\profile.json'))
 $dataFrontendRoot = [IO.Path]::GetFullPath((Join-Path $repo 'frontend\build-output\data-import-audit-20261027\frontend'))
-$dataBackendPackageRoot = 'D:\Jupyter\Chromatography_agent\testing\runs\2026-10-27-data-import-audit\backend-runtime-package-data-window-08\data-center-invalid-window-20261026'
+$dataBackendPackageRoot = [IO.Path]::GetFullPath((Join-Path $repo 'deploy\local-packages\data-center-invalid-window-20261026'))
 if (!$DataAcceptanceMode) {
     $script:AcceptanceSfcFullBindingPolicy = [pscustomobject]@{
     model_id = 'rs12-extra-trees-s80-seed42'
@@ -155,10 +155,40 @@ function Set-ProcessEnvironment([pscustomobject]$Config) {
         [Environment]::SetEnvironmentVariable('DATABASE_URL', $script:AcceptanceDatabaseUrl, 'Process')
         [Environment]::SetEnvironmentVariable('SYNC_DATABASE_URL', $script:AcceptanceSyncDatabaseUrl, 'Process')
     }
+    if (!$DataAcceptanceMode) { Set-PackagedFixtureEnvironment $Config }
     $pythonPath = if ($DataAcceptanceMode) { $dataBackendPackageRoot } else { Join-Path $repo 'backend\src' }
     [Environment]::SetEnvironmentVariable('PYTHONPATH', $pythonPath, 'Process')
     Set-PythonBytecodePolicy $DataAcceptanceMode
     [Environment]::SetEnvironmentVariable('PYTHONUTF8', '1', 'Process')
+}
+
+function Set-PackagedFixtureEnvironment([pscustomobject]$Config) {
+    $resourceRoot = Join-Path $repo 'backend\src\chrom_platform\resources'
+    $singleName = if ($AcceptanceMode) { 'sfc-single-reference-2p5-warning-v3.json' } else { 'sfc-single-reference.json' }
+    $bindings = @(
+        @{ Key = 'CHROM_TLC_GOLDEN_FIXTURE'; Name = 'tlc.smoke.json' },
+        @{ Key = 'CHROM_SFC_GOLDEN_FIXTURE'; Name = $singleName }
+    )
+    foreach ($binding in $bindings) {
+        if (Get-ConfigValue $Config @($binding.Key)) {
+            $resource = Join-Path $resourceRoot $binding.Name
+            [Environment]::SetEnvironmentVariable($binding.Key, [IO.Path]::GetFullPath($resource), 'Process')
+        }
+    }
+
+    $fullReferencePath = Get-ConfigValue $Config @('CHROM_SFC_FULL_REFERENCE_PATH')
+    $fullReferenceSha = Get-ConfigValue $Config @('CHROM_SFC_FULL_REFERENCE_SHA256')
+    if ($fullReferencePath -or $fullReferenceSha) {
+        $fullName = switch ($fullReferenceSha) {
+            'ea41f8db47e3abefc29cd1a4570374f0199eb05f2d91b46f297a04834e25b1b4' { 'sfc-rs12-full-column-reference-coupled-20261020-v2.json' }
+            'b317a88d05d1aedb165adbcf1353b0775bb5f5e171e43a763db2a962e5c9e246' { 'sfc-full-reference.json' }
+            default { Fail 'SFC full reference does not match a packaged reviewed reference' }
+        }
+        if (!$fullReferencePath -or !$fullReferenceSha) { Fail 'SFC full reference path and SHA-256 must be configured together' }
+        $resource = Join-Path $resourceRoot $fullName
+        if (!$AcceptanceMode) { Assert-Hash $resource $fullReferenceSha 'SFC full packaged reference' }
+        [Environment]::SetEnvironmentVariable('CHROM_SFC_FULL_REFERENCE_PATH', [IO.Path]::GetFullPath($resource), 'Process')
+    }
 }
 
 function Set-PythonBytecodePolicy([bool]$DataOnly) {
@@ -272,7 +302,7 @@ function Assert-DeploymentBindings([pscustomobject]$Config) {
         'model_LGB\model_RF (3).pkl.gz' = '10dbad5457e8961418f28b42dd5c4350e55dc367574d38dba421b16a481d7559'
     }
     foreach ($asset in $tlcAssets.Keys) { Assert-Hash (Join-Path $tlcRoot $asset) $tlcAssets[$asset] "TLC asset $asset" }
-    Assert-Hash (Get-ConfigValue $Config @('CHROM_TLC_GOLDEN_FIXTURE')) 'b047ca229f61fbf57a660c49d6b91e4fd77cf608970034897375f0c27db37eb8' 'TLC golden fixture'
+    Assert-Hash (Join-Path $repo 'backend\src\chrom_platform\resources\tlc.smoke.json') 'b047ca229f61fbf57a660c49d6b91e4fd77cf608970034897375f0c27db37eb8' 'TLC golden fixture'
 
     if ($AcceptanceMode) {
         Assert-AcceptanceSfcBindings $Config
@@ -294,7 +324,7 @@ function Assert-DeploymentBindings([pscustomobject]$Config) {
         Assert-Hash (Join-Path (Join-Path $sfcRoot $sfcModelId) 'model.joblib') (Get-ConfigValue $Config @('CHROM_SFC_ARTIFACT_SHA256')) 'SFC model'
         $candidate = Assert-File (Get-ConfigValue $Config @('CHROM_SFC_CANDIDATE_DB_PATH')) 'SFC candidate database'
         Assert-Hash $candidate '266a6d00df80166c3faf64be9dc21748d9a39a9f7106a24b8741fdd628eb9c1d' 'SFC candidate database'
-        Assert-Hash (Get-ConfigValue $Config @('CHROM_SFC_GOLDEN_FIXTURE')) '335f027e3483dc36e3f7f1be4a8d00e00471880ce436b93b5b67c85dd5bd2905' 'SFC golden fixture'
+        Assert-Hash (Join-Path $repo 'backend\src\chrom_platform\resources\sfc-single-reference.json') '335f027e3483dc36e3f7f1be4a8d00e00471880ce436b93b5b67c85dd5bd2905' 'SFC golden fixture'
     }
 
     if ($AcceptanceMode) {
@@ -492,7 +522,8 @@ function Assert-AcceptanceSfcBindings([pscustomobject]$Config) {
     $expectedModelRoot = [IO.Path]::GetFullPath('D:\Jupyter\SFC\deployments\sfc-predictor-v1.1\assets\models')
     $expectedRegistry = [IO.Path]::GetFullPath((Join-Path $expectedModelRoot 'registry.json'))
     $expectedCatalog = [IO.Path]::GetFullPath((Join-Path $repo 'Services\sfc_assets\conditions.sqlite'))
-    $expectedFixture = [IO.Path]::GetFullPath((Join-Path $repo 'testing\fixtures\priority-launch\sfc-single-reference-2p5-warning-v3.json'))
+    $legacyFixture = [IO.Path]::GetFullPath((Join-Path $repo 'testing\fixtures\priority-launch\sfc-single-reference-2p5-warning-v3.json'))
+    $expectedFixture = [IO.Path]::GetFullPath((Join-Path $repo 'backend\src\chrom_platform\resources\sfc-single-reference-2p5-warning-v3.json'))
     $expectedFixtureSha256 = '2d7236cff2bb095fec358902ee71aef0a95121b170d57aaf940dae535d122538'
 
     try {
@@ -501,7 +532,7 @@ function Assert-AcceptanceSfcBindings([pscustomobject]$Config) {
         $configuredCatalog = [IO.Path]::GetFullPath((Get-ConfigValue $Config @('CHROM_SFC_CANDIDATE_DB_PATH')))
         $configuredFixture = [IO.Path]::GetFullPath((Get-ConfigValue $Config @('CHROM_SFC_GOLDEN_FIXTURE')))
     } catch { Fail 'Acceptance SFC path binding is invalid' }
-    if ($configuredModelRoot -cne $expectedModelRoot -or $configuredRegistry -cne $expectedRegistry -or $configuredCatalog -cne $expectedCatalog -or $configuredFixture -cne $expectedFixture) {
+    if ($configuredModelRoot -cne $expectedModelRoot -or $configuredRegistry -cne $expectedRegistry -or $configuredCatalog -cne $expectedCatalog -or ($configuredFixture -cne $legacyFixture -and $configuredFixture -cne $expectedFixture)) {
         Fail 'Acceptance SFC paths do not match the fixed RS12 registry, catalog, and fixture'
     }
 
@@ -568,7 +599,8 @@ function Assert-AcceptanceSfcFullBinding(
         Fail 'Acceptance SFC full reference has no matching reviewed runtime pin'
     }
 
-    $expectedFixture = [IO.Path]::GetFullPath((Join-Path $RepoRoot $TrustedBinding.fixture_relative_path))
+    $legacyFixture = [IO.Path]::GetFullPath((Join-Path $RepoRoot $TrustedBinding.fixture_relative_path))
+    $expectedFixture = [IO.Path]::GetFullPath((Join-Path $RepoRoot ('backend\src\chrom_platform\resources\' + [IO.Path]::GetFileName($TrustedBinding.fixture_relative_path))))
     try {
         if (![IO.Path]::IsPathFullyQualified($values['CHROM_SFC_FULL_REFERENCE_PATH'])) { Fail 'Acceptance SFC full reference path must be absolute' }
         $configuredFixture = [IO.Path]::GetFullPath($values['CHROM_SFC_FULL_REFERENCE_PATH'])
@@ -583,7 +615,7 @@ function Assert-AcceptanceSfcFullBinding(
     $expectedCatalog = [IO.Path]::GetFullPath((Join-Path $RepoRoot 'Services\sfc_assets\conditions.sqlite'))
     if ($configuredRoot -cne [IO.Path]::GetFullPath($TrustedBinding.model_root) -or
         $configuredRegistry -cne $expectedRegistry -or $configuredRegistry -cne [IO.Path]::GetFullPath((Join-Path $TrustedBinding.model_root 'registry.json')) -or
-        $configuredCatalog -cne $expectedCatalog -or $configuredFixture -cne $expectedFixture) {
+        $configuredCatalog -cne $expectedCatalog -or ($configuredFixture -cne $legacyFixture -and $configuredFixture -cne $expectedFixture)) {
         Fail 'Acceptance SFC full paths do not match the fixed RS12 registry, catalog, and reference'
     }
     if (!(Test-Path -LiteralPath $trustedAuthorCatalog -PathType Leaf)) { Fail 'Acceptance SFC full author catalog is missing' }
@@ -593,9 +625,9 @@ function Assert-AcceptanceSfcFullBinding(
     Assert-Hash $expectedMetadata $TrustedBinding.metadata_sha256 'Acceptance SFC full metadata'
     Assert-Hash $expectedCatalog $TrustedBinding.platform_catalog_sha256 'Acceptance SFC full platform catalog'
     Assert-Hash $trustedAuthorCatalog $TrustedBinding.author_catalog_sha256 'Acceptance SFC full author catalog'
-    Assert-Hash $configuredFixture $trustedReferenceSha256 'Acceptance SFC full author reference'
+    Assert-Hash $expectedFixture $trustedReferenceSha256 'Acceptance SFC full author reference'
     try {
-        $fixture = Get-Content -LiteralPath $configuredFixture -Raw -Encoding UTF8 | ConvertFrom-Json
+        $fixture = Get-Content -LiteralPath $expectedFixture -Raw -Encoding UTF8 | ConvertFrom-Json
         $registryJson = Get-Content -LiteralPath $configuredRegistry -Raw -Encoding UTF8 | ConvertFrom-Json
         $metadata = Get-Content -LiteralPath $expectedMetadata -Raw -Encoding UTF8 | ConvertFrom-Json
     } catch { Fail 'Acceptance SFC full reference or model metadata is invalid JSON' }

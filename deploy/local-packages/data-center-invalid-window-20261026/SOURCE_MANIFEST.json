@@ -1,0 +1,361 @@
+{
+  "build_id": "data-center-invalid-window-20261026",
+  "modules": [
+    "datasets"
+  ],
+  "chromatography_types": [],
+  "files": [
+    {
+      "path": "alembic/alembic.ini",
+      "sha256": "a2228c1392b3be4e4b8b6c8359048c53d92e508bf8ee061581b71bed1554a3ca"
+    },
+    {
+      "path": "alembic/candidates/0022_data_center_import.py",
+      "sha256": "2f5fa4ef175f9c4572ba4b612a387cbddfbb60d65a63a95ae493a7a8bec01306"
+    },
+    {
+      "path": "alembic/env.py",
+      "sha256": "84aa7edfe95646e266395f228bc906abe38c71c95b5a5f226c2bc846b25bd42b"
+    },
+    {
+      "path": "alembic/README.md",
+      "sha256": "198780973e887f19458e593055386d4747349f18735718cd8a25fef5ff307760"
+    },
+    {
+      "path": "alembic/script.py.mako",
+      "sha256": "a95829b00bcff3113f0913c60736f3763e5709604c033886f8248ab9dfdd0435"
+    },
+    {
+      "path": "alembic/versions/0001_m1_persistence.py",
+      "sha256": "9d86406fb10ba9e8ae4ca9e608e6f977ea8f9c020c85281b68689a32a95ec375"
+    },
+    {
+      "path": "alembic/versions/0002_m2_prediction_data.py",
+      "sha256": "8ebd8d9190208edaea8fdaba2d40b242b775aa104f50adb44c842d081c2ed586"
+    },
+    {
+      "path": "alembic/versions/0007_worker_outbox_lease.py",
+      "sha256": "c213af89547a2a251cadd02b693aaee6793055546b5d34bd7e3e07273232fdb9"
+    },
+    {
+      "path": "build-manifest.json",
+      "sha256": "68b74b3f390087e70ba22b9d37063fed899e5b5ea26c143f9a0d10aae34803a7"
+    },
+    {
+      "path": "chrom_platform/__init__.py",
+      "sha256": "18af4919fd9fc45c294933ddd88a6a1297bb3889bb1dba3a5d49bd1b715a2caa"
+    },
+    {
+      "path": "chrom_platform/app.py",
+      "sha256": "c2b446e31c7d6f37c8bd2259da4a354ad2958ff469e8a8a42e99953d38cdf9f7"
+    },
+    {
+      "path": "chrom_platform/artifact_core/__init__.py",
+      "sha256": "6f4298cff4764e614b9f41ef201789b9bc2606a14e930ab1985b82e0aa946d3e"
+    },
+    {
+      "path": "chrom_platform/artifact_core/data_csv_window.py",
+      "sha256": "0526063c140a7c57ad0a5f3150c22206bc52af7978006f379ec5979c37599dec"
+    },
+    {
+      "path": "chrom_platform/artifact_core/dataset_csv_elevated_runner.py",
+      "sha256": "cd4034faa73f045d32b519d416f1260a1c13c09e670ed595ee7dca96d2e1de05"
+    },
+    {
+      "path": "chrom_platform/artifact_core/defender_profile_candidate.py",
+      "sha256": "e09dfe426363df44502980c8706da5d04cb7e1291d7ab9852a7e35dfb1bb66a5"
+    },
+    {
+      "path": "chrom_platform/artifact_core/model_package_manifest.py",
+      "sha256": "5ffa28cabbe999454106bb0667820be8028936d2aab58e6287f55887e39af2f2"
+    },
+    {
+      "path": "chrom_platform/artifact_core/model_package_scan.py",
+      "sha256": "2d1f8eae9ef5075b6b0a093520dc971ec17be8252f02e1524687f65ada1b318a"
+    },
+    {
+      "path": "chrom_platform/artifact_core/models.py",
+      "sha256": "e684a62ebd95fe2aaa10dc4f41ffb36909bd4b8c464c1d344a772cdaf0e25d51"
+    },
+    {
+      "path": "chrom_platform/artifact_core/repository.py",
+      "sha256": "2b29c575b511674004068a0772243ebc86db42a0d3ecc14eee5f636287905153"
+    },
+    {
+      "path": "chrom_platform/artifact_core/router.py",
+      "sha256": "f5d02cfb3560de6fca3f6a6005a9c4ff44a596338b4655e13dc142ac37d6780e"
+    },
+    {
+      "path": "chrom_platform/artifact_core/scanner_defender.py",
+      "sha256": "6193169f152fb7665d911f4c51eef51ef8f2338e6279affc5d9409cda8bcf6b3"
+    },
+    {
+      "path": "chrom_platform/artifact_core/schemas.py",
+      "sha256": "b6533c36835c454505069f4a48f9cece1aaefc390a6afd68f38cd9f8e2afcf37"
+    },
+    {
+      "path": "chrom_platform/artifact_core/service.py",
+      "sha256": "be21534b990783d68e74dae47248cfdbce84834de1a9c021f528495cac1ad73f"
+    },
+    {
+      "path": "chrom_platform/artifact_core/single_job.py",
+      "sha256": "e987f1737237923474985e6ca8de16f4505ea1b3f1f4c39de97150f75fd9b6ac"
+    },
+    {
+      "path": "chrom_platform/artifact_core/storage.py",
+      "sha256": "67d578671964ca1ac783601f8bab5d01cedd46172d9ef7ef89b9d3146ad7c9f6"
+    },
+    {
+      "path": "chrom_platform/artifact_core/uow.py",
+      "sha256": "982748349ebe13a8716af5675a1dac208e6311f3bd36ff1a2b9d5796822d97c6"
+    },
+    {
+      "path": "chrom_platform/artifact_core/validation_worker.py",
+      "sha256": "c0fcad0aae758580cdbde0ebd844231bf8cef809a09c8303dc9f546d2672e64b"
+    },
+    {
+      "path": "chrom_platform/assembly/__init__.py",
+      "sha256": "5db3628e7143518f53d14c323bab2b7d2b2c6723b0a27f43be07271ba5c64a5c"
+    },
+    {
+      "path": "chrom_platform/assembly/handler_registry.py",
+      "sha256": "ab803674cf98a0e081d2afa10e6d0bedd72b41ceaf8d7cc0998f1cc9edf84cfe"
+    },
+    {
+      "path": "chrom_platform/assembly/m1.py",
+      "sha256": "d0723ab2f2b493eadea0d30878a8f554fb53a643ffd06affc47c6b0bf6549918"
+    },
+    {
+      "path": "chrom_platform/assembly/m2.py",
+      "sha256": "71264000308ca35bbbc073e0efbd9e742fdd45633b516fd0e96cf475b9a2c2ae"
+    },
+    {
+      "path": "chrom_platform/assembly/manifest.py",
+      "sha256": "f1463e60b78dfebc647b78cebf6c40041e87e1f6cd5d85af75761659785030b5"
+    },
+    {
+      "path": "chrom_platform/core/__init__.py",
+      "sha256": "5a1772820ca85e58767b0a6f0fff5b68f665a91cdb69d8fe8b5999cfe3b919ba"
+    },
+    {
+      "path": "chrom_platform/core/cursor.py",
+      "sha256": "b32d295441da9ee8d139e1f9b126d32e92501d4cb06784238dc6931dc3cd078b"
+    },
+    {
+      "path": "chrom_platform/core/dto.py",
+      "sha256": "a69d86bb4d1bac767eeb930d1ee8a549256786adecc2af0b27abea5fabdb5e32"
+    },
+    {
+      "path": "chrom_platform/core/errors.py",
+      "sha256": "35e8e35a994c4df9a6fe4a07a3aeebb6f674a64bc78360bf4f6051c08bc6295a"
+    },
+    {
+      "path": "chrom_platform/core/health.py",
+      "sha256": "cbf3d556b50c118cdb8635ec7baeba03b23bc44df7cac55cece186984be3047f"
+    },
+    {
+      "path": "chrom_platform/core/idempotency.py",
+      "sha256": "598c37ba612ba1fea9dd245f4fd758de9a37525a6258923eaf8cf7a1627b1858"
+    },
+    {
+      "path": "chrom_platform/core/model_load_observation.py",
+      "sha256": "55b5e3a0399e6c06aeea822dfa4ad37b314591917238ee2924ab6f72074a791b"
+    },
+    {
+      "path": "chrom_platform/core/projects.py",
+      "sha256": "afaaf3e3219190d5a72db170fa444b25f9a9a023fce464b8f3e97d0a3cece450"
+    },
+    {
+      "path": "chrom_platform/core/public_settings.py",
+      "sha256": "c788e9d95ccf682b04a512c3d9976a131c0c3edc58b643aecc229c22cfa1c330"
+    },
+    {
+      "path": "chrom_platform/generate_openapi.py",
+      "sha256": "aa4f8ad2f81b4caaded9842f9991e5f3d63a69bc0a0fd29d02711e49ae7dce83"
+    },
+    {
+      "path": "chrom_platform/infrastructure/__init__.py",
+      "sha256": "70f4b25bd953a5cb0e0a3f553cc33b623cebc7a6d11846008f9ff4ec57189152"
+    },
+    {
+      "path": "chrom_platform/infrastructure/db.py",
+      "sha256": "5d0e7ea32801a6ad589d940f6b4ec1342a5b2190803d2085de839c1c16b8e921"
+    },
+    {
+      "path": "chrom_platform/infrastructure/health.py",
+      "sha256": "c493b294f88d22fb71edada286d4de6090f0ea25c8966bc7b9cfaaf6c59fd7df"
+    },
+    {
+      "path": "chrom_platform/infrastructure/metadata.py",
+      "sha256": "134168ef391a75273830ee13731ca38d040b79bec31df064de08ad24843bdfe9"
+    },
+    {
+      "path": "chrom_platform/infrastructure/migration_compat.py",
+      "sha256": "7d7659e59437f6194be5c4d928feb24e86d38d3e2f3f51bfa3f156509f9254d3"
+    },
+    {
+      "path": "chrom_platform/infrastructure/models.py",
+      "sha256": "49ace2bc60dcc83015c9aee1e333c1215067b0ff37a367cb27afe5373e17effc"
+    },
+    {
+      "path": "chrom_platform/infrastructure/repositories.py",
+      "sha256": "684796dc6ddd6a85f35022bb27f103b63284302c6883ae7b46de91342777b73c"
+    },
+    {
+      "path": "chrom_platform/infrastructure/structure_uow.py",
+      "sha256": "25d9e943777beaca345ab13e1e9d64cc0e86103f52b5769d69ed1e54f3256f85"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/__init__.py",
+      "sha256": "71d50c98999b1540c6ccaf040539aaf2d591b90185a58a4b76bee447d5c67bb4"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/csv_import.py",
+      "sha256": "8f6fe63015a10f7c0dcb4d4748f9938c5dc9d9182e584cfe8379ef0b8056582e"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/errors.py",
+      "sha256": "79351a46ac3924158f52e8036bdd782c07d4bccc5fb95b2e9919264e2d2e897c"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/exports.py",
+      "sha256": "38342e09d1d161ea0965a763f66512167518bc113b7fe60456b317bc906831c8"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/import_artifacts.py",
+      "sha256": "2680120467ec111dade0365deb5564ad6a8aaeccea1ba7941d721dc23cd80f12"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/import_report.py",
+      "sha256": "80f24cfea8c5cfbc897b55399f504291c5dff87887b94436745a55d0e5de975a"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/import_worker.py",
+      "sha256": "208336e320e6af76114efbc3a27bb082998a39935a71cdd794d05ab7e9d63810"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/import_workflow.py",
+      "sha256": "216d394f8f6942c1507b56f7983a957a9720420670b0c8a32cc0b9f825db7fbd"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/persistence.py",
+      "sha256": "5397eb8b1ba95ec4ae9d4c8b4b9cc2df0af7c765e7e8cf497d884e7630585142"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/ports.py",
+      "sha256": "d31351e8772beb5572c0fd75d7de85b440c1af2c0626f53849f8bded04062fcd"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/router.py",
+      "sha256": "12c36c1adf925e336fdccbd54fc1cc94c00e7ced1bf0bb52d38608a3087edbb9"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/schemas.py",
+      "sha256": "a67591b2ab568fbc9472d12aa83cfc42abfcfb44f7572d4a46bf6aa26fbbabb4"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/service.py",
+      "sha256": "e11bfee3a7786b901314b4968c026474a0c954264b0ed3ec077473d93da6760b"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/testing.py",
+      "sha256": "ded2fd95a98030e27a32d5b9dfe87f4421ae24e7ba7a7059fc038585c2a1fadb"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/tlc_author_domain.py",
+      "sha256": "0122468b8b38fe6f35a71d8537b6943d7683f17c0b768db1ea3309058b9f9853"
+    },
+    {
+      "path": "chrom_platform/structure_core/__init__.py",
+      "sha256": "c817c79f5b203f2deb9624ce7b4ce8634b02546e83ef0f33dadf10fdbb72b56d"
+    },
+    {
+      "path": "chrom_platform/structure_core/router.py",
+      "sha256": "87e7832fef73664ab38055544069ead8b1d119b1eda5e1c121eaaeede8e0b5c1"
+    },
+    {
+      "path": "chrom_platform/structure_core/schemas.py",
+      "sha256": "1e5ee72f0f2b7ea0580995f165c05f922654c81f226331e00dff46b267f6fb08"
+    },
+    {
+      "path": "chrom_platform/structure_core/service.py",
+      "sha256": "aee4e3d233d87f49dbaa3d41214d4ff3c94a9c11823c7f5a1ee5a5abe8745c05"
+    },
+    {
+      "path": "chrom_platform/structure_core/uow.py",
+      "sha256": "cc2ff5d4268a56d988ab9d4a4ecaa488c0a9eecdcf7dd3b4e47330c3b0292d1a"
+    },
+    {
+      "path": "chrom_platform/task_core/__init__.py",
+      "sha256": "b10fb00ccf965dcaa106bbda32b4b2b5862454060a285bdd0ed06bb70adeba5f"
+    },
+    {
+      "path": "chrom_platform/task_core/confirmation_target_resolver.py",
+      "sha256": "63b6a988f1ae2dd8fe65ce0e4de444f3026ff53d3aa7094897b93749e2ce9598"
+    },
+    {
+      "path": "chrom_platform/task_core/models.py",
+      "sha256": "02f5c7698d639ea9e2fead1e3c10636d57f45ba0a5ecdf702a68c0a92ea1e9b1"
+    },
+    {
+      "path": "chrom_platform/task_core/outbox_dispatch.py",
+      "sha256": "78a5951798a2090bcce88ca627fc0fe1b6c7b944f1639787aef9ea5641e13348"
+    },
+    {
+      "path": "chrom_platform/task_core/policy.py",
+      "sha256": "669224514126c7153e5e4ba031f77bfbf33dcd3c55b9e9835625b9f7061d3f9a"
+    },
+    {
+      "path": "chrom_platform/task_core/repository.py",
+      "sha256": "e93514b7c0d7e354326e25d3054a752d7f27976404b908818233010296666143"
+    },
+    {
+      "path": "chrom_platform/task_core/router.py",
+      "sha256": "bc17095c0d12a8d96b814a7403b4c56f269e3608a2713231c056147a32d616c3"
+    },
+    {
+      "path": "chrom_platform/task_core/schemas.py",
+      "sha256": "7e59d26ae25f7d205c338e2c40789e4ab63cfebfe7e2c2fa2330316d44c07ba9"
+    },
+    {
+      "path": "chrom_platform/task_core/service.py",
+      "sha256": "d71c7a3d9c32571b22003412558a8c46c4da65114c5c85fd99a5e20a609f7774"
+    },
+    {
+      "path": "chrom_platform/task_core/sse.py",
+      "sha256": "aad35880defc846b2d150f93a255163b40f826f2f73e450d4cfd0c144c34428a"
+    },
+    {
+      "path": "chrom_platform/task_core/state.py",
+      "sha256": "80690d194e1d9560caa801a505a74542b36688afe8571e92f64d390b2670b919"
+    },
+    {
+      "path": "chrom_platform/worker_cli.py",
+      "sha256": "a66adc1971a4da158c3206a0b6707cd9a2a4f40452ef5d2ada8bfd718849c8a5"
+    },
+    {
+      "path": "requirements-profile.txt",
+      "sha256": "85ed3bb21d9a4bf68dbdd5c20a06f354b976b9743ef519121e409e973803131b"
+    }
+  ],
+  "migrations": [
+    "alembic/versions/0001_m1_persistence.py",
+    "alembic/versions/0002_m2_prediction_data.py",
+    "alembic/versions/0007_worker_outbox_lease.py"
+  ],
+  "workers": [
+    "chrom_platform/artifact_core/validation_worker.py",
+    "chrom_platform/modules/data_center/import_worker.py"
+  ],
+  "worker_entrypoint": "chrom_platform/worker_cli.py",
+  "dependencies": [
+    "fastapi==0.136.3",
+    "pydantic==2.13.4",
+    "sqlalchemy==2.0.50",
+    "alembic==1.18.5",
+    "redis==8.0.1",
+    "rdkit==2026.3.3",
+    "asyncmy==0.2.14",
+    "dramatiq[redis]==2.2.1"
+  ]
+}

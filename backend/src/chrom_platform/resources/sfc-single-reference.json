@@ -1,0 +1,20 @@
+{
+  "model_id": "sc-rs12-amylose-dmpc-coated",
+  "artifact_sha256": "035cb8cb6fba463a845506cfdee8271bc4dd3e2c7529fd79b5f8642fb1799c40",
+  "structure_refs": ["C[C@H](O)F", "C[C@@H](O)F"],
+  "modifier_smiles": "CO",
+  "modifier_total_fraction": 0.2,
+  "conditions": {
+    "column": "AD",
+    "stationary_phase": "amylose tris (3,5-dimethylphenylcarbamate)",
+    "mode": "coated",
+    "length_mm": 150.0,
+    "inner_diameter_mm": 4.6,
+    "particle_size_um": 5.0,
+    "column_temperature_c": 35.0,
+    "flow_rate_ml_min": 2.0
+  },
+  "expected_score": 0.680460057545507,
+  "tolerance": 1e-9,
+  "source": "independent SFC v0.1 single-column reference AD"
+}

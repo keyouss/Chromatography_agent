@@ -24,6 +24,9 @@ worker = ["asyncmy==0.2.14", "dramatiq[redis]==2.2.1", "redis==8.0.1"]
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+chrom_platform = ["resources/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]

@@ -1,0 +1,8 @@
+fastapi==0.136.3
+pydantic==2.13.4
+sqlalchemy==2.0.50
+alembic==1.18.5
+redis==8.0.1
+rdkit==2026.3.3
+asyncmy==0.2.14
+dramatiq[redis]==2.2.1

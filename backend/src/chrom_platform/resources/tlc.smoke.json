@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "smiles": "O=C(C1=CC=CC=C1)CCCl",
+  "mobile_phase": {
+    "hexane": 0.8,
+    "ethyl_acetate": 0.2,
+    "dichloromethane": 0.0,
+    "methanol": 0.0,
+    "diethyl_ether": 0.0
+  },
+  "predicted_rf": 0.657982,
+  "component_predictions": {
+    "lgb": 0.640312,
+    "xgb": 0.584923,
+    "random_forest": 0.690622,
+    "ann": 0.687027
+  },
+  "ensemble_weights": {
+    "lgb": 0.2,
+    "xgb": 0.2,
+    "random_forest": 0.2,
+    "ann": 0.4
+  },
+  "model_name": "author_ensemble_LGB_XGB_RF_ANN",
+  "model_path": "D:\\Jupyter\\Chromatography_agent\\deliverables\\chromatography_tools_windows_cc_hplc_gc_tlc\\tlc_rf\\model_LGB\\model_ANN (3).pkl.gz",
+  "model_paths": {
+    "ann": "D:\\Jupyter\\Chromatography_agent\\deliverables\\chromatography_tools_windows_cc_hplc_gc_tlc\\tlc_rf\\model_LGB\\model_ANN (3).pkl.gz",
+    "lgb": "D:\\Jupyter\\Chromatography_agent\\deliverables\\chromatography_tools_windows_cc_hplc_gc_tlc\\tlc_rf\\model_LGB\\model_LGB (3).pkl.gz",
+    "xgb": "D:\\Jupyter\\Chromatography_agent\\deliverables\\chromatography_tools_windows_cc_hplc_gc_tlc\\tlc_rf\\model_LGB\\model_XGB (3).pkl.gz",
+    "random_forest": "D:\\Jupyter\\Chromatography_agent\\deliverables\\chromatography_tools_windows_cc_hplc_gc_tlc\\tlc_rf\\model_LGB\\model_RF (3).pkl.gz"
+  },
+  "warnings": [
+    "该结果为作者 LGB、XGB、RF、ANN 集成预测，仅适合作为初始展开剂条件建议。",
+    "论文数据来自标准化自动化 TLC 条件；不同 TLC 板、展开缸、温湿度需重新实验确认。"
+  ]
+}

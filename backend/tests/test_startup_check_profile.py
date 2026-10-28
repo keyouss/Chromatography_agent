@@ -60,12 +60,10 @@ def test_fixed_profile_bindings_never_use_caller_path() -> None:
 
 
 def test_data_worker_health_uses_only_the_fixed_physical_package() -> None:
-    expected = Path(
-        r"D:\Jupyter\Chromatography_agent\testing\runs\2026-10-27-data-import-audit"
-        r"\backend-runtime-package-data-window-08\data-center-invalid-window-20261026"
-    )
+    expected = Path(CHECKER).resolve().parents[2] / "deploy" / "local-packages" / "data-center-invalid-window-20261026"
     assert CHECK.worker_package_path("data-20261026") == expected
     assert CHECK.worker_package_path("assistant-20261006") == Path(CHECKER).resolve().parents[2] / "backend/src"
+    assert "testing" not in str(CHECK.worker_package_path("data-20261026")).lower()
     with pytest.raises(ValueError):
         CHECK.worker_package_path("backend/src")
 

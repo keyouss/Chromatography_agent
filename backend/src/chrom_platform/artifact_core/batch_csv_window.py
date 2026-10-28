@@ -21,9 +21,7 @@ PRIOR_PROFILES = (
 EXPECTED_EXE_SHA256 = "a4291c5b4325895d13d32e232bf50c1b41356306803ac5dc75bba9aecb021141"
 INPUT_MANIFEST_SHA256 = "b76265cf9c746bbd0c7390f784d69072e81ea79b39aeb901dca6f46475ce2f50"
 BUILD_MANIFEST_SHA256 = "002507de595ff8fdb607b7b15bd92d5c391e5ac1ed0f754520f3b4bf1d68e3fe"
-INPUT_MANIFEST_PATH = Path(
-    r"D:\Jupyter\Chromatography_agent\testing\runs\2026-10-22-five-types-batch\inputs-revision-02\manifest.json"
-)
+INPUT_MANIFEST_PATH = Path(__file__).resolve().parents[1] / "resources" / "batch-scan-manifest.json"
 
 # This tuple is the complete allowlist. It is intentionally not generated from
 # a runtime manifest so later edits cannot widen this reviewed scan window.

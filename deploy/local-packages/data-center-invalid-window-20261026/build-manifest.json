@@ -1,0 +1,13 @@
+{
+  "manifest_version": "1.0",
+  "build_id": "data-center-invalid-window-20261026",
+  "modules": [
+    "datasets"
+  ],
+  "chromatography_types": [],
+  "prediction_tools": {},
+  "utilities": [],
+  "export_formats": [],
+  "auth_provider": "deployment_default",
+  "assistant_features": null
+}

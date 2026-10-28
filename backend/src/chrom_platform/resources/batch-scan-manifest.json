@@ -1,0 +1,188 @@
+{
+  "status": "LOCAL_CANDIDATES_ONLY_NOT_UPLOADED_OR_SCANNED",
+  "directory": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02",
+  "candidate_csv_count": 5,
+  "files": [
+    {
+      "type": "TLC",
+      "file": "tlc-batch.csv",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs\\tlc-batch.csv",
+      "candidate_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02\\tlc-batch.csv",
+      "source_sha256": "dbd9cfcf410eaf6d6ca1741c530b9624f2355ce3da66a4c6915760e173b75277",
+      "candidate_sha256": "37278b70cc49df0f542ed7d768e983280aa9ddc2d1107ee986e13e3770aa1c01",
+      "source_bytes": 207,
+      "candidate_bytes": 205,
+      "source_row_widths": [
+        5,
+        5,
+        5,
+        5,
+        0
+      ],
+      "candidate_row_widths": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "byte_rule": "candidate == source[:-2]; source == candidate + CRLF",
+      "product_csv_structure_check_source": "CSV_ROW_SHAPE_INVALID",
+      "product_csv_structure_check_candidate": null,
+      "expected_business_rows": [
+        "VALID",
+        "VALID",
+        "SCHEMA_INVALID"
+      ],
+      "expected_total_evaluations_if_accepted": 2,
+      "note": "Expected schema/business disposition only; not validated or executed."
+    },
+    {
+      "type": "CC",
+      "file": "cc-batch.csv",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs\\cc-batch.csv",
+      "candidate_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02\\cc-batch.csv",
+      "source_sha256": "277e8b09fef35505e40106b793776c8eb8c7985faae076dba9e1bc2836ef9e6f",
+      "candidate_sha256": "df39b76a0fcaa7423cad34632620094f672659c6713dff6f6d5b5fa21a14059c",
+      "source_bytes": 556,
+      "candidate_bytes": 554,
+      "source_row_widths": [
+        8,
+        8,
+        8,
+        8,
+        0
+      ],
+      "candidate_row_widths": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "byte_rule": "candidate == source[:-2]; source == candidate + CRLF",
+      "product_csv_structure_check_source": "CSV_ROW_SHAPE_INVALID",
+      "product_csv_structure_check_candidate": null,
+      "expected_business_rows": [
+        "VALID",
+        "VALID",
+        "SCHEMA_INVALID"
+      ],
+      "expected_total_evaluations_if_accepted": 4,
+      "note": "Expected schema/business disposition only; not validated or executed."
+    },
+    {
+      "type": "HPLC",
+      "file": "hplc-batch.csv",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs\\hplc-batch.csv",
+      "candidate_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02\\hplc-batch.csv",
+      "source_sha256": "d80edae3e20e11c0606b45865fe1f381ab70291f2c739d23bf64e5b6b4fc2c54",
+      "candidate_sha256": "81b5b6b5cde519a1be7451815b23c1e3d13dfbdc814f1b6fb4dc4a03da590245",
+      "source_bytes": 237,
+      "candidate_bytes": 235,
+      "source_row_widths": [
+        5,
+        5,
+        5,
+        5,
+        0
+      ],
+      "candidate_row_widths": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "byte_rule": "candidate == source[:-2]; source == candidate + CRLF",
+      "product_csv_structure_check_source": "CSV_ROW_SHAPE_INVALID",
+      "product_csv_structure_check_candidate": null,
+      "expected_business_rows": [
+        "VALID",
+        "VALID",
+        "SCHEMA_INVALID"
+      ],
+      "expected_total_evaluations_if_accepted": 4,
+      "note": "Expected schema/business disposition only; not validated or executed."
+    },
+    {
+      "type": "GC",
+      "file": "gc-batch.csv",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs\\gc-batch.csv",
+      "candidate_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02\\gc-batch.csv",
+      "source_sha256": "55ddd78a14bbfecf199b8295df18e26f31a834a11661c3166e8dc06e832d0546",
+      "candidate_sha256": "06bf63989a93468fb25088696cc2b4d8c36723556179f95546147fd4e2fe3f88",
+      "source_bytes": 552,
+      "candidate_bytes": 550,
+      "source_row_widths": [
+        2,
+        2,
+        2,
+        2,
+        0
+      ],
+      "candidate_row_widths": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "byte_rule": "candidate == source[:-2]; source == candidate + CRLF",
+      "product_csv_structure_check_source": "CSV_ROW_SHAPE_INVALID",
+      "product_csv_structure_check_candidate": null,
+      "expected_business_rows": [
+        "VALID",
+        "VALID",
+        "SCHEMA_INVALID"
+      ],
+      "expected_total_evaluations_if_accepted": 2,
+      "note": "Expected schema/business disposition only; not validated or executed."
+    },
+    {
+      "type": "SFC",
+      "file": "sfc-batch.csv",
+      "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs\\sfc-batch.csv",
+      "candidate_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\inputs-revision-02\\sfc-batch.csv",
+      "source_sha256": "a1c9621a38860ca6e76876b5c1243102fb44844824eed008d7ca73e5a94acfb5",
+      "candidate_sha256": "7d0cc9a8d2b52d1d1e897a83a01e3e0ffb2af6dd18b7b9f3af004efbf7e0ff4e",
+      "source_bytes": 752,
+      "candidate_bytes": 750,
+      "source_row_widths": [
+        8,
+        8,
+        8,
+        8,
+        0
+      ],
+      "candidate_row_widths": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "byte_rule": "candidate == source[:-2]; source == candidate + CRLF",
+      "product_csv_structure_check_source": "CSV_ROW_SHAPE_INVALID",
+      "product_csv_structure_check_candidate": null,
+      "expected_business_rows": [
+        "VALID",
+        "VALID",
+        "SCHEMA_INVALID"
+      ],
+      "expected_total_evaluations_if_accepted": 4,
+      "note": "Expected schema/business disposition only; not validated or executed."
+    }
+  ],
+  "old_inputs_status": "UNCHANGED_READ_ONLY",
+  "old_inputs_issue": "All five ended CRLF CRLF; one extra blank CSV record caused CSV_ROW_SHAPE_INVALID.",
+  "runtime_status": {
+    "uploaded": 1,
+    "scan_passed_clean": 1,
+    "batch_jobs": 0,
+    "science_jobs": 0,
+    "window": "CLOSED",
+    "evidence": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-22-five-types-batch\\backend-first-tlc-artifact-failure.json"
+  },
+  "expected_total_evaluations_if_accepted": 16,
+  "limitations": [
+    "No upload, scanner, UAC, API, model, batch job, or science job was invoked.",
+    "The schema-invalid row is intentionally unchanged.",
+    "All source CSVs and source manifest remain unchanged."
+  ]
+}

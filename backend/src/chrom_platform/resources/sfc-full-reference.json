@@ -1,0 +1,146 @@
+{
+  "fixture_schema_version": "1.0",
+  "reference_kind": "author_implementation_software_consistency",
+  "scientific_claim": "Not an experimental label, accuracy estimate, or unseen-molecule generalization result.",
+  "model": {
+    "id": "rs15-extra-trees-s80-seed2024",
+    "version": "1",
+    "scope": "all_column",
+    "target": "label_success_rs15",
+    "threshold": "1.5",
+    "score_semantics": "positive_class_probability",
+    "preprocessing": {
+      "pipeline_class": "sklearn.pipeline.Pipeline",
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "classifier": "sklearn.ensemble._forest.ExtraTreesClassifier",
+      "n_estimators": 350,
+      "random_state": 2024
+    },
+    "artifact_sha256": "1e642a9d9aefc9fd811ded8e3a1e833faf34464d40b8a224c2ec72252312d88e",
+    "metadata_sha256": "050fbe6feb30ea04ce076e47bcd5827bf30355b7984d5d07584f342018970396",
+    "registry_sha256": "42f04a4ceb63024e685d0d8a4a8bd1ca57b12216f4f7f1050216f7ec04228429",
+    "feature_count": 66,
+    "feature_names_sha256": "32edab1459ea05c2d6637dfc09f63ebe5bdaa9e6a0c9b92a3490a7852c920481",
+    "input_schema_sha256": "ace9728f7a4a78c5d35750306b449b64c7fba3b0f7c63aefe62ad2c8d133281d",
+    "output_schema_sha256": "425fb826affe18823f75bd33a1e21a75687b0f47ee798d5d228293c3be62c3db",
+    "feature_names": [
+      "column", "stationary_phase", "mode", "length_mm", "inner_diameter_mm", "particle_size_um", "column_temperature", "flow_rate",
+      "mw_modi", "tpsa_modi", "nrotbs_modi", "hba_modi", "hbd_modi", "logp_modi", "rpsa_modi", "rasa_modi", "mdec_modi", "mats_modi", "modifier_ratio",
+      "mw_smiles_pair_value", "mw_smiles_mean", "mw_smiles_median", "tpsa_smiles_mean", "tpsa_smiles_median", "nrotbs_smiles_pair_value", "nrotbs_smiles_mean", "nrotbs_smiles_median", "hba_smiles_pair_value", "hba_smiles_mean", "hba_smiles_median", "hbd_smiles_pair_value", "hbd_smiles_mean", "hbd_smiles_median", "logp_smiles_pair_value", "logp_smiles_mean", "logp_smiles_median", "rpsa_smiles_mean", "rpsa_smiles_median", "rasa_smiles_mean", "rasa_smiles_median", "mdec_smiles_pair_value", "mdec_smiles_mean", "mdec_smiles_median", "mats_smiles_pair_value", "mats_smiles_mean", "mats_smiles_median", "mw_smiles_abs_diff", "mw_smiles_range", "tpsa_smiles_abs_diff", "tpsa_smiles_range", "nrotbs_smiles_abs_diff", "nrotbs_smiles_range", "hba_smiles_abs_diff", "hba_smiles_range", "hbd_smiles_abs_diff", "hbd_smiles_range", "logp_smiles_abs_diff", "logp_smiles_range", "rpsa_smiles_abs_diff", "rpsa_smiles_range", "rasa_smiles_abs_diff", "rasa_smiles_range", "mdec_smiles_abs_diff", "mdec_smiles_range", "mats_smiles_abs_diff", "mats_smiles_range"
+    ],
+    "training_split": {
+      "dataset_id": "single_stereocenter_pair_condition_rs15_classification_clean",
+      "split_mode": "row_random_stratified",
+      "split": "80/10/10",
+      "seed": 2024,
+      "applicability_limit": "Row-random metrics do not establish unseen-molecule generalization."
+    }
+  },
+  "author_reference": {
+    "inference_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v0.1\\backend\\app\\inference.py",
+    "inference_sha256": "581f0a8683df18bb07dcbf6c76357b5fc0b2bd0f644fde2b7940604405b9f286",
+    "schema_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v0.1\\backend\\app\\schemas.py",
+    "schema_sha256": "25bd47c7d324fc3bfeb1c00e8eac5a6f05c93f07e4f505f3b7ff640537245c67",
+    "python": "3.11.15",
+    "packages": {
+      "joblib": "1.5.3",
+      "scikit-learn": "1.6.1",
+      "numpy": "1.26.4",
+      "pandas": "2.3.3",
+      "rdkit": "2026.3.3",
+      "mordred": "1.2.0",
+      "pydantic": "2.13.4"
+    },
+    "same_process_runs": [0.6635690520620546, 0.6635690520620546],
+    "additional_observed_run": 0.6635690520620547,
+    "expected_probability": 0.6635690520620546,
+    "tolerance": {
+      "absolute": 1e-12,
+      "relative": 1e-12,
+      "rule": "abs(actual-reference) <= absolute + relative*abs(reference)",
+      "basis": "Binary64 software-consistency bound: archived author-source calls differ by 1 ULP, and a later same-process replay varied by 2 ULP. The 1e-12 bound covers observed implementation jitter; it is not a scientific error tolerance."
+    },
+    "expected_warnings": [
+      "FEATURE_VALUE_MISSING:mdec_modi",
+      "FEATURE_VALUE_MISSING:mdec_smiles_pair_value",
+      "FEATURE_VALUE_MISSING:mdec_smiles_mean",
+      "FEATURE_VALUE_MISSING:mdec_smiles_median",
+      "FEATURE_VALUE_MISSING:mdec_smiles_abs_diff",
+      "FEATURE_VALUE_MISSING:mdec_smiles_range"
+    ],
+    "missing_feature_policy": {
+      "allowed_nan_features": [
+        "mdec_modi",
+        "mdec_smiles_pair_value",
+        "mdec_smiles_mean",
+        "mdec_smiles_median",
+        "mdec_smiles_abs_diff",
+        "mdec_smiles_range"
+      ],
+      "infinity": "reject",
+      "unexpected_nan": "reject",
+      "allowed_nan_action": "preserve NaN at adapter boundary and emit a per-feature warning; fitted author pipeline applies its recorded median imputer",
+      "scope": "only the six NaN fields observed for this exact author reference input; all other NaN patterns reject"
+    },
+    "observed_nan_features": [
+      "mdec_modi",
+      "mdec_smiles_pair_value",
+      "mdec_smiles_mean",
+      "mdec_smiles_median",
+      "mdec_smiles_abs_diff",
+      "mdec_smiles_range"
+    ],
+    "raw_output": {
+      "candidate_count": 1,
+      "rank": 1,
+      "probability": 0.6635690520620546,
+      "conditions": {
+        "column": "AD",
+        "stationary_phase": "amylose tris (3,5-dimethylphenylcarbamate)",
+        "mode": "coated",
+        "length_mm": 150.0,
+        "inner_diameter_mm": 4.6,
+        "particle_size_um": 5.0,
+        "column_temperature": 35.0,
+        "flow_rate": 2.5
+      },
+      "mdec_modi": null
+    }
+  },
+  "candidate_source": {
+    "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\data\\result_with_advanced_descriptors.sqlite",
+    "sha256": "266a6d00df80166c3faf64be9dc21748d9a39a9f7106a24b8741fdd628eb9c1d",
+    "query_result_count": 1,
+    "condition_units": {
+      "length_mm": "mm",
+      "inner_diameter_mm": "mm",
+      "particle_size_um": "um",
+      "column_temperature_c": "C",
+      "flow_rate_ml_min": "mL/min"
+    }
+  },
+  "input": {
+    "tool": "full_column",
+    "structure_smiles": {
+      "a": "C[C@H](O)F",
+      "b": "C[C@@H](O)F",
+      "modifier": "CO"
+    },
+    "modifier_total_fraction": 0.2,
+    "modifier_components": [{"structure_ref": "modifier", "fraction": 1.0}],
+    "candidate_scope_id": "sfc-full-reference",
+    "top_k": 1,
+    "candidate": {
+      "candidate_id": "sfc-full-reference-0001",
+      "column": "AD",
+      "stationary_phase": "amylose tris (3,5-dimethylphenylcarbamate)",
+      "mode": "coated",
+      "length_mm": 150.0,
+      "inner_diameter_mm": 4.6,
+      "particle_size_um": 5.0,
+      "column_temperature": 35.0,
+      "flow_rate": 2.5
+    }
+  }
+}

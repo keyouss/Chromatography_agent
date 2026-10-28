@@ -92,6 +92,6 @@ $assemblyText = Get-Content -LiteralPath $assemblyPath -Raw -Encoding UTF8
 $pinMatch = [regex]::Match($assemblyText, 'SFC_SINGLE_REFERENCE_SHA256\s*=\s*"([0-9a-f]{64})"')
 Assert-True ($pinMatch.Success -and $pinMatch.Groups[1].Value -eq (Get-Sha256 $fixturePath)) 'Assembly fixture auto pin does not match the fixed v3 fixture'
 Assert-True ($runLocalText.Contains("Assert-Hash `$candidate '266a6d00df80166c3faf64be9dc21748d9a39a9f7106a24b8741fdd628eb9c1d' 'SFC candidate database'")) 'Formal SFC catalog hash changed'
-Assert-True ($runLocalText.Contains("Assert-Hash (Get-ConfigValue `$Config @('CHROM_SFC_GOLDEN_FIXTURE')) '335f027e3483dc36e3f7f1be4a8d00e00471880ce436b93b5b67c85dd5bd2905' 'SFC golden fixture'")) 'Formal SFC fixture hash changed'
+Assert-True ($runLocalText.Contains("Assert-Hash (Join-Path `$repo 'backend\src\chrom_platform\resources\sfc-single-reference.json') '335f027e3483dc36e3f7f1be4a8d00e00471880ce436b93b5b67c85dd5bd2905' 'SFC golden fixture'")) 'Formal SFC fixture package hash changed'
 Write-Output 'PASS acceptance branch is wired and fixture auto pin matches the v3 fixture'
 Write-Output 'PASS formal RS15 candidate and golden pins remain unchanged'

@@ -308,7 +308,7 @@ def create_app(manifest_path: str | Path | None = None, *, contract_generation: 
         # deployment does not load M2 ORM tables or worker code at all.
         from .assembly.m2 import assemble_m2
         data_csv_window = None
-        if "datasets" in m2_modules and not contract_generation:
+        if "datasets" in m2_modules and manifest.build_id == "data-center-invalid-window-20261026" and not contract_generation:
             from .artifact_core.data_csv_window import build_data_csv_window
 
             data_csv_window = build_data_csv_window(

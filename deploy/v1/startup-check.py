@@ -20,10 +20,7 @@ PROFILES = {
         "dataset_only": True,
     },
 }
-DATA_BACKEND_PACKAGE = Path(
-    r"D:\Jupyter\Chromatography_agent\testing\runs\2026-10-27-data-import-audit"
-    r"\backend-runtime-package-data-window-08\data-center-invalid-window-20261026"
-)
+DATA_BACKEND_PACKAGE = Path(__file__).resolve().parents[2] / "deploy" / "local-packages" / "data-center-invalid-window-20261026"
 
 
 def profile_binding(profile: str, local_app_data: str | Path) -> dict[str, str | bool]:

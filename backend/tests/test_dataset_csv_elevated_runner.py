@@ -607,7 +607,8 @@ def test_runner_rejects_untrusted_pipe_peer(monkeypatch, tmp_path, field, value)
 def test_elevated_bootstrap_is_fixed_physical_package_and_has_no_module_args():
     args = elevated._fixed_elevation_arguments()
     assert args[:3] == ["-B", "-I", "-c"]
-    assert "backend-runtime-package-data-window-08" in str(elevated.PACKAGE_ROOT)
+    assert elevated.PACKAGE_ROOT == Path(elevated.__file__).resolve().parents[2]
+    assert "testing" not in str(elevated.PACKAGE_ROOT).lower()
     assert str(elevated.PACKAGE_ROOT).replace("\\", "\\\\") in args[3]
     assert elevated.HELPER_MODULE in args[3]
     assert "runpy.run_module" in args[3]
@@ -615,11 +616,7 @@ def test_elevated_bootstrap_is_fixed_physical_package_and_has_no_module_args():
 
 
 def test_audit02_paths_are_fixed_and_share_the_physical_state_root():
-    expected_package = Path(
-        r"D:\Jupyter\Chromatography_agent\testing\runs\2026-10-27-data-import-audit"
-        r"\backend-runtime-package-data-window-08\data-center-invalid-window-20261026"
-    )
-    assert elevated.PACKAGE_ROOT == expected_package
+    assert elevated.PACKAGE_ROOT == Path(elevated.__file__).resolve().parents[2]
     assert elevated.REQUEST_PATH == elevated.STATE_ROOT / "dataset-csv-scan-v1-audit02-20261027.request.json"
     assert elevated.LEDGER_PATH == elevated.STATE_ROOT / "dataset-csv-scan-v1-audit02-20261027.used"
     assert elevated.REQUEST_PATH.parent == elevated.LEDGER_PATH.parent == elevated.STATE_ROOT
