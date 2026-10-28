@@ -1,0 +1,53 @@
+# Priority API/Worker runtime pins. This file is an exact install manifest;
+# installation is intentionally not run by the integration task.
+# API and Worker use this same direct-runtime manifest. Linux image choice:
+# python:3.11-slim-bookworm. Required apt runtime packages: libgomp1
+# libglib2.0-0 libxrender1 libxext6 libsm6 libx11-6 libstdc++6.
+# No apt or pip installation is run here.
+# Torch CUDA wheel source is required for the +cu124 build.
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+# Project backend/worker pins (backend/pyproject.toml).
+setuptools==82.0.1
+fastapi==0.136.3
+uvicorn==0.49.0
+pydantic==2.13.4
+sqlalchemy==2.0.50
+alembic==1.18.5
+asyncmy==0.2.14
+PyMySQL==1.2.0
+redis==8.0.1
+dramatiq[redis]==2.2.1
+rdkit==2026.3.3
+
+# SFC/TLC runtime pins from backend/evidence/dependency-install-20260921/
+# baseline-runtime.json and baseline-conda-list.json (SFC Python 3.11.15).
+torch==2.6.0+cu124
+numpy==1.26.4
+pandas==2.3.3
+python-multipart==0.0.32
+pillow==12.2.0
+scikit-learn==1.6.1
+joblib==1.5.3
+lightgbm==4.7.0
+xgboost==2.1.4
+mordred==1.2.0
+torch-geometric==2.8.0
+
+# Assistant production-worker imports from the current SFC environment
+# Native Agent migration uses the already-installed SFC versions below.
+# This manifest change does not install or upgrade the environment.
+pydantic-ai-slim==2.56.0
+pydantic-graph==2.56.0
+openai==3.31.0
+httpx==0.28.1
+httpcore==1.0.9
+tiktoken==0.13.0
+
+# RDKit 2026.3.3 imported successfully in the Windows SFC environment, but
+# Linux wheel availability was not verified by an index query or dry-run:
+# STATUS=UNVERIFIED (do not claim Linux installation readiness).
+
+# Current SFC environment pin. PyMySQL is only for the explicitly configured
+# synchronous assistant business port; asyncmy remains the async API/Worker
+# database driver. No silent driver fallback is permitted.

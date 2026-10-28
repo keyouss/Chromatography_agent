@@ -1,0 +1,19 @@
+{
+  "active": {
+    "candidate_normalized_sha256": "3cffbdfb7b6a34db7a1b413635ba7330d31126c1729e59eb6434637b67f55599",
+    "candidate_raw_sha256": "8d434a6e5be2be2a9f75d0aec4e8c00156b2ae43a674b7b7c2a31dd0020f6ad2",
+    "path": "cc-v1/openapi.json",
+    "revision": "revision-20261004-04",
+    "sha256": "3cffbdfb7b6a34db7a1b413635ba7330d31126c1729e59eb6434637b67f55599"
+  },
+  "schema_version": "1.0",
+  "snapshots": [
+    {
+      "bytes": 129944,
+      "path": "cc-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "revision": "pre-revision-20261004-04-active",
+      "role": "previous_active_immutable_rollback",
+      "sha256": "635d75970f64e6d1e25f1bd0a82af4b3b37181f30f174a88c8cd2df5f901330d"
+    }
+  ]
+}

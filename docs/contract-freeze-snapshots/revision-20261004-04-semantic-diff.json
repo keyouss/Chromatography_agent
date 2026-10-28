@@ -1,0 +1,5591 @@
+{
+  "baseline_snapshot": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze",
+  "candidate_root": "backend/.generated/records-replay-20261004-06-final",
+  "changes": [
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "auth_mode": {
+            "enum": [
+              "deployment_default",
+              "session",
+              "bearer",
+              "service"
+            ],
+            "title": "Auth Mode",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "auth_mode",
+          "policy_version"
+        ],
+        "title": "AccessContextActor",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessContextActor",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "Non-sensitive, server-derived project selection context.",
+      "pointer": "/components/schemas/AccessContextView/description",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/AccessibleProjectView",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/$ref",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/type",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/AccessContextActor"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/actor",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Default Project Id"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/default_project_id",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Permissions",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/permissions",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "enum": [
+          "resolved",
+          "needs_selection",
+          "no_accessible_projects"
+        ],
+        "title": "Project Selection",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/project_selection",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Tenant"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/tenant",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "actor",
+        "permissions",
+        "accessible_projects",
+        "project_selection",
+        "actor_id",
+        "auth_mode",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "old": [
+        "actor_id",
+        "auth_mode",
+        "accessible_projects",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "pointer": "/components/schemas/AccessContextView/required",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "AccessibleProjectView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessibleProjectView",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle",
+        "export_report"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle"
+      ],
+      "pointer": "/components/schemas/ArtifactView/properties/kind/enum",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/CcPredictionCreate/properties/project_id/anyOf",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/CcPredictionCreate/properties/project_id/maxLength",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/CcPredictionCreate/properties/project_id/minLength",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/CcPredictionCreate/properties/project_id/type",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "Exactly two distinct structures to separate; no enantiomer claim is implied.",
+      "pointer": "/components/schemas/CcPredictionCreate/properties/structure_refs/description",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": 2,
+      "old": 1,
+      "pointer": "/components/schemas/CcPredictionCreate/properties/structure_refs/minItems",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "old": [
+        "project_id",
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "pointer": "/components/schemas/CcPredictionCreate/required",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "resource_ref": {
+            "$ref": "#/components/schemas/ResourceRef"
+          },
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "status",
+          "resource_ref"
+        ],
+        "title": "ExportAccepted",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportAccepted",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "json",
+              "csv",
+              "xlsx"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "include": {
+            "items": {
+              "enum": [
+                "input_snapshot",
+                "result",
+                "model_version",
+                "warnings"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Include",
+            "type": "array"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "resource_refs": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceRef"
+            },
+            "minItems": 1,
+            "title": "Resource Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_id",
+          "resource_refs",
+          "format",
+          "include"
+        ],
+        "title": "ExportCreate",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportCreate",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Id"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "format": {
+            "enum": [
+              "json",
+              "csv",
+              "xlsx"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "format_version": {
+            "title": "Format Version",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "source_snapshots": {
+            "additionalProperties": true,
+            "title": "Source Snapshots",
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELED",
+              "TIMED_OUT",
+              "INTERRUPTED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "status",
+          "format",
+          "format_version",
+          "source_snapshots",
+          "created_at"
+        ],
+        "title": "ExportView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportView",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 96,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Score Semantics"
+      },
+      "pointer": "/components/schemas/ModelOption/properties/score_semantics",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 32,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Threshold"
+      },
+      "pointer": "/components/schemas/ModelOption/properties/threshold",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 96,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Score Semantics"
+      },
+      "pointer": "/components/schemas/ModelSnapshot/properties/score_semantics",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 32,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Threshold"
+      },
+      "pointer": "/components/schemas/ModelSnapshot/properties/threshold",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/anyOf",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/maxLength",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/minLength",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/type",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "old": [
+        "project_id",
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/required",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "const": "exact",
+            "title": "Mode",
+            "type": "string"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "model_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Model Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "model_id",
+          "model_version"
+        ],
+        "title": "PredictionDraftExactModelSelection",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftExactModelSelection",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Artifact Sha256",
+            "type": "string"
+          },
+          "business_scope_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Business Scope Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Input Schema Version",
+            "type": "string"
+          },
+          "output_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Output Schema Version",
+            "type": "string"
+          },
+          "score_semantics": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Semantics"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threshold"
+          },
+          "version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "business_scope_id",
+          "artifact_sha256",
+          "input_schema_version",
+          "output_schema_version"
+        ],
+        "title": "PredictionDraftSourceModelSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftSourceModelSnapshot",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_smiles": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Canonical Smiles",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "stereochemistry_status": {
+            "enum": [
+              "specified",
+              "unspecified",
+              "not_applicable"
+            ],
+            "title": "Stereochemistry Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "canonical_smiles",
+          "stereochemistry_status"
+        ],
+        "title": "PredictionDraftStructureSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftStructureSnapshot",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "cc",
+      "pointer": "/components/schemas/PredictionDraftView/properties/chromatography_type/const",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": [
+        "tlc",
+        "cc",
+        "hplc",
+        "gc",
+        "sfc",
+        "chiral_lc"
+      ],
+      "pointer": "/components/schemas/PredictionDraftView/properties/chromatography_type/enum",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/created_at",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "maxLength": 128,
+        "minLength": 1,
+        "title": "Etag",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/etag",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/PredictionDraftExactModelSelection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/$ref",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": true,
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/additionalProperties",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "Model Selection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/title",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "object",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/type",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Modifier Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/modifier_structure_snapshots",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/revision",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/PredictionDraftSourceModelSnapshot"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_model_snapshot",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "title": "Source Prediction Id",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_prediction_id",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Source Record Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_record_revision",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/structure_snapshots",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Updated At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/updated_at",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "id",
+        "source_record_id",
+        "source_prediction_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "structure_snapshots",
+        "input",
+        "schema_version",
+        "model_selection",
+        "source_model_snapshot",
+        "source_record_revision",
+        "revision",
+        "etag",
+        "created_at",
+        "updated_at"
+      ],
+      "old": [
+        "id",
+        "source_record_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "input",
+        "schema_version",
+        "model_selection"
+      ],
+      "pointer": "/components/schemas/PredictionDraftView/required",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": "cc",
+      "pointer": "/components/schemas/PredictionRecord/properties/chromatography_type/const",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "remove",
+      "old": [
+        "tlc",
+        "cc",
+        "hplc",
+        "gc",
+        "sfc",
+        "chiral_lc"
+      ],
+      "pointer": "/components/schemas/PredictionRecord/properties/chromatography_type/enum",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "single",
+        "pair"
+      ],
+      "old": [
+        "single",
+        "pair",
+        "batch"
+      ],
+      "pointer": "/components/schemas/StructureCount/properties/semantics/enum",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExportAccepted"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[ExportAccepted]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_ExportAccepted_",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExportView"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[ExportView]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_ExportView_",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "pointer": "/components/schemas/UploadCreate/properties/kind/enum",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "_EmptyPayload",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/_EmptyPayload",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "post": {
+          "operationId": "create_prediction_record_export",
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Idempotency-Key",
+              "required": true,
+              "schema": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "202": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_ExportAccepted_"
+                  }
+                }
+              },
+              "description": "异步受理",
+              "headers": {
+                "Location": {
+                  "required": true,
+                  "schema": {
+                    "format": "uri-reference",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Create Export",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1exports",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_prediction_record_export",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "title": "Id",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_ExportView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Export",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1exports~1{id}",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_prediction_draft",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "draft_id",
+              "required": true,
+              "schema": {
+                "title": "Draft Id",
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "project_id",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Project Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_PredictionDraftView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Prediction Draft",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1prediction-drafts~1{draft_id}",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "chromatography_type",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chromatography Type"
+          }
+        },
+        {
+          "in": "query",
+          "name": "status",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        {
+          "in": "query",
+          "name": "cursor",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "chromatography_type",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chromatography Type"
+          }
+        },
+        {
+          "in": "query",
+          "name": "status",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records/get/parameters",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}/get/parameters",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        {
+          "in": "header",
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1archive/post/parameters",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        {
+          "in": "header",
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1replay-draft/post/parameters",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/_EmptyPayload"
+            }
+          }
+        },
+        "required": true
+      },
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1replay-draft/post/requestBody",
+      "profile": "cc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "auth_mode": {
+            "enum": [
+              "deployment_default",
+              "session",
+              "bearer",
+              "service"
+            ],
+            "title": "Auth Mode",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "auth_mode",
+          "policy_version"
+        ],
+        "title": "AccessContextActor",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessContextActor",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": "Non-sensitive, server-derived project selection context.",
+      "pointer": "/components/schemas/AccessContextView/description",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/AccessibleProjectView",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/$ref",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/type",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/AccessContextActor"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/actor",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Default Project Id"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/default_project_id",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Permissions",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/permissions",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "enum": [
+          "resolved",
+          "needs_selection",
+          "no_accessible_projects"
+        ],
+        "title": "Project Selection",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/project_selection",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Tenant"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/tenant",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "actor",
+        "permissions",
+        "accessible_projects",
+        "project_selection",
+        "actor_id",
+        "auth_mode",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "old": [
+        "actor_id",
+        "auth_mode",
+        "accessible_projects",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "pointer": "/components/schemas/AccessContextView/required",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "AccessibleProjectView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessibleProjectView",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle"
+      ],
+      "pointer": "/components/schemas/ArtifactView/properties/kind/enum",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/anyOf",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/maxLength",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/minLength",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/type",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "old": [
+        "project_id",
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/required",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "pointer": "/components/schemas/UploadCreate/properties/kind/enum",
+      "profile": "minimal-structure-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "auth_mode": {
+            "enum": [
+              "deployment_default",
+              "session",
+              "bearer",
+              "service"
+            ],
+            "title": "Auth Mode",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "auth_mode",
+          "policy_version"
+        ],
+        "title": "AccessContextActor",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessContextActor",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": "Non-sensitive, server-derived project selection context.",
+      "pointer": "/components/schemas/AccessContextView/description",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/AccessibleProjectView",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/$ref",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/AccessContextView/properties/accessible_projects/items/type",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/AccessContextActor"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/actor",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Default Project Id"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/default_project_id",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Permissions",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/permissions",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "enum": [
+          "resolved",
+          "needs_selection",
+          "no_accessible_projects"
+        ],
+        "title": "Project Selection",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/project_selection",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Tenant"
+      },
+      "pointer": "/components/schemas/AccessContextView/properties/tenant",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "actor",
+        "permissions",
+        "accessible_projects",
+        "project_selection",
+        "actor_id",
+        "auth_mode",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "old": [
+        "actor_id",
+        "auth_mode",
+        "accessible_projects",
+        "allowed_actions",
+        "is_multi_user_authenticated"
+      ],
+      "pointer": "/components/schemas/AccessContextView/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "AccessibleProjectView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/AccessibleProjectView",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle",
+        "export_report"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment",
+        "context_snapshot",
+        "diagnostic_bundle"
+      ],
+      "pointer": "/components/schemas/ArtifactView/properties/kind/enum",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "resource_ref": {
+            "$ref": "#/components/schemas/ResourceRef"
+          },
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "status",
+          "resource_ref"
+        ],
+        "title": "ExportAccepted",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportAccepted",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "json",
+              "csv",
+              "xlsx"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "include": {
+            "items": {
+              "enum": [
+                "input_snapshot",
+                "result",
+                "model_version",
+                "warnings"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Include",
+            "type": "array"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "resource_refs": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceRef"
+            },
+            "minItems": 1,
+            "title": "Resource Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_id",
+          "resource_refs",
+          "format",
+          "include"
+        ],
+        "title": "ExportCreate",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportCreate",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Id"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "format": {
+            "enum": [
+              "json",
+              "csv",
+              "xlsx"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "format_version": {
+            "title": "Format Version",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "source_snapshots": {
+            "additionalProperties": true,
+            "title": "Source Snapshots",
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELED",
+              "TIMED_OUT",
+              "INTERRUPTED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "status",
+          "format",
+          "format_version",
+          "source_snapshots",
+          "created_at"
+        ],
+        "title": "ExportView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/ExportView",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 96,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Score Semantics"
+      },
+      "pointer": "/components/schemas/ModelOption/properties/score_semantics",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 32,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Threshold"
+      },
+      "pointer": "/components/schemas/ModelOption/properties/threshold",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 96,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Score Semantics"
+      },
+      "pointer": "/components/schemas/ModelSnapshot/properties/score_semantics",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "anyOf": [
+          {
+            "maxLength": 32,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Threshold"
+      },
+      "pointer": "/components/schemas/ModelSnapshot/properties/threshold",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/anyOf",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/maxLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/minLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/NormalizeStructureRequest/properties/project_id/type",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "old": [
+        "project_id",
+        "input_type",
+        "value",
+        "preserve_stereochemistry"
+      ],
+      "pointer": "/components/schemas/NormalizeStructureRequest/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "const": "exact",
+            "title": "Mode",
+            "type": "string"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "model_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Model Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "model_id",
+          "model_version"
+        ],
+        "title": "PredictionDraftExactModelSelection",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftExactModelSelection",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Artifact Sha256",
+            "type": "string"
+          },
+          "business_scope_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Business Scope Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Input Schema Version",
+            "type": "string"
+          },
+          "output_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Output Schema Version",
+            "type": "string"
+          },
+          "score_semantics": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Semantics"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threshold"
+          },
+          "version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "business_scope_id",
+          "artifact_sha256",
+          "input_schema_version",
+          "output_schema_version"
+        ],
+        "title": "PredictionDraftSourceModelSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftSourceModelSnapshot",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_smiles": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Canonical Smiles",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "stereochemistry_status": {
+            "enum": [
+              "specified",
+              "unspecified",
+              "not_applicable"
+            ],
+            "title": "Stereochemistry Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "canonical_smiles",
+          "stereochemistry_status"
+        ],
+        "title": "PredictionDraftStructureSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftStructureSnapshot",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": "sfc",
+      "pointer": "/components/schemas/PredictionDraftView/properties/chromatography_type/const",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": [
+        "tlc",
+        "cc",
+        "hplc",
+        "gc",
+        "sfc",
+        "chiral_lc"
+      ],
+      "pointer": "/components/schemas/PredictionDraftView/properties/chromatography_type/enum",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/created_at",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "maxLength": 128,
+        "minLength": 1,
+        "title": "Etag",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/etag",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/PredictionDraftExactModelSelection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/$ref",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": true,
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/additionalProperties",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "Model Selection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/title",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "object",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/type",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Modifier Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/modifier_structure_snapshots",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/revision",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/PredictionDraftSourceModelSnapshot"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_model_snapshot",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "title": "Source Prediction Id",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_prediction_id",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Source Record Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_record_revision",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/structure_snapshots",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Updated At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/updated_at",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "id",
+        "source_record_id",
+        "source_prediction_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "structure_snapshots",
+        "input",
+        "schema_version",
+        "model_selection",
+        "source_model_snapshot",
+        "source_record_revision",
+        "revision",
+        "etag",
+        "created_at",
+        "updated_at"
+      ],
+      "old": [
+        "id",
+        "source_record_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "input",
+        "schema_version",
+        "model_selection"
+      ],
+      "pointer": "/components/schemas/PredictionDraftView/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": "sfc",
+      "pointer": "/components/schemas/PredictionRecord/properties/chromatography_type/const",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": [
+        "tlc",
+        "cc",
+        "hplc",
+        "gc",
+        "sfc",
+        "chiral_lc"
+      ],
+      "pointer": "/components/schemas/PredictionRecord/properties/chromatography_type/enum",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "column": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Column",
+            "type": "string"
+          },
+          "column_temperature_c": {
+            "title": "Column Temperature C",
+            "type": "number"
+          },
+          "flow_rate_ml_min": {
+            "exclusiveMinimum": 0.0,
+            "title": "Flow Rate Ml Min",
+            "type": "number"
+          },
+          "inner_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Inner Diameter Mm",
+            "type": "number"
+          },
+          "length_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Length Mm",
+            "type": "number"
+          },
+          "mode": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Mode",
+            "type": "string"
+          },
+          "particle_size_um": {
+            "exclusiveMinimum": 0.0,
+            "title": "Particle Size Um",
+            "type": "number"
+          },
+          "stationary_phase": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Stationary Phase",
+            "type": "string"
+          }
+        },
+        "required": [
+          "column",
+          "stationary_phase",
+          "mode",
+          "length_mm",
+          "inner_diameter_mm",
+          "particle_size_um",
+          "column_temperature_c",
+          "flow_rate_ml_min"
+        ],
+        "title": "SfcCandidateConditions",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SfcCandidateConditions",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "description": "Axis values supplied by a client; candidates are expanded server-side.",
+        "properties": {
+          "axes": {
+            "additionalProperties": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "maxProperties": 8,
+            "minProperties": 1,
+            "propertyNames": {
+              "enum": [
+                "column",
+                "stationary_phase",
+                "mode",
+                "length_mm",
+                "inner_diameter_mm",
+                "particle_size_um",
+                "column_temperature_c",
+                "flow_rate_ml_min"
+              ]
+            },
+            "title": "Axes",
+            "type": "object"
+          },
+          "max_candidates": {
+            "default": 100000,
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Max Candidates",
+            "type": "integer"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        "required": [
+          "axes"
+        ],
+        "title": "SfcCandidateScopeCreate",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SfcCandidateScopeCreate",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_count": {
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Candidate Count",
+            "type": "integer"
+          },
+          "conditions": {
+            "items": {
+              "$ref": "#/components/schemas/SfcCandidateConditions"
+            },
+            "maxItems": 500,
+            "title": "Conditions",
+            "type": "array"
+          },
+          "expansion": {
+            "const": "server_cartesian_or_historical_distinct_rows",
+            "title": "Expansion",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "max_candidates": {
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Max Candidates",
+            "type": "integer"
+          },
+          "model_id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Model Id",
+            "type": "string"
+          },
+          "model_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Model Version",
+            "type": "string"
+          },
+          "project_id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "model_id",
+          "model_version",
+          "candidate_count",
+          "max_candidates",
+          "expansion",
+          "conditions",
+          "truncated"
+        ],
+        "title": "SfcCandidateScopeView",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SfcCandidateScopeView",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "values": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "values"
+        ],
+        "title": "SfcConditionOption",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SfcConditionOption",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_count": {
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Candidate Count",
+            "type": "integer"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/SfcConditionOption"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "max_candidates": {
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Max Candidates",
+            "type": "integer"
+          },
+          "model_id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Model Id",
+            "type": "string"
+          },
+          "model_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Model Version",
+            "type": "string"
+          },
+          "project_id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          },
+          "scope_id": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Scope Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope_id",
+          "project_id",
+          "model_id",
+          "model_version",
+          "candidate_count",
+          "max_candidates",
+          "fields"
+        ],
+        "title": "SfcConditionsOptions",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SfcConditionsOptions",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/SfcFullColumnPredictionCreate/properties/project_id/anyOf",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/SfcFullColumnPredictionCreate/properties/project_id/maxLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/SfcFullColumnPredictionCreate/properties/project_id/minLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/SfcFullColumnPredictionCreate/properties/project_id/type",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "old": [
+        "project_id",
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "pointer": "/components/schemas/SfcFullColumnPredictionCreate/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "const": "positive_class_probability",
+        "default": "positive_class_probability",
+        "title": "Score Semantics",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/SfcPredictionResult/properties/score_semantics",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/SfcCandidateConditions"
+      },
+      "pointer": "/components/schemas/SfcResultRow/properties/conditions",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "const": "positive_class_probability",
+        "title": "Score Semantics",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/SfcResultRow/properties/score_semantics",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "candidate_id",
+        "rank",
+        "conditions",
+        "score_semantics"
+      ],
+      "old": [
+        "candidate_id",
+        "rank"
+      ],
+      "pointer": "/components/schemas/SfcResultRow/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": [
+        {
+          "maxLength": 96,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "pointer": "/components/schemas/SfcSingleColumnPredictionCreate/properties/project_id/anyOf",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 96,
+      "pointer": "/components/schemas/SfcSingleColumnPredictionCreate/properties/project_id/maxLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": 1,
+      "pointer": "/components/schemas/SfcSingleColumnPredictionCreate/properties/project_id/minLength",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "remove",
+      "old": "string",
+      "pointer": "/components/schemas/SfcSingleColumnPredictionCreate/properties/project_id/type",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "old": [
+        "project_id",
+        "schema_version",
+        "model_selection",
+        "structure_refs",
+        "chromatography_type",
+        "tool",
+        "input"
+      ],
+      "pointer": "/components/schemas/SfcSingleColumnPredictionCreate/required",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "single",
+        "pair"
+      ],
+      "old": [
+        "single",
+        "pair",
+        "batch"
+      ],
+      "pointer": "/components/schemas/StructureCount/properties/semantics/enum",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExportAccepted"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[ExportAccepted]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_ExportAccepted_",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExportView"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[ExportView]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_ExportView_",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SfcCandidateScopeView"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[SfcCandidateScopeView]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_SfcCandidateScopeView_",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SfcConditionsOptions"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/WarningDTO"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "title": "SuccessEnvelope[SfcConditionsOptions]",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/SuccessEnvelope_SfcConditionsOptions_",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "structure_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "old": [
+        "structure_input",
+        "batch_input",
+        "dataset_package",
+        "knowledge_document",
+        "model_package",
+        "assistant_attachment"
+      ],
+      "pointer": "/components/schemas/UploadCreate/properties/kind/enum",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "_EmptyPayload",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/_EmptyPayload",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "post": {
+          "operationId": "create_prediction_record_export",
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Idempotency-Key",
+              "required": true,
+              "schema": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "202": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_ExportAccepted_"
+                  }
+                }
+              },
+              "description": "异步受理",
+              "headers": {
+                "Location": {
+                  "required": true,
+                  "schema": {
+                    "format": "uri-reference",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Create Export",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1exports",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_prediction_record_export",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "title": "Id",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_ExportView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Export",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1exports~1{id}",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_prediction_draft",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "draft_id",
+              "required": true,
+              "schema": {
+                "title": "Draft Id",
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "project_id",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Project Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_PredictionDraftView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Prediction Draft",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1prediction-drafts~1{draft_id}",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "chromatography_type",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chromatography Type"
+          }
+        },
+        {
+          "in": "query",
+          "name": "status",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        {
+          "in": "query",
+          "name": "cursor",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "chromatography_type",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chromatography Type"
+          }
+        },
+        {
+          "in": "query",
+          "name": "status",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records/get/parameters",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}/get/parameters",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        {
+          "in": "header",
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1archive/post/parameters",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        {
+          "in": "header",
+          "name": "Idempotency-Key",
+          "required": true,
+          "schema": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ],
+      "old": [
+        {
+          "in": "path",
+          "name": "record_id",
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        }
+      ],
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1replay-draft/post/parameters",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/_EmptyPayload"
+            }
+          }
+        },
+        "required": true
+      },
+      "pointer": "/paths/~1api~1v1~1prediction-records~1{record_id}~1replay-draft/post/requestBody",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "post": {
+          "operationId": "create_sfc_candidate_scope",
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Idempotency-Key",
+              "required": true,
+              "schema": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SfcCandidateScopeCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_SfcCandidateScopeView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "List Sfc Candidate Scopes",
+          "tags": [
+            "prediction"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1sfc~1candidate-scopes",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_sfc_condition_options",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "scope_id",
+              "required": false,
+              "schema": {
+                "default": "sfc_conditions_default",
+                "title": "Scope Id",
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "project_id",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Project Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_SfcConditionsOptions_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Sfc Condition Options",
+          "tags": [
+            "prediction"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1sfc~1conditions~1options",
+      "profile": "sfc-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "const": "exact",
+            "title": "Mode",
+            "type": "string"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "model_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Model Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "model_id",
+          "model_version"
+        ],
+        "title": "PredictionDraftExactModelSelection",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftExactModelSelection",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Artifact Sha256",
+            "type": "string"
+          },
+          "business_scope_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Business Scope Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Input Schema Version",
+            "type": "string"
+          },
+          "output_schema_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Output Schema Version",
+            "type": "string"
+          },
+          "score_semantics": {
+            "anyOf": [
+              {
+                "maxLength": 96,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Semantics"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threshold"
+          },
+          "version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "business_scope_id",
+          "artifact_sha256",
+          "input_schema_version",
+          "output_schema_version"
+        ],
+        "title": "PredictionDraftSourceModelSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftSourceModelSnapshot",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_smiles": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Canonical Smiles",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "stereochemistry_status": {
+            "enum": [
+              "specified",
+              "unspecified",
+              "not_applicable"
+            ],
+            "title": "Stereochemistry Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "canonical_smiles",
+          "stereochemistry_status"
+        ],
+        "title": "PredictionDraftStructureSnapshot",
+        "type": "object"
+      },
+      "pointer": "/components/schemas/PredictionDraftStructureSnapshot",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/created_at",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "maxLength": 128,
+        "minLength": 1,
+        "title": "Etag",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/etag",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": "#/components/schemas/PredictionDraftExactModelSelection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/$ref",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "remove",
+      "old": true,
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/additionalProperties",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "remove",
+      "old": "Model Selection",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/title",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "remove",
+      "old": "object",
+      "pointer": "/components/schemas/PredictionDraftView/properties/model_selection/type",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Modifier Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/modifier_structure_snapshots",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/revision",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "$ref": "#/components/schemas/PredictionDraftSourceModelSnapshot"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_model_snapshot",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "title": "Source Prediction Id",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_prediction_id",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "minimum": 1.0,
+        "title": "Source Record Revision",
+        "type": "integer"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/source_record_revision",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "items": {
+          "$ref": "#/components/schemas/PredictionDraftStructureSnapshot"
+        },
+        "title": "Structure Snapshots",
+        "type": "array"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/structure_snapshots",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "format": "date-time",
+        "title": "Updated At",
+        "type": "string"
+      },
+      "pointer": "/components/schemas/PredictionDraftView/properties/updated_at",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "replace",
+      "new": [
+        "id",
+        "source_record_id",
+        "source_prediction_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "structure_snapshots",
+        "input",
+        "schema_version",
+        "model_selection",
+        "source_model_snapshot",
+        "source_record_revision",
+        "revision",
+        "etag",
+        "created_at",
+        "updated_at"
+      ],
+      "old": [
+        "id",
+        "source_record_id",
+        "project_id",
+        "chromatography_type",
+        "tool",
+        "input",
+        "schema_version",
+        "model_selection"
+      ],
+      "pointer": "/components/schemas/PredictionDraftView/required",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "enum": [
+          "column",
+          "stationary_phase",
+          "mode",
+          "length_mm",
+          "inner_diameter_mm",
+          "particle_size_um",
+          "column_temperature_c",
+          "flow_rate_ml_min"
+        ]
+      },
+      "pointer": "/components/schemas/SfcCandidateScopeCreate/properties/axes/propertyNames",
+      "profile": "universal-v1"
+    },
+    {
+      "change": "add",
+      "new": {
+        "get": {
+          "operationId": "get_prediction_draft",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "draft_id",
+              "required": true,
+              "schema": {
+                "title": "Draft Id",
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "project_id",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Project Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessEnvelope_PredictionDraftView_"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "401": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "403": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "409": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "410": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "412": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "413": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "428": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorEnvelope"
+                  }
+                }
+              },
+              "description": "统一 API 错误"
+            }
+          },
+          "summary": "Get Prediction Draft",
+          "tags": [
+            "data-center"
+          ]
+        }
+      },
+      "pointer": "/paths/~1api~1v1~1prediction-drafts~1{draft_id}",
+      "profile": "universal-v1"
+    }
+  ],
+  "profiles": {
+    "cc-v1": {
+      "added_operations": [
+        "GET /api/v1/exports/{id}",
+        "GET /api/v1/prediction-drafts/{draft_id}",
+        "POST /api/v1/exports"
+      ],
+      "added_paths": [
+        "/api/v1/exports",
+        "/api/v1/exports/{id}",
+        "/api/v1/prediction-drafts/{draft_id}"
+      ],
+      "added_schemas": [
+        "AccessContextActor",
+        "AccessibleProjectView",
+        "ExportAccepted",
+        "ExportCreate",
+        "ExportView",
+        "PredictionDraftExactModelSelection",
+        "PredictionDraftSourceModelSnapshot",
+        "PredictionDraftStructureSnapshot",
+        "SuccessEnvelope_ExportAccepted_",
+        "SuccessEnvelope_ExportView_",
+        "_EmptyPayload"
+      ],
+      "changed_operations": [
+        "GET /api/v1/prediction-records",
+        "GET /api/v1/prediction-records/{record_id}",
+        "POST /api/v1/prediction-records/{record_id}/archive",
+        "POST /api/v1/prediction-records/{record_id}/replay-draft"
+      ],
+      "changed_schemas": [
+        "AccessContextView",
+        "ArtifactView",
+        "CcPredictionCreate",
+        "ModelOption",
+        "ModelSnapshot",
+        "NormalizeStructureRequest",
+        "PredictionDraftView",
+        "PredictionRecord",
+        "StructureCount",
+        "UploadCreate"
+      ],
+      "json_pointer_change_count": 65,
+      "new_counts": {
+        "operations": 39,
+        "paths": 38,
+        "schemas": 104
+      },
+      "new_sha256": "3CFFBDFB7B6A34DB7A1B413635BA7330D31126C1729E59EB6434637B67F55599",
+      "old_counts": {
+        "operations": 36,
+        "paths": 35,
+        "schemas": 93
+      },
+      "old_sha256": "635D75970F64E6D1E25F1BD0A82AF4B3B37181F30F174A88C8CD2DF5F901330D",
+      "removed_operations": [],
+      "removed_paths": [],
+      "removed_schemas": []
+    },
+    "minimal-structure-v1": {
+      "added_operations": [],
+      "added_paths": [],
+      "added_schemas": [
+        "AccessContextActor",
+        "AccessibleProjectView"
+      ],
+      "changed_operations": [],
+      "changed_schemas": [
+        "AccessContextView",
+        "ArtifactView",
+        "NormalizeStructureRequest",
+        "UploadCreate"
+      ],
+      "json_pointer_change_count": 18,
+      "new_counts": {
+        "operations": 26,
+        "paths": 25,
+        "schemas": 61
+      },
+      "new_sha256": "BF35AF8FD7661B9ED2C5709B1DEB8629D79AB0A3153F644AF8D649E4A73D63AD",
+      "old_counts": {
+        "operations": 26,
+        "paths": 25,
+        "schemas": 59
+      },
+      "old_sha256": "F5C57950F6C0CFD0A619E375EFB191549D78B1EF07DA0E645A26B28456F6F45A",
+      "removed_operations": [],
+      "removed_paths": [],
+      "removed_schemas": []
+    },
+    "sfc-v1": {
+      "added_operations": [
+        "GET /api/v1/exports/{id}",
+        "GET /api/v1/prediction-drafts/{draft_id}",
+        "GET /api/v1/sfc/conditions/options",
+        "POST /api/v1/exports",
+        "POST /api/v1/sfc/candidate-scopes"
+      ],
+      "added_paths": [
+        "/api/v1/exports",
+        "/api/v1/exports/{id}",
+        "/api/v1/prediction-drafts/{draft_id}",
+        "/api/v1/sfc/candidate-scopes",
+        "/api/v1/sfc/conditions/options"
+      ],
+      "added_schemas": [
+        "AccessContextActor",
+        "AccessibleProjectView",
+        "ExportAccepted",
+        "ExportCreate",
+        "ExportView",
+        "PredictionDraftExactModelSelection",
+        "PredictionDraftSourceModelSnapshot",
+        "PredictionDraftStructureSnapshot",
+        "SfcCandidateConditions",
+        "SfcCandidateScopeCreate",
+        "SfcCandidateScopeView",
+        "SfcConditionOption",
+        "SfcConditionsOptions",
+        "SuccessEnvelope_ExportAccepted_",
+        "SuccessEnvelope_ExportView_",
+        "SuccessEnvelope_SfcCandidateScopeView_",
+        "SuccessEnvelope_SfcConditionsOptions_",
+        "_EmptyPayload"
+      ],
+      "changed_operations": [
+        "GET /api/v1/prediction-records",
+        "GET /api/v1/prediction-records/{record_id}",
+        "POST /api/v1/prediction-records/{record_id}/archive",
+        "POST /api/v1/prediction-records/{record_id}/replay-draft"
+      ],
+      "changed_schemas": [
+        "AccessContextView",
+        "ArtifactView",
+        "ModelOption",
+        "ModelSnapshot",
+        "NormalizeStructureRequest",
+        "PredictionDraftView",
+        "PredictionRecord",
+        "SfcFullColumnPredictionCreate",
+        "SfcPredictionResult",
+        "SfcResultRow",
+        "SfcSingleColumnPredictionCreate",
+        "StructureCount",
+        "UploadCreate"
+      ],
+      "json_pointer_change_count": 81,
+      "new_counts": {
+        "operations": 41,
+        "paths": 40,
+        "schemas": 115
+      },
+      "new_sha256": "E88954FB90593596CBB99765DA03C99A6C4E0C01DB05095CD04A73F5FDCB0414",
+      "old_counts": {
+        "operations": 36,
+        "paths": 35,
+        "schemas": 97
+      },
+      "old_sha256": "778AE39484EB6DFD48BEBCEB1D105E76DC3DED832470CA46C2A71546A21A1F23",
+      "removed_operations": [],
+      "removed_paths": [],
+      "removed_schemas": []
+    },
+    "universal-v1": {
+      "added_operations": [
+        "GET /api/v1/prediction-drafts/{draft_id}"
+      ],
+      "added_paths": [
+        "/api/v1/prediction-drafts/{draft_id}"
+      ],
+      "added_schemas": [
+        "PredictionDraftExactModelSelection",
+        "PredictionDraftSourceModelSnapshot",
+        "PredictionDraftStructureSnapshot"
+      ],
+      "changed_operations": [],
+      "changed_schemas": [
+        "PredictionDraftView",
+        "SfcCandidateScopeCreate"
+      ],
+      "json_pointer_change_count": 19,
+      "new_counts": {
+        "operations": 128,
+        "paths": 120,
+        "schemas": 332
+      },
+      "new_sha256": "9D2D4033793BDA426BE5EA7BC9325D64EAD90417718967C336DF65C1D5047EFA",
+      "old_counts": {
+        "operations": 127,
+        "paths": 119,
+        "schemas": 329
+      },
+      "old_sha256": "4A14FCABAEF14ACF20EC7A1297631E0CC503A9AB2C612ED1FFAED4A0281064EC",
+      "removed_operations": [],
+      "removed_paths": [],
+      "removed_schemas": []
+    }
+  },
+  "revision": "revision-20261004-04",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "active": {
+    "revision": "revision-20261003-02",
+    "path": "universal-v1/openapi.json",
+    "sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+    "candidate_raw_sha256": "c9e1d65c2199dcd57f004c2700db11800f5bb3a1dcbdac4c52b7aa8e7624ee01",
+    "candidate_normalized_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec"
+  },
+  "snapshots": [
+    {
+      "revision": "pre-revision-20261003-02-active",
+      "path": "universal-v1/rollback-snapshots/revision-20261003-02-baseline/openapi.json",
+      "sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+      "bytes": 490444,
+      "role": "previous_active_immutable_rollback"
+    },
+    {
+      "revision": "pre-revision-20261003-01-active",
+      "path": "universal-v1/rollback-snapshots/revision-20261003-01-baseline/openapi.json",
+      "sha256": "ad3506ebf484d59fae92d396cf57114c22638f52ba79086cee2472a94af126f1",
+      "bytes": 490175,
+      "role": "previous_active_immutable_rollback"
+    },
+    {
+      "revision": "pre-revision-20261002-04-active",
+      "path": "universal-v1/rollback-snapshots/revision-20261002-04-baseline/openapi.json",
+      "sha256": "cb4f9b92dde639fc5188a4d898de23efb1e20b22733722bd50d7eff580f84d1a",
+      "bytes": 439923,
+      "role": "previous_active_immutable_rollback"
+    }
+  ]
+}

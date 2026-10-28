@@ -1,0 +1,10 @@
+{
+  "manifest_version": "1.0",
+  "build_id": "sfc-v1",
+  "modules": ["prediction", "records", "utilities"],
+  "chromatography_types": ["sfc"],
+  "prediction_tools": {"sfc": ["single_column", "full_column"]},
+  "utilities": ["structure_converter"],
+  "export_formats": ["json", "csv", "xlsx"],
+  "auth_provider": "deployment_default"
+}

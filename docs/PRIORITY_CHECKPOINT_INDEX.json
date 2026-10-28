@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "plan": "docs/PRIORITY_LAUNCH_PLAN.md",
+  "stage": "checkpoint_and_launch_implementation",
+  "launch_target": "local_browser",
+  "scope": [
+    "tlc",
+    "cc",
+    "hplc",
+    "gc",
+    "sfc",
+    "assistant_prediction",
+    "assistant_existing_data_summary",
+    "assistant_model_draft_query"
+  ],
+  "deferred": [
+    "knowledge_retrieval",
+    "training",
+    "model_evaluation_approval_publish_rollback",
+    "full_context_inspector",
+    "full_offline_delivery"
+  ],
+  "checkpoints": [
+    {
+      "status": "hash_verified",
+      "manifest_sha256": "112ed1f4b3007171d1f0bd340fd37ba2cd2e4e60c4d2efdf72914e1bc3ea6c4c",
+      "path": "checkpoints/pre-priority-launch/frontend-20260921-1941",
+      "thread_id": "01a0be50-6eef-71a3-a4d0-41d8678c6596",
+      "role": "frontend",
+      "files": 91,
+      "recovery_policy": "Extract to a new directory and compare; do not run snapshot overwrite commands on the active workspace/contracts. Resume deferred work on top of the launch changes.",
+      "addenda": [
+        {
+          "path": "checkpoints/pre-priority-launch/frontend-20260921-1941/RESTORE_NOTES.md",
+          "sha256": "7c4c5f7671392b6657608a965afc569e2ce4f94e72f2dd8bf30342c31cf90f93",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "status": "hash_verified_with_errata",
+      "manifest_sha256": "3298a9dfdc662c96b3b8aaf7cc991660d40b1fa28e84cc872f6f37aa443c1792",
+      "path": "backend/checkpoints/pre-priority-launch/revision-001",
+      "thread_id": "01a0be51-01d9-7b80-9759-e194b8c6017c",
+      "role": "backend",
+      "reported_manifest_sha256": "ffc542bd528e8028492a369081dcc61324073eab4299c48fc43b3d2eb8ca8398",
+      "mismatches": [
+        {
+          "path": "testing/STATUS.md",
+          "expected": "e95176211f5b081d4573f65dd7e226e89eff4bc8e5e8014ab5bf73c12d2f3a67",
+          "actual": "a1b799a0659151522e63849cb29499eee85fd147ad9843bccdfdab87aeb2d82d"
+        }
+      ],
+      "corrected_manifest_sha256": "0007a08387ad52a366911e87715d1156ae4ccf3f7815237aadb9f55c435fbb3e",
+      "verified_snapshot_entries": 59,
+      "verified_snapshot_bytes": 592013,
+      "corrected_root_fingerprint": "4132dd2822922380512331e7a0175d4a5f9eb7eb9ee6308a398b0a8862333a04",
+      "errata_sha256": "d541ba60444cd0bd9d39eda81dacdacd5da709e353892a5b056d58cdb5a2e1ed",
+      "resolution": "Original evidence preserved; corrected manifest and sidecar verified against all 59 copied files. Historical testing/STATUS.md source/copy difference is documented, not overwritten. Root hash uses sorted rows with LF including final LF."
+    },
+    {
+      "status": "hash_verified",
+      "manifest_sha256": "87cffd66e9030e67f1bf04b7bcc87a378431dcf271ad57c8befad6e7a208985a",
+      "path": "testing/checkpoints/pre-priority-launch/rev-20260921-194126",
+      "thread_id": "01a0bf2f-10c1-7d51-b9c9-6876ed36a26c",
+      "role": "testing",
+      "verified_manifest_entries": 26,
+      "inventory_rows": 56
+    }
+  ],
+  "preserve_torch": "2.6.0+cu124",
+  "source_control": "no_git_use_manifest_sha256_and_scoped_source_snapshots",
+  "acceptance": "real_browser_success_with_real_models_and_services",
+  "candidate_08": "canceled_before_generation_per_backend_handoff",
+  "coordinator_checkpoint": {
+    "path": "docs/checkpoints/pre-priority-launch-coordinator",
+    "manifest_sha256": "3dc3d83966218d9120f32e45bc8bd9c49a567ad448e0c5661a00628e69772d1f",
+    "status": "captured"
+  },
+  "runtime_target": "windows_sfc_api_and_worker_existing_mysql_redis",
+  "linux_container_authorization": "not_approved_deferred_by_user"
+}

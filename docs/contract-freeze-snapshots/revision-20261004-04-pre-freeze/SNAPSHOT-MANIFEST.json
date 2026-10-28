@@ -1,0 +1,35 @@
+{
+  "files": {
+    "contracts/cc-v1/openapi.json": {
+      "bytes": 129944,
+      "sha256": "635D75970F64E6D1E25F1BD0A82AF4B3B37181F30F174A88C8CD2DF5F901330D"
+    },
+    "contracts/index.json": {
+      "bytes": 682,
+      "sha256": "951D2AB653A8DE927CA8C2592E970CD29E6A95ACFCB88DAEACF222D3CBCBBF97"
+    },
+    "contracts/minimal-structure-v1/openapi.json": {
+      "bytes": 87248,
+      "sha256": "F5C57950F6C0CFD0A619E375EFB191549D78B1EF07DA0E645A26B28456F6F45A"
+    },
+    "contracts/sfc-v1/openapi.json": {
+      "bytes": 132905,
+      "sha256": "778AE39484EB6DFD48BEBCEB1D105E76DC3DED832470CA46C2A71546A21A1F23"
+    },
+    "contracts/universal-v1/openapi.json": {
+      "bytes": 497507,
+      "sha256": "4A14FCABAEF14ACF20EC7A1297631E0CC503A9AB2C612ED1FFAED4A0281064EC"
+    },
+    "contracts/universal-v1/rollback-index.json": {
+      "bytes": 1379,
+      "sha256": "058F0C4D864A7A0FED455EDEBC39E0F49FAF26694F49D00906CAFE4434CFA094"
+    },
+    "docs/V1_M3_M4_CONTRACT_FREEZE.json": {
+      "bytes": 9810,
+      "sha256": "6A9A1B7E6F05B0E840C6AC1323EB807FAE19D5097A49E6E6C58DA47C948D651A"
+    }
+  },
+  "revision": "revision-20261004-04",
+  "role": "immutable_pre_freeze_snapshot",
+  "schema_version": "1.0"
+}

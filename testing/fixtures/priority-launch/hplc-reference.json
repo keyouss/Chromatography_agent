@@ -1,0 +1,19 @@
+{
+  "fixture_version": 1,
+  "kind": "offline-reference",
+  "component": "hplc",
+  "input": {"smiles": ["N[C@@H](C)C(O)=O", "N[C@H](C)C(O)=O"], "ipa_fraction": 0.1, "flow_rate_ml_min": 1.0, "columns": ["ADH", "IA"]},
+  "expected_raw": {
+    "recommended_column": "ADH",
+    "columns": {
+      "ADH": {"separation_probability": 1.0, "rt_q10_min": [13.95049, 12.003219], "rt_q50_min": [14.676679, 12.734612], "rt_q90_min": [15.395338, 13.438482]},
+      "IA": {"separation_probability": 1.0, "rt_q10_min": [8.201467, 12.195879], "rt_q50_min": [8.771506, 12.897688], "rt_q90_min": [9.361368, 13.600186]}
+    },
+    "units": {"retention_time": "min", "ipa_fraction": "unitless", "flow_rate": "mL/min", "separation_probability": "unitless"}
+  },
+  "warnings_raw": ["\ufffd\ufffd\u0123\ufffd\ufffd\u0475\ufffd\ufffd\ufffd\ufffd\ufffd CMRT \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0130\ufffd\ufffd\ufffd\ufffd\ufffd\u04e1\ufffd\ufffd\u073c\ufffd\ufffd\ufffd\u02b5\ufffd\ufffd\u03f5\u0373\ufffd\u013d\ufffd\ufffd\ufffd\u02b5\ufffd\ufffd\u0237\ufffd\u03e1\ufffd"],
+  "model": {"name": "QGeoGNN GeoGNN_model.pth", "model_asset_sha256": "3FF5277FD1A9269B3166882941438F3F68D43B2A8EEFEDF1D4B61B2801A66BF8", "registry_sha256": "952BA3ED4B3E9C80E50B65366EDD46D5147E64D6A8E9145F2ECCB8BE4BC0FDFF", "source_sha256": "5B1B17A7265313136750E80DED2D5F8DB43D2C40445E47476991E2B58B36083C"},
+  "evidence": {"raw_json": "backend/.generated/priority-launch-evidence/four-model-inventory/hplc.smoke.json", "raw_json_sha256": "800E086E2917E64D1E0CFF890B311B6CFEED268CEA5EF00A217248577FD04AE5", "cli_log_sha256": "316DC6CA9E37F48ED563F17FA0508173905807E2FAF2C49F4AB27FAEC03ADDDE", "stderr_log_sha256": "990715EBF5B4FC77602F1F1D08ED1328E1694C10A1E7F7FD849F6C9ECC299744", "asset_matrix_sha256": "B7693ED134F4CB6AFAFDD352C25F6668CAD833F625E6CC8D3C6B7B1AA54FEB06", "sha256sums_present": false, "declared_exit_code": 0},
+  "replay": {"command": ["D:\\Anaconda\\envs\\SFC\\python.exe", "predict.py", "--demo"], "repeat_count": 2, "exit_codes": [0, 0], "stdout_sha256": ["6105AD277CEDF05564E83D11B09D2C85CAB5306272E09E2D93976D175A89964C", "6105AD277CEDF05564E83D11B09D2C85CAB5306272E09E2D93976D175A89964C"], "stderr_sha256": ["848B24BFED530A2E2B7C1C12AE7B4BD10C7D529F5F93FCA6E821B9DE71D4824A", "22BDA8EA5E9EA95EF57D140A34ED7D5088F049497DBE61C56686DB51C8DC853E"], "numeric_max_absolute_delta": 0.0, "numeric_max_relative_delta": 0.0, "repeat_derived_tolerance": {"absolute": 0.0, "relative": 0.0, "scientific_accuracy_claim": false}},
+  "license_note": "No bundled LICENSE; source README limits use to public non-commercial research pending author confirmation. This fixture does not copy model assets."
+}

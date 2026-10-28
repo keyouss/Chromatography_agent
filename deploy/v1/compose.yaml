@@ -1,0 +1,147 @@
+name: chrom-platform-v1
+
+# This file is copied into a profile-specific offline bundle. The bundle
+# contains only ./profiles/<BUILD_PROFILE>/{backend,frontend}; no checkout
+# paths are used at runtime.
+services:
+  mysql:
+    image: ${MYSQL_IMAGE:?MYSQL_IMAGE must be an audited immutable image reference}
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-chrom_platform}
+      MYSQL_USER: ${MYSQL_USER:?MYSQL_USER is required}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD is required}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  redis:
+    image: ${REDIS_IMAGE:?REDIS_IMAGE must be an audited immutable image reference}
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  api:
+    image: ${CHROM_API_IMAGE:?CHROM_API_IMAGE must be an audited offline runtime image}
+    restart: unless-stopped
+    working_dir: /opt/chrom-platform/backend
+    command: ["uvicorn", "chrom_platform.app:create_app_from_environment", "--factory", "--host", "0.0.0.0", "--port", "9012"]
+    environment:
+      PYTHONPATH: /opt/chrom-platform/backend
+      CHROM_BUILD_MANIFEST: /opt/chrom-platform/backend/build-manifest.json
+      CHROM_PROJECT_IDS: ${CHROM_PROJECT_IDS:-}
+      DATABASE_URL: mysql+asyncmy://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE:-chrom_platform}
+      REDIS_URL: redis://redis:6379/0
+      ARTIFACT_ROOT: /var/lib/chrom-platform/artifacts
+      SECRET_KEY_FILE: /run/secrets/chrom-platform-key
+      TRACE_CONTENT_MODE: ${TRACE_CONTENT_MODE:-off}
+    volumes:
+      - ./profiles/${BUILD_PROFILE:-universal-v1}/backend:/opt/chrom-platform/backend:ro
+      - artifacts:/var/lib/chrom-platform/artifacts
+    secrets:
+      - chrom-platform-key
+    expose:
+      - "9012"
+    ports:
+      - ${API_HOST:-127.0.0.1}:${API_PORT:-9012}:9012
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9012/api/v1/health/live', timeout=2)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  worker:
+    image: ${CHROM_WORKER_IMAGE:?CHROM_WORKER_IMAGE must be an audited offline worker image}
+    restart: unless-stopped
+    working_dir: /opt/chrom-platform/backend
+    # The runtime image must provide the audited worker entrypoint. The
+    # baseline deliberately does not invent a worker or silently run an API.
+    command: ${WORKER_COMMAND:?WORKER_COMMAND must name the audited worker entrypoint}
+    environment:
+      PYTHONPATH: /opt/chrom-platform/backend
+      CHROM_BUILD_MANIFEST: /opt/chrom-platform/backend/build-manifest.json
+      DATABASE_URL: mysql+asyncmy://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE:-chrom_platform}
+      REDIS_URL: redis://redis:6379/0
+      ARTIFACT_ROOT: /var/lib/chrom-platform/artifacts
+      WORKER_READY_FILE: /run/chrom-platform/worker.ready
+      TRACE_CONTENT_MODE: ${TRACE_CONTENT_MODE:-off}
+    volumes:
+      - ./profiles/${BUILD_PROFILE:-universal-v1}/backend:/opt/chrom-platform/backend:ro
+      - artifacts:/var/lib/chrom-platform/artifacts
+      - worker-run:/run/chrom-platform
+    secrets:
+      - chrom-platform-key
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-m", "chrom_platform.worker_cli", "--healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  frontend:
+    image: ${CHROM_FRONTEND_IMAGE:?CHROM_FRONTEND_IMAGE must be an audited static-server image}
+    restart: unless-stopped
+    volumes:
+      - ./profiles/${BUILD_PROFILE:-universal-v1}/frontend/dist:/usr/share/nginx/html:ro
+    expose:
+      - "80"
+    ports:
+      - ${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-5173}:80
+    healthcheck:
+      test: ["CMD-SHELL", "test -s /usr/share/nginx/html/index.html && nginx -t"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  nginx:
+    image: ${NGINX_IMAGE:?NGINX_IMAGE must be an audited immutable image reference}
+    restart: unless-stopped
+    ports:
+      - ${WEB_HOST:-127.0.0.1}:${WEB_PORT:-8080}:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nginx -t"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  artifacts:
+  mysql-data:
+  redis-data:
+  worker-run:
+
+secrets:
+  chrom-platform-key:
+    file: ${SECRET_KEY_FILE:?SECRET_KEY_FILE must point to a deployment-managed secret file}

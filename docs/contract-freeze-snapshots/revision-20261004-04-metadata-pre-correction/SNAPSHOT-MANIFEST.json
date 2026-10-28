@@ -1,0 +1,11 @@
+{
+  "files": {
+    "V1_M3_M4_CONTRACT_FREEZE.json": {
+      "bytes": 24313,
+      "sha256": "10C838EAA9AD968947D45E06E4FEEDDCA5FBAA4CA5E46D29AA8B01EC3904F480"
+    }
+  },
+  "revision": "revision-20261004-04",
+  "role": "immutable_pre_metadata_correction_snapshot",
+  "schema_version": "1.0"
+}

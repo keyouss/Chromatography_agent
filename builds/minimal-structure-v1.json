@@ -1,0 +1,10 @@
+{
+  "manifest_version": "1.0",
+  "build_id": "minimal-structure-v1",
+  "modules": ["utilities"],
+  "chromatography_types": [],
+  "prediction_tools": {},
+  "utilities": ["structure_converter"],
+  "export_formats": [],
+  "auth_provider": "deployment_default"
+}

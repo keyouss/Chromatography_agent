@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-02",
+  "decision": "M3/M4 interface baseline retained; universal-v1 revision-20261002-04 frozen",
+  "snapshot": "D:\\Jupyter\\Chromatography_agent\\backend\\.generated\\snapshots\\m3-m4-v1-candidate-20260921-05",
+  "previous_baseline": "docs/contract-baselines/m2",
+  "scope": "API/DTO baseline and recorded component/physical assembly evidence only; not production acceptance",
+  "profiles": [
+    {
+      "profile": "minimal-structure-v1",
+      "paths": 25,
+      "operations": 26,
+      "added_operations": 0,
+      "source_manifest_sha256": "92e4478332c3a0cb05c5371b74fdf284a8f33e925acb4c406dd6cfff3e7af152",
+      "raw_openapi_sha256": "e217447c96357b758c866306ee4074e736e6364dfb37d37fe2a9b05a2d41d454",
+      "normalized_openapi_sha256": "f5c57950f6c0cfd0a619e375efb191549d78b1ef07da0e645a26b28456f6f45a",
+      "summary_sha256": "32522533fa8af866cf203512da87db0a819e2aa825fc89a7778bef38e0bb58c0",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "build-manifest.json",
+          "present": true,
+          "sha256": "7723C27B8EB72057A3EEDF12D8B681D95D03612A5FA88A3048335F6825D8EEF1"
+        },
+        "source_manifest": {
+          "path": "SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "92E4478332C3A0CB05C5371B74FDF284A8F33E925ACB4C406DD6CFFF3E7AF152"
+        },
+        "dependency_lock": {
+          "path": "requirements-profile.txt",
+          "present": true,
+          "sha256": "9CB05EADBD0C1AB24F02F8F4DD4E88E4E95EA4849D819F13CE43A853E6E449AB"
+        }
+      }
+    },
+    {
+      "profile": "sfc-v1",
+      "paths": 35,
+      "operations": 36,
+      "added_operations": 0,
+      "source_manifest_sha256": "3e0028576a641c374170a99479f02e0b43c6c02218d84f24c206c0a0071d8cdb",
+      "raw_openapi_sha256": "8dfc88b1f04c16a827b7b04021ea84a14b963163191eb2f224058eaeaa809154",
+      "normalized_openapi_sha256": "778ae39484eb6dfd48bebceb1d105e76dc3ded832470ca46c2a71546a21a1f23",
+      "summary_sha256": "06c3464fec6281a6aca2db069d478f1aaca35a64319214589b9f0d6af8124a6f",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "build-manifest.json",
+          "present": true,
+          "sha256": "4BFBD76D9DABC77F3B1EB81C9419D6B512FA6931891443F9E2105D7AFBB6A321"
+        },
+        "source_manifest": {
+          "path": "SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "3E0028576A641C374170A99479F02E0B43C6C02218D84F24C206C0A0071D8CDB"
+        },
+        "dependency_lock": {
+          "path": "requirements-profile.txt",
+          "present": true,
+          "sha256": "43435D3051B87DF9E57090BB16937987CBF241ED2372E9C6D01E272445E70F7B"
+        }
+      }
+    },
+    {
+      "profile": "cc-v1",
+      "paths": 35,
+      "operations": 36,
+      "added_operations": 0,
+      "source_manifest_sha256": "38b15d3143c3d63c72c636aa16102f21934cfe9d0a09a200bc27f9c8df52a898",
+      "raw_openapi_sha256": "bd4665935a34b72d576705c5eb8abdb069f9168255087a330771c1230bfffba4",
+      "normalized_openapi_sha256": "635d75970f64e6d1e25f1bd0a82af4b3b37181f30f174a88c8cd2df5f901330d",
+      "summary_sha256": "67181b755ea4022082de83442da5a3f7490f310477e939a70a699ebe74e3dd32",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "build-manifest.json",
+          "present": true,
+          "sha256": "DC75A514B283F811D2BDBF0D0B27F3D4E3AEE3DCB4C3B1E1138494E41D0AC2CB"
+        },
+        "source_manifest": {
+          "path": "SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "38B15D3143C3D63C72C636AA16102F21934CFE9D0A09A200BC27F9C8DF52A898"
+        },
+        "dependency_lock": {
+          "path": "requirements-profile.txt",
+          "present": true,
+          "sha256": "6F0A6C7E64A26EF8A7868C2E9BAB5974C7C198B5F2D8CABEC645849D91C0EA38"
+        }
+      }
+    },
+    {
+      "profile": "universal-v1",
+      "paths": 117,
+      "operations": 125,
+      "added_operations": 13,
+      "source_manifest_sha256": "4872e6de3e56ea8593c1f4ffad5795a5fbf1418fab874891df65cd91bb569bd9",
+      "raw_openapi_sha256": "c474c426987b8da3ec9d826020164edd3a1453dc24f20f35202dc44a9be8f8cd",
+      "normalized_openapi_sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+      "summary_sha256": "aa963c6e1c2973f9dc376e39c0bee47ab08b6d0a3f7113a1b640dad22ba50148",
+      "revision": "revision-20261002-04",
+      "candidate_root": "backend/.generated/priority-launch-contract/revision-20261002-04",
+      "candidate_manifest_sha256": "36dda79327edf4dc36add065ae05d58513a94369820f7e40f494ac63c5a34118",
+      "candidate_sha256sums_sha256": "a8b30455c46a1ca3126936a1931b4473c08659dbfc254737f3ad6aedbe940934",
+      "candidate_audit_sha256": "f80197931f68263f0ba868c51f7ccb476f0f9a0b08377d1cbac229d863a074cc",
+      "candidate_change_summary_sha256": "47e208963d39d8a4c27723593536014dad3df3a09a972013d0905b93d23e71a2",
+      "candidate_source_route_audit_sha256": "592850592726b929940352444a48cc278413b1fc8871fab65bf0e962b52c6d90",
+      "candidate_handoff_sha256": "35bd1ac12707e431ca59edacd374d76da1fcd361bb2bd5b84d518f7d9da87b25",
+      "source_tree_sha256": "672aac39e813c0579581b913a49611c02ba1a53374584fc6950f46dc36ccbccc",
+      "source_file_count": 138,
+      "previous_active": {
+        "path": "contracts/universal-v1/rollback-snapshots/revision-20261002-04-baseline/openapi.json",
+        "sha256": "cb4f9b92dde639fc5188a4d898de23efb1e20b22733722bd50d7eff580f84d1a"
+      },
+      "qa_report_sha256": "fc939bb93aab4b71ac676b550d8f1ced6829d9780d09a19add416a09bb050fc7",
+      "batch_section_9": {
+        "status": "UNIMPLEMENTED_AND_UNVERIFIED_IN_THIS_SLICE",
+        "frozen": false
+      },
+      "legacy_fields": {
+        "status": "legacy_not_applicable_to_revision-20261002-04",
+        "source_manifest_sha256": "4872e6de3e56ea8593c1f4ffad5795a5fbf1418fab874891df65cd91bb569bd9",
+        "summary_sha256": "aa963c6e1c2973f9dc376e39c0bee47ab08b6d0a3f7113a1b640dad22ba50148",
+        "build_inputs": "The following build_inputs object is retained only as the historical M3/M4 profile-package record; it is not the revision-20261002-04 source binding."
+      },
+      "build_inputs": {
+        "build_manifest": {
+          "path": "build-manifest.json",
+          "present": true,
+          "sha256": "3D86E9E8D1F4B16D4B7029FEBA9C757D343F2B84BD01298CF1643F533147D031"
+        },
+        "source_manifest": {
+          "path": "SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "4872E6DE3E56EA8593C1F4FFAD5795A5FBF1418FAB874891DF65CD91BB569BD9"
+        },
+        "dependency_lock": {
+          "path": "requirements-profile.txt",
+          "present": true,
+          "sha256": "246DDC31EF92273E8E59ECA9C49EA6FBDB2100DC2F8E8635E464490F7D701433"
+        }
+      }
+    }
+  ],
+  "evidence": [
+    "testing/runs/2026-09-21-candidate-05-parity.md",
+    "testing/runs/2026-09-21-m3-m4-candidate-05-spec-matrix-revalidation.md",
+    "testing/runs/2026-09-21-snapshot-05-root-integrity.md"
+  ],
+  "review_notes": [
+    "Prior DTO/list/strict-body/required-request-header issues checked against the snapshot.",
+    "Three model-center 202 Location response headers declare string without required/uri-reference annotations; snapshot router source explicitly sets Location in all three success paths. Treat annotation consistency as nonblocking documentation follow-up, not missing runtime header."
+  ],
+  "unaccepted": [
+    "real MySQL/Redis/Dramatiq and race/recovery integration",
+    "real PydanticAI provider success",
+    "scientific golden samples and independent evaluation",
+    "complete transitive dependency/platform wheel lock",
+    "clean offline installation",
+    "successful end-to-end business flows"
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v0.1\\backend\\app\\inference.py",
+      "exists": true,
+      "sha256": "581f0a8683df18bb07dcbf6c76357b5fc0b2bd0f644fde2b7940604405b9f286",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v0.1\\backend\\app\\molecule_tools.py",
+      "exists": true,
+      "sha256": "e98c00568baca03299de0f0a5fcf972a581d031dc3719c50776dc98bf0a85e37",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v0.1\\frontend\\src\\styles.css",
+      "exists": true,
+      "sha256": "58294ee29f37dc693ece15370197241e97ca1343cfb58ea85e040cf43e457b70",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\backend\\app\\inference.py",
+      "exists": true,
+      "sha256": "581f0a8683df18bb07dcbf6c76357b5fc0b2bd0f644fde2b7940604405b9f286",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\backend\\app\\molecule_tools.py",
+      "exists": true,
+      "sha256": "e98c00568baca03299de0f0a5fcf972a581d031dc3719c50776dc98bf0a85e37",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\backend\\app\\chromatography.py",
+      "exists": true,
+      "sha256": "b68bb7d53a8c9dc14e72aed8ca5988aea2c484a32b1a78864039d40910300f10",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\frontend\\src\\styles.css",
+      "exists": true,
+      "sha256": "37c4b9d200f16e9607a2767330cb2a5469615b208cd91b93922914f0e9b86368",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v2.0\\backend\\app\\inference.py",
+      "exists": true,
+      "sha256": "7fba6f055e71fb4125429f6a4ee46b1472ee500066200b9e22b9cb93aed9e39f",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v2.0\\backend\\app\\molecule_tools.py",
+      "exists": true,
+      "sha256": "e98c00568baca03299de0f0a5fcf972a581d031dc3719c50776dc98bf0a85e37",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v2.0\\backend\\modeling\\datasets\\validator.py",
+      "exists": true,
+      "sha256": "81ef7bc947ba045059a9af1b449f06cfeeb5a43da9bbd1d2aaa697e636cba436",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v2.0\\frontend\\src\\styles.css",
+      "exists": true,
+      "sha256": "15eb3046c3e551c6c0ddb14166668559f886c3e59184e1ef6cac8a009f671176",
+      "purpose": "科学算法/结构/界面复用候选，尚未复制",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group tasks\\Agent集成\\mo-group\\js\\platform.js",
+      "exists": true,
+      "sha256": "edd62243c062ab2af7cdd275ed65a442aa8722ebda365f884f955e27204ee0e2",
+      "purpose": "TLC曲线/反推/比较；迁移到新契约，保留授权说明",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group tasks\\Agent集成\\mo-group\\platform\\index.html",
+      "exists": true,
+      "sha256": "7af626db6c39319324f3e4b5d68b1f3ce993e5b33278fabb8add88318cb548cc",
+      "purpose": "TLC曲线/反推/比较；迁移到新契约，保留授权说明",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group tasks\\Agent集成\\mo-group\\css\\style.css",
+      "exists": true,
+      "sha256": "cfae058671b38cb56365e273e2069cac7e87095f772c1875872ff1ea505359f9",
+      "purpose": "TLC曲线/反推/比较；迁移到新契约，保留授权说明",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group tasks\\Agent集成\\mo-group\\在线工具-前后端接口文档.md",
+      "exists": true,
+      "sha256": "6ee00abcec7bd1fc69aafadc18e43efc49becd3e822064f1d35daae000a984f3",
+      "purpose": "TLC曲线/反推/比较；迁移到新契约，保留授权说明",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\ketcher\\LICENSE",
+      "exists": true,
+      "sha256": "3d54b234fa88c11d1d96380ff5fe29f3c5d8e1078ef914dfe8185ce4b1fbeac7",
+      "purpose": "standalone离线编辑器来源",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\ketcher\\NOTICE",
+      "exists": true,
+      "sha256": "ab82986438fc66fa2b40836415b734ff018b1e42ee3a18434b27bdf1c42eb368",
+      "purpose": "standalone离线编辑器来源",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\ketcher\\package.json",
+      "exists": true,
+      "sha256": "da2431e7e71e6043747a535112eab66ac05c21e021f92ad144f8b0318ee580bd",
+      "purpose": "standalone离线编辑器来源",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    },
+    {
+      "source_path": "D:\\Jupyter\\ketcher\\package-lock.json",
+      "exists": true,
+      "sha256": "04496f88139fe28486e769e3a4a41fb9eda59839f13e7109b8f1329c136ae567",
+      "purpose": "standalone离线编辑器来源",
+      "status": "REFERENCE_ONLY",
+      "target": null
+    }
+  ]
+}

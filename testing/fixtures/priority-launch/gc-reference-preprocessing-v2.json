@@ -1,0 +1,147 @@
+{
+  "fixture_version": 2,
+  "kind": "offline-reference-candidate",
+  "component": "gc",
+  "acceptance_state": "candidate",
+  "input": {
+    "smiles": [
+      "CCCCCCC"
+    ],
+    "initial_temperature_c": 40,
+    "final_temperature_c": 200,
+    "heating_rate_c_per_min": 20,
+    "initial_hold_min": 2
+  },
+  "expected_raw": {
+    "success": true,
+    "predictions": [
+      {
+        "smiles": "CCCCCCC",
+        "rt_q10_min": 10.272826,
+        "rt_q50_min": 10.781655,
+        "rt_q90_min": 11.268167
+      }
+    ],
+    "failed_smiles": [],
+    "temperature_series_c": [
+      40.0,
+      40.0,
+      40.0,
+      60.0,
+      80.0,
+      100.0,
+      120.0,
+      140.0,
+      160.0,
+      180.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0,
+      200.0
+    ],
+    "units": {
+      "temperature": "C",
+      "heating_rate": "C/min",
+      "hold": "min",
+      "retention_time": "min"
+    },
+    "artifact_sha256": "0433756eab33689981c6d881e3b76c34a8043eb2f47a6adf6ed4a65dd9d5758c",
+    "preprocessing_protocol_id": "gc-preprocessing-rdkit-seed42-v1"
+  },
+  "model": {
+    "name": "author_GNN_model_save_600",
+    "model_id": "gc-gnn-seq240408-250c",
+    "model_version": "gc-gnn-seq240408-250c-600-prep-rdkit-seed42-v1",
+    "input_schema_version": "1.0",
+    "output_schema_version": "gc-retention-time-1",
+    "model_asset_sha256": "0433756eab33689981c6d881e3b76c34a8043eb2f47a6adf6ed4a65dd9d5758c",
+    "registry_sha256": "ee2bdf82e71d7444f4466e7567a10c7cef47f672b64e4bec36dbc2553ea72395",
+    "source_sha256": "96725a4c2b1010caceae2ac89229a3f816fe59dc0b7c5c6f63bdc1baef12cc4e",
+    "preprocessing_protocol_id": "gc-preprocessing-rdkit-seed42-v1"
+  },
+  "preprocessing_protocol": {
+    "id": "gc-preprocessing-rdkit-seed42-v1",
+    "random_seed": 42,
+    "embed_multiple_confs_parameters": {
+      "numConfs": 10,
+      "maxAttempts": 0,
+      "randomSeed": 42,
+      "clearConfs": true,
+      "useRandomCoords": false,
+      "boxSizeMult": 2.0,
+      "randNegEig": true,
+      "numZeroFail": 1,
+      "pruneRmsThresh": -1.0,
+      "coordMap": {},
+      "forceTol": 0.001,
+      "ignoreSmoothingFailures": false,
+      "enforceChirality": true,
+      "numThreads": 1,
+      "useExpTorsionAnglePrefs": true,
+      "useBasicKnowledge": true,
+      "printExpTorsionAngles": false,
+      "useSmallRingTorsions": false,
+      "useMacrocycleTorsions": true,
+      "ETversion": 2,
+      "useMacrocycle14config": true
+    },
+    "mmff_optimize_molecule_confs_parameters": {
+      "numThreads": 1,
+      "maxIters": 200,
+      "mmffVariant": "MMFF94",
+      "nonBondedThresh": 100.0,
+      "ignoreInterfragInteractions": true
+    },
+    "conformer_selection": "RDKit MolToMolFile default confId=-1; no energy sort; no RMSD prune; downstream readback contains one conformer",
+    "environment": {
+      "python": "3.11.15",
+      "rdkit": "2026.03.3",
+      "torch": "2.6.0+cu124",
+      "numpy": "1.26.4",
+      "mordred": "1.2.0"
+    },
+    "other_random_sources": {
+      "data_process_torch_seed": 1314,
+      "cpu": true,
+      "model_eval": true,
+      "torch_no_grad": true,
+      "dataloader_shuffle": false,
+      "workers": 0,
+      "numpy_random_used": false,
+      "python_random_used": false
+    }
+  },
+  "evidence": {
+    "author_harness": "testing/runs/2026-10-04-gc-determinism/author_seed42_suite.py",
+    "author_harness_sha256": "480174eb2083184ebe4cc8a5fd2fcc95e0c6701f020d7bbb0bee5370afbbc204",
+    "author_runs": [
+      "author-seed42-run-1.json",
+      "author-seed42-run-2.json",
+      "author-seed42-run-3.json"
+    ],
+    "author_run_sha256": [
+      "38dd0e3f7e99287569f34144c95cb0aed08f4a5b8fc4ee0a8b87decaaeab5f39",
+      "448a551e33ab4d98faa3ce4ad483597c3b03ab5f4ee97bf71a08526b7b4ebfef",
+      "32c8ab36c06bdec5416d45b252c2f1b726272bbee64cc74786d8e88faaa6add6"
+    ],
+    "scientific_accuracy_claim": false,
+    "run_to_run_variability_is_accuracy_interval": false
+  },
+  "license_note": "This candidate stores no model weights. It is an engineering reproducibility reference, not a scientific accuracy evaluation; redistribution rights for model assets remain separately unresolved."
+}

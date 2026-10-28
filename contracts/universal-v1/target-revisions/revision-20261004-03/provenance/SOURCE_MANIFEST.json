@@ -1,0 +1,732 @@
+{
+  "build_id": "universal-v1",
+  "modules": [
+    "prediction",
+    "records",
+    "datasets",
+    "knowledge",
+    "training",
+    "model_center",
+    "utilities",
+    "assistant",
+    "settings"
+  ],
+  "chromatography_types": [
+    "tlc",
+    "cc",
+    "hplc",
+    "sfc",
+    "gc"
+  ],
+  "files": [
+    {
+      "path": "alembic/alembic.ini",
+      "sha256": "a2228c1392b3be4e4b8b6c8359048c53d92e508bf8ee061581b71bed1554a3ca"
+    },
+    {
+      "path": "alembic/env.py",
+      "sha256": "3f4e2e0b5ab98ad822083ca1318a51d0389051321d90fcb53fc553112b389fe8"
+    },
+    {
+      "path": "alembic/README.md",
+      "sha256": "198780973e887f19458e593055386d4747349f18735718cd8a25fef5ff307760"
+    },
+    {
+      "path": "alembic/script.py.mako",
+      "sha256": "a95829b00bcff3113f0913c60736f3763e5709604c033886f8248ab9dfdd0435"
+    },
+    {
+      "path": "alembic/versions/0001_m1_persistence.py",
+      "sha256": "9d86406fb10ba9e8ae4ca9e608e6f977ea8f9c020c85281b68689a32a95ec375"
+    },
+    {
+      "path": "alembic/versions/0002_m2_prediction_data.py",
+      "sha256": "8ebd8d9190208edaea8fdaba2d40b242b775aa104f50adb44c842d081c2ed586"
+    },
+    {
+      "path": "alembic/versions/0003_m3_knowledge.py",
+      "sha256": "525de75f44e4b6ecf872ad7b1d0eb5e408816aa5699bd2a2dff8cd7afc42c38f"
+    },
+    {
+      "path": "alembic/versions/0004_m3_training.py",
+      "sha256": "b223c21af2d590c877b1371d374a59ce75ad7435140bd7f9622b3ea3ce1c1f5b"
+    },
+    {
+      "path": "alembic/versions/0005_m3_model_center.py",
+      "sha256": "c19235d1ba8b1578395acb5212430076c781f0d1e998da57cf0cb83f78de0f15"
+    },
+    {
+      "path": "alembic/versions/0006_m4_assistant.py",
+      "sha256": "1017325fa4aef79dd283a7c0c85bc0ca51a4d5f5569391ab1ddf5b9e1c56ed2b"
+    },
+    {
+      "path": "alembic/versions/0007_worker_outbox_lease.py",
+      "sha256": "c213af89547a2a251cadd02b693aaee6793055546b5d34bd7e3e07273232fdb9"
+    },
+    {
+      "path": "alembic/versions/0008_merge_worker_outbox.py",
+      "sha256": "f6cd15bb06bd165fdd80b2bad78bac462a0d8ddae4763231d79e7f95c9f42b8d"
+    },
+    {
+      "path": "alembic/versions/0009_training_outbox_lease.py",
+      "sha256": "49f888264226d5157877fd97d35f9a14ab0763071be87c02738ab1558500b79f"
+    },
+    {
+      "path": "alembic/versions/0010_model_center_job_fencing.py",
+      "sha256": "a1f923e65a3a50fa2b57a90e8e14fb9336dcf8948fc42508659b59309171e121"
+    },
+    {
+      "path": "alembic/versions/0011_m2_batch_prediction.py",
+      "sha256": "dc49b7cad55fe011965148ddb9e788b3535d3a69d4798eff0406f33c761b5771"
+    },
+    {
+      "path": "alembic/versions/0012_m2_record_export.py",
+      "sha256": "e2dbdca1ef8051fe17f08697619e0f0a189abf1f3fa5708cb93befeae38e8f45"
+    },
+    {
+      "path": "alembic/versions/0013_merge_m2_batch_export.py",
+      "sha256": "1c2324b5579728e26bbb423d05715ae7e95687f1f57cea452c16ad369c7da2e9"
+    },
+    {
+      "path": "alembic/versions/0014_batch_resolved_snapshot_export.py",
+      "sha256": "e2f4a5e7da9d208bb30e1fa1b297dcb101acb2fe60dc86c6e571a912a08a14f7"
+    },
+    {
+      "path": "build-manifest.json",
+      "sha256": "fee6087c02bb6296b46cc54580a16c631f66be51f6f44e8e84ebd8bf6c6909f8"
+    },
+    {
+      "path": "chrom_platform/__init__.py",
+      "sha256": "18af4919fd9fc45c294933ddd88a6a1297bb3889bb1dba3a5d49bd1b715a2caa"
+    },
+    {
+      "path": "chrom_platform/adapters/cc/__init__.py",
+      "sha256": "aa08a6bfcb405d93ba1224984fcd2b08e7e88f5137347dc8a29bba5999baad16"
+    },
+    {
+      "path": "chrom_platform/adapters/cc/adapter.py",
+      "sha256": "f4f58f8113544123e5d189b63343b9d63541402adea23ba4c7f58b51291ba9a2"
+    },
+    {
+      "path": "chrom_platform/adapters/cc/condition_catalog.py",
+      "sha256": "83f64e83011e0bca8c5a09ec1dbe13e05843b061e451dda272aa705b2b7d8415"
+    },
+    {
+      "path": "chrom_platform/adapters/cc/golden_4g.py",
+      "sha256": "046939c22682d5ec76a01f18bed1b7be0241d36628b4432c183588f59f0d5477"
+    },
+    {
+      "path": "chrom_platform/adapters/cc/runtime.py",
+      "sha256": "521169026bea92b31b3cdf667214118ac6648f5e4ad4b59306fdc52267d8dee1"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/__init__.py",
+      "sha256": "e98ccc08b5aeb59a1024bc9bc1e20b65cc30f20e0e327ae2d258fa60e40f0c8a"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/adapter.py",
+      "sha256": "dd5fc603ae9499435ba08accf97ca79f4f194f27059af3a38e6f83fcec83384d"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/manifest.py",
+      "sha256": "0391153a949e475e4a14c07f23757e57598c984da8794cb2e46e66c8f76ffe95"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/runtime.py",
+      "sha256": "1326470ed343a9a1a9c69dadfd26ae34dabb14d4aa1f8af075f7b816a6b75b77"
+    },
+    {
+      "path": "chrom_platform/adapters/hplc/__init__.py",
+      "sha256": "eaa9d41dac1200825e838a8e73ae003149f31f99935edc3833ae825f36fc361b"
+    },
+    {
+      "path": "chrom_platform/adapters/hplc/adapter.py",
+      "sha256": "3a58fee4d123c39c8f8f92ec1841a51f8d236431e68b118cfd5c4d83c21bdfee"
+    },
+    {
+      "path": "chrom_platform/adapters/hplc/manifest.py",
+      "sha256": "13ba7328074d3ea073333c49de26903a29554546fa890c8cf1bb99903bc728dc"
+    },
+    {
+      "path": "chrom_platform/adapters/hplc/runtime.py",
+      "sha256": "598bc68c70167429f954e4f39d4712dfd848aeddb0fb0fb83d4131a32e62330e"
+    },
+    {
+      "path": "chrom_platform/adapters/sfc/__init__.py",
+      "sha256": "6e4344c782a7627de92ee10d78ffb8f12fe3c1153ccaa4ccf22129a4c88750aa"
+    },
+    {
+      "path": "chrom_platform/adapters/sfc/adapter.py",
+      "sha256": "2746db7fec2a8c12fd6121fce489d530f25129e7cad174a7afd58661a7a20e8a"
+    },
+    {
+      "path": "chrom_platform/adapters/sfc/runtime.py",
+      "sha256": "2b53710a3304d0599484f5b85410f0aa5f1909b91a6484493c801324e6fb7c9f"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/__init__.py",
+      "sha256": "c53a37ed66380882322869b1ae43402044b7a4ddb717e34a9fe625f659a246f1"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/adapter.py",
+      "sha256": "75501051244223f99bb779d7d3733196abcc1899c3cae57a4e1937ab210432cd"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/manifest.py",
+      "sha256": "65a2db5877b7f7dd228bfc979fda3949ba14b1bff7569c76417d1c270b9cac4b"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/runtime.py",
+      "sha256": "237a24eecf76d3913fc8abbed6281aaef782b8a6f8fc6c9ad00a3f6767472019"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/schema.py",
+      "sha256": "2e6bea3e8c51216015c8fa6a40ef0bb9a3058a2e524c63c261cb610c24192ed0"
+    },
+    {
+      "path": "chrom_platform/adapters/tlc/service.py",
+      "sha256": "e9ce0b4fdbe80f0a3a16974c5d99137036e7672a92b567f8de1dfabf4a109a7a"
+    },
+    {
+      "path": "chrom_platform/app.py",
+      "sha256": "6c259b23238b959c16e8dbb19969e5535d638b3dbe4afcbcd8d614c5c6534e0e"
+    },
+    {
+      "path": "chrom_platform/artifact_core/__init__.py",
+      "sha256": "6f4298cff4764e614b9f41ef201789b9bc2606a14e930ab1985b82e0aa946d3e"
+    },
+    {
+      "path": "chrom_platform/artifact_core/models.py",
+      "sha256": "4343e64c0ace9255719547a4c8570de5cb889c361efc06a560a99622bba59d28"
+    },
+    {
+      "path": "chrom_platform/artifact_core/repository.py",
+      "sha256": "6f2d9a633c2bf0699e5777ead2aae587b12cb178606c21d73fff085f27d22b06"
+    },
+    {
+      "path": "chrom_platform/artifact_core/router.py",
+      "sha256": "f5d02cfb3560de6fca3f6a6005a9c4ff44a596338b4655e13dc142ac37d6780e"
+    },
+    {
+      "path": "chrom_platform/artifact_core/schemas.py",
+      "sha256": "8e258509b038f89913f74d9e5fdd151753d2a452d71e52e8b7d29e217367fb80"
+    },
+    {
+      "path": "chrom_platform/artifact_core/service.py",
+      "sha256": "e6699d01fa0591db86359fb69ac6df54959894397fcc7d755fee92bf081155cf"
+    },
+    {
+      "path": "chrom_platform/artifact_core/storage.py",
+      "sha256": "434fd73c834faede9d0cb2493b7810391763af99dc84f9e7d917b493ada2ef0a"
+    },
+    {
+      "path": "chrom_platform/artifact_core/uow.py",
+      "sha256": "4354468832d3beac5383e5f1e36796b7b663752fcdfe72cdd791a89ebab9b39a"
+    },
+    {
+      "path": "chrom_platform/assembly/__init__.py",
+      "sha256": "5db3628e7143518f53d14c323bab2b7d2b2c6723b0a27f43be07271ba5c64a5c"
+    },
+    {
+      "path": "chrom_platform/assembly/assistant_worker.py",
+      "sha256": "dd8084dd74309d45b3dd97405cc84a23e63b019b0818381c6ba3d7253ecf5e89"
+    },
+    {
+      "path": "chrom_platform/assembly/handler_registry.py",
+      "sha256": "ab803674cf98a0e081d2afa10e6d0bedd72b41ceaf8d7cc0998f1cc9edf84cfe"
+    },
+    {
+      "path": "chrom_platform/assembly/m1.py",
+      "sha256": "001eba6098ecaeef7c7f55896bc75b327efe07c816042b7001da48a125abf957"
+    },
+    {
+      "path": "chrom_platform/assembly/m2.py",
+      "sha256": "5e1b86fc5896f8b49165489f70608525b70a24585eebc8259b0d6c6686afefa1"
+    },
+    {
+      "path": "chrom_platform/assembly/m3.py",
+      "sha256": "d813d5780a22677baa728e0c9bfbe3d93b3d1a148099f02c529a5414240e0a25"
+    },
+    {
+      "path": "chrom_platform/assembly/m4.py",
+      "sha256": "c2d6f8fcb984ecd406b6202b36c0361a26db79ae5803b1fa7c665c3406b15461"
+    },
+    {
+      "path": "chrom_platform/assembly/manifest.py",
+      "sha256": "93206549a1dc5e0f85f632a63567a3af01e130b31dff1dcd730595a4fcfc0d79"
+    },
+    {
+      "path": "chrom_platform/assembly/prediction.py",
+      "sha256": "779587e60ee6cde0da967543beda0d67c032fcf9e590cc4c8d98b74beda81b44"
+    },
+    {
+      "path": "chrom_platform/assembly/prediction_worker.py",
+      "sha256": "422fcf08bb7282745710183931469f0b068ac0d2e1c460122dcd42485350cd8c"
+    },
+    {
+      "path": "chrom_platform/assembly/training_worker.py",
+      "sha256": "a2147b94fbebe2e7723761a412e247553321daa3090bec840b57ee559480acae"
+    },
+    {
+      "path": "chrom_platform/core/__init__.py",
+      "sha256": "5a1772820ca85e58767b0a6f0fff5b68f665a91cdb69d8fe8b5999cfe3b919ba"
+    },
+    {
+      "path": "chrom_platform/core/cursor.py",
+      "sha256": "bddf9c93e68fbf9782cb09408489df7da5061887facde2cbb3e56f7feb897075"
+    },
+    {
+      "path": "chrom_platform/core/dto.py",
+      "sha256": "a69d86bb4d1bac767eeb930d1ee8a549256786adecc2af0b27abea5fabdb5e32"
+    },
+    {
+      "path": "chrom_platform/core/errors.py",
+      "sha256": "35e8e35a994c4df9a6fe4a07a3aeebb6f674a64bc78360bf4f6051c08bc6295a"
+    },
+    {
+      "path": "chrom_platform/core/health.py",
+      "sha256": "cbf3d556b50c118cdb8635ec7baeba03b23bc44df7cac55cece186984be3047f"
+    },
+    {
+      "path": "chrom_platform/core/idempotency.py",
+      "sha256": "598c37ba612ba1fea9dd245f4fd758de9a37525a6258923eaf8cf7a1627b1858"
+    },
+    {
+      "path": "chrom_platform/core/projects.py",
+      "sha256": "afaaf3e3219190d5a72db170fa444b25f9a9a023fce464b8f3e97d0a3cece450"
+    },
+    {
+      "path": "chrom_platform/generate_openapi.py",
+      "sha256": "a07d6ffb5de0d6784a931343ba9b056610ff2e4b74e081281915cdcbdfdc4819"
+    },
+    {
+      "path": "chrom_platform/infrastructure/__init__.py",
+      "sha256": "70f4b25bd953a5cb0e0a3f553cc33b623cebc7a6d11846008f9ff4ec57189152"
+    },
+    {
+      "path": "chrom_platform/infrastructure/db.py",
+      "sha256": "5d0e7ea32801a6ad589d940f6b4ec1342a5b2190803d2085de839c1c16b8e921"
+    },
+    {
+      "path": "chrom_platform/infrastructure/health.py",
+      "sha256": "c493b294f88d22fb71edada286d4de6090f0ea25c8966bc7b9cfaaf6c59fd7df"
+    },
+    {
+      "path": "chrom_platform/infrastructure/metadata.py",
+      "sha256": "134168ef391a75273830ee13731ca38d040b79bec31df064de08ad24843bdfe9"
+    },
+    {
+      "path": "chrom_platform/infrastructure/migration_compat.py",
+      "sha256": "4cef3b92e7c3f9d79105b68fdec2ea6dfeaae6a9815eb682d2103d91e15f6cce"
+    },
+    {
+      "path": "chrom_platform/infrastructure/models.py",
+      "sha256": "49ace2bc60dcc83015c9aee1e333c1215067b0ff37a367cb27afe5373e17effc"
+    },
+    {
+      "path": "chrom_platform/infrastructure/repositories.py",
+      "sha256": "193b38b05e35985029c70c51f14bfda3335ef735e67776a6362e3958836a26d7"
+    },
+    {
+      "path": "chrom_platform/infrastructure/structure_uow.py",
+      "sha256": "25d9e943777beaca345ab13e1e9d64cc0e86103f52b5769d69ed1e54f3256f85"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/__init__.py",
+      "sha256": "9bb0e25cf0eee39d4eefce0a1949de0e87c388f78848d2b2c1b68b2e0d51c765"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/adapter.py",
+      "sha256": "06832e30320420fe8a3fdf858d1035be5afabfd997315f39030a1557e6a2beff"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/errors.py",
+      "sha256": "e329ad63e8a740e70674b536e9b02b4701a2c356e2f40d1db3bbed19cb99228d"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/events.py",
+      "sha256": "61d1f3e5497f1205345c1d329e7d56029709b369073dc259a8ed45daee4ae704"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/persistence.py",
+      "sha256": "d89bb04848a3382bc940fabde8970acda30e0d588fa7522de77d83261a9c3db1"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/ports.py",
+      "sha256": "44b0b96d9bfbc5c5324155f2a05d1839bc418e735d6681bf5ea5705516d698a3"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/priority.py",
+      "sha256": "13ec054f3f351b69aeb3e309f1d5442c650afe972f9a5100dac47fa6908d5ed0"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/priority_router.py",
+      "sha256": "9d4b3ed7ebbf227fb70c9090d12325a3873c4488c5fcc28e7bcdce113ff880ce"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/production_worker.py",
+      "sha256": "39d5e58b3cde142fc01f5e8c8a74d44ae1cb8735a69e923d28cea979302f409f"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/reconcile_cli.py",
+      "sha256": "51f5608e2010ff92567971a302cb50d469da020d4c3b08d630e095f4e923bbd2"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/recovery.py",
+      "sha256": "a525ce9376febd30a2a4ce1d2e3077a6da4f5578c6ba4ca0623b991964cb1be3"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/router.py",
+      "sha256": "35bfd914c8298776f791ec3aa28a7f4d64e38d8416be83fc6bdd6a2556bb3f7d"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/runtime.py",
+      "sha256": "a937c15e6171c7e1e0fafb9ae3606710950e59e7dbfc02c5888167e89229efce"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/schemas.py",
+      "sha256": "adb80bafb30f784e332e679ea6fd538cb9b5ac3f28287a07caaae899b21b0d7a"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/security.py",
+      "sha256": "633f127f6e103fb0a0fd615c01de5efa2536a82b33c24669150df4c13583a3a4"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/service.py",
+      "sha256": "1a631966c378df6253e378e31ab2ee5cb1d3275a9b6f31e112f743409e342631"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/sse.py",
+      "sha256": "07221cbd154fce612a8f197d67b5978fd77cb64325c9f1c2110b4947e3f7e462"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/tools/__init__.py",
+      "sha256": "6f80b40d5e82914691cc8cb91e20ae340bc547dadd2ea2b1b644632fa6619a19"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/tools/ledger.py",
+      "sha256": "93b708988b363a6f1e0999210a4b57f837500d453481d74499a118ef64437886"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/tools/registry.py",
+      "sha256": "61e086578257503b6ff3123f90d9972b8723aff7663841585438762d81bd8c09"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/trace.py",
+      "sha256": "48ba0e86f5ec848dc604ffd70ffd30f06c861defe83aaab90ec669afabd56933"
+    },
+    {
+      "path": "chrom_platform/modules/assistant/worker.py",
+      "sha256": "1eb89ec666113958e9c33847addda99f79014743b952125c7c5c149239e5e3b8"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/__init__.py",
+      "sha256": "71d50c98999b1540c6ccaf040539aaf2d591b90185a58a4b76bee447d5c67bb4"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/errors.py",
+      "sha256": "79351a46ac3924158f52e8036bdd782c07d4bccc5fb95b2e9919264e2d2e897c"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/exports.py",
+      "sha256": "5f0279c1736f976bd702cc4455d292005ce8c3766b080cb216b8d12d1f8d2a16"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/persistence.py",
+      "sha256": "5cdee320dd3bc64462868c1ef020e6a6e3b275e4adcb7f5d39aacf9c83886d99"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/ports.py",
+      "sha256": "c6e8ad4c4c753d6d7152a41762802fbd04a698ff5308cb212690e5fde1c4fcec"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/router.py",
+      "sha256": "24a441057eb3ec87ad80fbc532fa495627eef7f42516a4ad0642faa1cac997b9"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/schemas.py",
+      "sha256": "c27415ebf90d9491dc551bd78411cbe2d9d6d6196ef293d13529bca661f19022"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/service.py",
+      "sha256": "a79b7dc6d4d9ec15cdad77e6837fe66e2f67f980fd9a5c2cccb707e962f3027a"
+    },
+    {
+      "path": "chrom_platform/modules/data_center/testing.py",
+      "sha256": "15964944772eb51dfe58f7699341678157ae54b53857cb53c86c57ee721c7918"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/__init__.py",
+      "sha256": "a7ab443097dbbf372857351fa64bdb9307f429445d7ddb926bddcddcf2a3b8c1"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/errors.py",
+      "sha256": "71146aebc9572ac222a7bf05311c0c3073249b2bf3d9d0eb6285167ad52ef677"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/persistence.py",
+      "sha256": "f92284e2855b18e1a877e9fcf2a6e2211dd7c929fa4f61e85ff2ff9f1f1c4242"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/ports.py",
+      "sha256": "94ecca7017c4ca2c95543fc0161737d1f9d9894d957469317fcf5efcc84a158f"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/router.py",
+      "sha256": "9073abc108b649b6ac334db46fda9867d0d7e83522c5f268c6fdfef9fb7c8194"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/schemas.py",
+      "sha256": "98af87f55309148a276ee4c45dcbc494e27f53180fbe9c314bd0e1a114e1d7f1"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/service.py",
+      "sha256": "95826def50ae24a85fadeedbf39709861fe7d194359034b5a649157582af9070"
+    },
+    {
+      "path": "chrom_platform/modules/knowledge/worker.py",
+      "sha256": "ac8f39be05d852a8ca3a0c015277d1edc5d91f4710ed9ea53882d07e2fd6ced7"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/__init__.py",
+      "sha256": "69aef71c0c10ebc6e1391be2f825bfd5378e180a55334acef901ae828836421f"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/errors.py",
+      "sha256": "427b2a2d4cd3d061cc6af4add98777621c41a1b5330087d845afc7216e65bb1a"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/persistence.py",
+      "sha256": "3f6bf87cdf49dec0968d3e1aa91512ce70f6506c3003bdce7b514c56deeae3e4"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/ports.py",
+      "sha256": "7dff3600120a3a3ed38c2bad84a949daf1921e3ffd8f5f29e57f750923732729"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/router.py",
+      "sha256": "260504d6e8e52e16a0e555987bf6bdfe7d7e6ef10590a050fdc0058043075d23"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/schemas.py",
+      "sha256": "fcf38d282bcdc2fe43553365395bc19cb932ba0d37968951bae87b30b5aa3930"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/service.py",
+      "sha256": "50ec67943fba201b54b4536f892344ff5d56256618f0fa2e0d146aa6ee42fdb1"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/worker.py",
+      "sha256": "2faa9f62d6a0233b55ce3fd9e8f27c582d37793970cf4c50b52d5a61f63ec5e9"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/__init__.py",
+      "sha256": "5d1f598fe129bbf020b723f28836984b8a903ea4a2b6f556e35d9eec22c01f58"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/adapters.py",
+      "sha256": "01b11183b72a47d6ce6b19470cc2513012f7902e43b12f856b14e820cfb5f18a"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/batch.py",
+      "sha256": "58c85102df1c01134fe6a38074120f9495b9fda8c425e325c0ced1bd0cb81e10"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/batch_router.py",
+      "sha256": "2c748cc03aeeadd94948cc3f7a869b49d29d891f1aa9ff6cb70a37c288557174"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/batch_service.py",
+      "sha256": "d77200cd5d6681881ed4201e029ff9fe3bcc6c95f2525e685b7a6901b231a9c5"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/batch_worker.py",
+      "sha256": "0c6b8d8dad13b3b2813ee715a749986e87e44fbc2fafd0752535bfd935abac2d"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/persistence.py",
+      "sha256": "b6a28b160ea72e7d8054a6b06e83991d7284c55b2009adb36e0cef23f2eafa7a"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/ports.py",
+      "sha256": "42ea3ed69804538f181a8e1ae6e79a887d3ff87126ea24bcce16735ee644fbe9"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/production_worker.py",
+      "sha256": "79488a6f2a45d6b47e973915ea0059192f8e52b3084693e988297377f453065f"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/router.py",
+      "sha256": "5514ef65cfbb33fe864f2a1efe6697821bfb163fcb4d55cf563b50f484c44f5d"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/schemas.py",
+      "sha256": "76502056b6515395b6bfedee1dfca570ca47bcc72b464fbf1a3a6276f81fc8a2"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/service.py",
+      "sha256": "381d71a895be3035e7aeb561b1c8dbd799f67113bff1442939abc05ab59fab0f"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/worker.py",
+      "sha256": "98275dba944a40c8632475845372983dbea2c124cd78bcfa04441e377782544b"
+    },
+    {
+      "path": "chrom_platform/modules/training/__init__.py",
+      "sha256": "eebbc1c1935fd04741973af9f26204b9541e0878e07d4cd91749e56dc5bcaba7"
+    },
+    {
+      "path": "chrom_platform/modules/training/errors.py",
+      "sha256": "be814831106b300fa73b5465f0566785d7adfbfc210c03ad16b61fe853d2d7d0"
+    },
+    {
+      "path": "chrom_platform/modules/training/persistence.py",
+      "sha256": "c1bde907617b03c9e7db4388ae44cbc7451e6b85ec09f37cc20ebded8f913262"
+    },
+    {
+      "path": "chrom_platform/modules/training/ports.py",
+      "sha256": "df7f53aa4a0d3bb49fb3e4f9c036030afe593d456d3f0ff360703b8c1333d206"
+    },
+    {
+      "path": "chrom_platform/modules/training/production_worker.py",
+      "sha256": "3c064c60e88e36344dfb8f0adb02de850a8f4850e90829ac843060a7dafd63e3"
+    },
+    {
+      "path": "chrom_platform/modules/training/router.py",
+      "sha256": "8d39e4237f02b45e77c74b1b67948956b88497e05ddd635754254c82c3afffd5"
+    },
+    {
+      "path": "chrom_platform/modules/training/schemas.py",
+      "sha256": "786c2574da1e61824dfe28f75143b8437673beb640932ee9629d8895ad59918a"
+    },
+    {
+      "path": "chrom_platform/modules/training/service.py",
+      "sha256": "9c7eb33b877d57f13fd49e3dda57b20ed49f78631cc1954165d49d522e50aa0b"
+    },
+    {
+      "path": "chrom_platform/modules/training/worker.py",
+      "sha256": "14bec14d35a919805b63abcaa3065142f2a212c7cac2ae18294edb3af4796bfc"
+    },
+    {
+      "path": "chrom_platform/structure_core/__init__.py",
+      "sha256": "c817c79f5b203f2deb9624ce7b4ce8634b02546e83ef0f33dadf10fdbb72b56d"
+    },
+    {
+      "path": "chrom_platform/structure_core/router.py",
+      "sha256": "cf890f44c0aa3bc242cde175a3a64d0cff7ee5408373b97557d6ed6a363e70da"
+    },
+    {
+      "path": "chrom_platform/structure_core/schemas.py",
+      "sha256": "1e5ee72f0f2b7ea0580995f165c05f922654c81f226331e00dff46b267f6fb08"
+    },
+    {
+      "path": "chrom_platform/structure_core/service.py",
+      "sha256": "aee4e3d233d87f49dbaa3d41214d4ff3c94a9c11823c7f5a1ee5a5abe8745c05"
+    },
+    {
+      "path": "chrom_platform/structure_core/uow.py",
+      "sha256": "cc2ff5d4268a56d988ab9d4a4ecaa488c0a9eecdcf7dd3b4e47330c3b0292d1a"
+    },
+    {
+      "path": "chrom_platform/task_core/__init__.py",
+      "sha256": "b10fb00ccf965dcaa106bbda32b4b2b5862454060a285bdd0ed06bb70adeba5f"
+    },
+    {
+      "path": "chrom_platform/task_core/confirmation_target_resolver.py",
+      "sha256": "63b6a988f1ae2dd8fe65ce0e4de444f3026ff53d3aa7094897b93749e2ce9598"
+    },
+    {
+      "path": "chrom_platform/task_core/models.py",
+      "sha256": "02f5c7698d639ea9e2fead1e3c10636d57f45ba0a5ecdf702a68c0a92ea1e9b1"
+    },
+    {
+      "path": "chrom_platform/task_core/outbox_dispatch.py",
+      "sha256": "a96429e5e98e661f6d2eefcd09985d294040c0520562351d97df316d3fdda707"
+    },
+    {
+      "path": "chrom_platform/task_core/policy.py",
+      "sha256": "669224514126c7153e5e4ba031f77bfbf33dcd3c55b9e9835625b9f7061d3f9a"
+    },
+    {
+      "path": "chrom_platform/task_core/repository.py",
+      "sha256": "e93514b7c0d7e354326e25d3054a752d7f27976404b908818233010296666143"
+    },
+    {
+      "path": "chrom_platform/task_core/router.py",
+      "sha256": "d981b3fb6a57f0cb45d23b6741a58c6bebc80154139d4f034e6478a79bf768b6"
+    },
+    {
+      "path": "chrom_platform/task_core/schemas.py",
+      "sha256": "d4cbcb0a91234082049053cfabd5686744ce25aa9b47fb64371d951a865a689d"
+    },
+    {
+      "path": "chrom_platform/task_core/service.py",
+      "sha256": "bf6e202b7eacb6a3e20584d9aa451e8a0420eaa72b2d137e229756edf9e7e0a6"
+    },
+    {
+      "path": "chrom_platform/task_core/state.py",
+      "sha256": "80690d194e1d9560caa801a505a74542b36688afe8571e92f64d390b2670b919"
+    },
+    {
+      "path": "chrom_platform/worker_cli.py",
+      "sha256": "46dd655e4e178359c30614962af8a9729f5addeaac0905709b01c25ba132fb97"
+    },
+    {
+      "path": "requirements-profile.txt",
+      "sha256": "2c36c93244c8c2fd982242581ff8d3f425af9cc74a16954fc2a5b46c418c3d7e"
+    }
+  ],
+  "migrations": [
+    "alembic/versions/0001_m1_persistence.py",
+    "alembic/versions/0002_m2_prediction_data.py",
+    "alembic/versions/0003_m3_knowledge.py",
+    "alembic/versions/0004_m3_training.py",
+    "alembic/versions/0005_m3_model_center.py",
+    "alembic/versions/0006_m4_assistant.py",
+    "alembic/versions/0007_worker_outbox_lease.py",
+    "alembic/versions/0008_merge_worker_outbox.py",
+    "alembic/versions/0009_training_outbox_lease.py",
+    "alembic/versions/0010_model_center_job_fencing.py",
+    "alembic/versions/0011_m2_batch_prediction.py",
+    "alembic/versions/0012_m2_record_export.py",
+    "alembic/versions/0013_merge_m2_batch_export.py",
+    "alembic/versions/0014_batch_resolved_snapshot_export.py"
+  ],
+  "workers": [
+    "chrom_platform/assembly/assistant_worker.py",
+    "chrom_platform/assembly/prediction_worker.py",
+    "chrom_platform/assembly/training_worker.py",
+    "chrom_platform/modules/assistant/production_worker.py",
+    "chrom_platform/modules/assistant/worker.py",
+    "chrom_platform/modules/knowledge/worker.py",
+    "chrom_platform/modules/model_center/worker.py",
+    "chrom_platform/modules/prediction/batch_worker.py",
+    "chrom_platform/modules/prediction/production_worker.py",
+    "chrom_platform/modules/prediction/worker.py",
+    "chrom_platform/modules/training/production_worker.py",
+    "chrom_platform/modules/training/worker.py"
+  ],
+  "worker_entrypoint": "chrom_platform/worker_cli.py",
+  "dependencies": [
+    "fastapi==0.136.3",
+    "pydantic==2.13.4",
+    "sqlalchemy==2.0.50",
+    "alembic==1.18.5",
+    "redis==8.0.1",
+    "rdkit==2026.3.3",
+    "asyncmy==0.2.14",
+    "dramatiq[redis]==2.2.1",
+    "numpy==1.26.4",
+    "torch==2.6.0+cu124",
+    "joblib==1.5.3",
+    "scikit-learn==1.6.1",
+    "lightgbm==4.7.0",
+    "xgboost==2.1.4",
+    "torch-geometric==2.8.0",
+    "mordred==1.2.0",
+    "pandas==2.3.3",
+    "openpyxl==3.1.5",
+    "matplotlib==3.11.1",
+    "pydantic-ai"
+  ]
+}

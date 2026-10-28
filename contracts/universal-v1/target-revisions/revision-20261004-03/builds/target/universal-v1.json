@@ -1,0 +1,63 @@
+{
+  "manifest_version": "1.0",
+  "build_id": "universal-v1",
+  "modules": [
+    "prediction",
+    "records",
+    "datasets",
+    "knowledge",
+    "training",
+    "model_center",
+    "utilities",
+    "assistant",
+    "settings"
+  ],
+  "chromatography_types": [
+    "tlc",
+    "cc",
+    "hplc",
+    "sfc",
+    "gc"
+  ],
+  "prediction_tools": {
+    "tlc": [
+      "batch",
+      "condition_compare",
+      "reverse_solvent",
+      "single"
+    ],
+    "cc": [
+      "batch",
+      "single"
+    ],
+    "hplc": [
+      "batch",
+      "single"
+    ],
+    "sfc": [
+      "batch",
+      "full_column",
+      "single_column"
+    ],
+    "gc": [
+      "batch",
+      "single"
+    ]
+  },
+  "utilities": [
+    "structure_converter",
+    "molecule_lookup",
+    "tlc_reverse_solvent"
+  ],
+  "export_formats": [
+    "json",
+    "csv",
+    "xlsx"
+  ],
+  "auth_provider": "deployment_default",
+  "assistant_features": [
+    "knowledge",
+    "business",
+    "trace"
+  ]
+}

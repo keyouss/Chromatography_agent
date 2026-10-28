@@ -1,0 +1,491 @@
+{
+  "date": "2026-10-04",
+  "decision": "Candidate06 four-profile contract freeze; formal specification update only, deployment and runtime DB migration not performed",
+  "snapshot": "D:\\Jupyter\\Chromatography_agent\\backend\\.generated\\snapshots\\m3-m4-v1-candidate-20260921-05",
+  "previous_baseline": "docs/contract-baselines/m2",
+  "scope": "API/DTO baseline and recorded component/physical assembly evidence only; not production acceptance",
+  "profiles": [
+    {
+      "profile": "minimal-structure-v1",
+      "paths": 25,
+      "operations": 26,
+      "added_operations": 0,
+      "source_manifest_sha256": "fac1d146a19a26bb1bebcf8b9933d565107d840e53c398e6c3875e492c22d29a",
+      "raw_openapi_sha256": "3c22a0a3a3a64af45d85a88908fd4672c6f03f9a85c00ccfa20fe608d5e193c4",
+      "normalized_openapi_sha256": "bf35af8fd7661b9ed2c5709b1deb8629d79ab0a3153f644af8d649e4a73d63ad",
+      "summary_sha256": "847e3f3fb63be04ae0925b3d5a1e977e1097c3893daa24e5fd7bd02b918dbe88",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/minimal-structure-v1/build-manifest.json",
+          "present": true,
+          "sha256": "7723c27b8eb72057a3eedf12d8b681d95d03612a5fa88a3048335f6825d8eef1"
+        },
+        "source_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/minimal-structure-v1/SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "fac1d146a19a26bb1bebcf8b9933d565107d840e53c398e6c3875e492c22d29a"
+        },
+        "dependency_lock": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/minimal-structure-v1/requirements-profile.txt",
+          "present": true,
+          "sha256": "9cb05eadbd0c1ab24f02f8f4dd4e88e4e95ea4849d819f13ce43a853e6e449ab"
+        }
+      },
+      "path": "minimal-structure-v1/openapi.json",
+      "revision": "revision-20261004-04",
+      "schema_count": 61,
+      "candidate_openapi_path": "backend/.generated/records-replay-20261004-06-final/openapi/minimal-structure-v1/openapi.normalized.json",
+      "candidate_raw_sha256": "3c22a0a3a3a64af45d85a88908fd4672c6f03f9a85c00ccfa20fe608d5e193c4",
+      "candidate_normalized_sha256": "bf35af8fd7661b9ed2c5709b1deb8629d79ab0a3153f644af8d649e4a73d63ad",
+      "semantic_diff": {
+        "old_sha256": "F5C57950F6C0CFD0A619E375EFB191549D78B1EF07DA0E645A26B28456F6F45A",
+        "new_sha256": "BF35AF8FD7661B9ED2C5709B1DEB8629D79AB0A3153F644AF8D649E4A73D63AD",
+        "old_counts": {
+          "paths": 25,
+          "operations": 26,
+          "schemas": 59
+        },
+        "new_counts": {
+          "paths": 25,
+          "operations": 26,
+          "schemas": 61
+        },
+        "added_paths": [],
+        "removed_paths": [],
+        "added_operations": [],
+        "removed_operations": [],
+        "changed_operations": [],
+        "added_schemas": [
+          "AccessContextActor",
+          "AccessibleProjectView"
+        ],
+        "removed_schemas": [],
+        "changed_schemas": [
+          "AccessContextView",
+          "ArtifactView",
+          "NormalizeStructureRequest",
+          "UploadCreate"
+        ],
+        "json_pointer_change_count": 18,
+        "path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+        "sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96"
+      },
+      "candidate_summary_path": "backend/.generated/records-replay-20261004-06-final/openapi/minimal-structure-v1/summary.json"
+    },
+    {
+      "profile": "sfc-v1",
+      "paths": 40,
+      "operations": 41,
+      "added_operations": 5,
+      "source_manifest_sha256": "3580b64fa3481970027aa3ba0aa0001b6b3f05964f0556d19bdf3f5840f3a2e7",
+      "raw_openapi_sha256": "2f0bbedb1a00d9f177a6e0103c353b2ecefe1adfe7d929f45e2e56c268c5d203",
+      "normalized_openapi_sha256": "e88954fb90593596cbb99765da03c99a6c4e0c01db05095cd04a73f5fdcb0414",
+      "summary_sha256": "49608d4b833f58d40ec0433db3f9b0b082270422cc988b86a23040699b933363",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/sfc-v1/build-manifest.json",
+          "present": true,
+          "sha256": "2c0dd70c2774ff5765d4380a1b9dcc25dbe8d4ecaf64f3bc49ce8f184a20d123"
+        },
+        "source_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/sfc-v1/SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "3580b64fa3481970027aa3ba0aa0001b6b3f05964f0556d19bdf3f5840f3a2e7"
+        },
+        "dependency_lock": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/sfc-v1/requirements-profile.txt",
+          "present": true,
+          "sha256": "8566424227c67a347140275b8f0921ff9ae8d5f58ad6a2f790d212ae5ab5a0cb"
+        }
+      },
+      "path": "sfc-v1/openapi.json",
+      "revision": "revision-20261004-04",
+      "schema_count": 115,
+      "candidate_openapi_path": "backend/.generated/records-replay-20261004-06-final/openapi/sfc-v1/openapi.normalized.json",
+      "candidate_raw_sha256": "2f0bbedb1a00d9f177a6e0103c353b2ecefe1adfe7d929f45e2e56c268c5d203",
+      "candidate_normalized_sha256": "e88954fb90593596cbb99765da03c99a6c4e0c01db05095cd04a73f5fdcb0414",
+      "semantic_diff": {
+        "old_sha256": "778AE39484EB6DFD48BEBCEB1D105E76DC3DED832470CA46C2A71546A21A1F23",
+        "new_sha256": "E88954FB90593596CBB99765DA03C99A6C4E0C01DB05095CD04A73F5FDCB0414",
+        "old_counts": {
+          "paths": 35,
+          "operations": 36,
+          "schemas": 97
+        },
+        "new_counts": {
+          "paths": 40,
+          "operations": 41,
+          "schemas": 115
+        },
+        "added_paths": [
+          "/api/v1/exports",
+          "/api/v1/exports/{id}",
+          "/api/v1/prediction-drafts/{draft_id}",
+          "/api/v1/sfc/candidate-scopes",
+          "/api/v1/sfc/conditions/options"
+        ],
+        "removed_paths": [],
+        "added_operations": [
+          "GET /api/v1/exports/{id}",
+          "GET /api/v1/prediction-drafts/{draft_id}",
+          "GET /api/v1/sfc/conditions/options",
+          "POST /api/v1/exports",
+          "POST /api/v1/sfc/candidate-scopes"
+        ],
+        "removed_operations": [],
+        "changed_operations": [
+          "GET /api/v1/prediction-records",
+          "GET /api/v1/prediction-records/{record_id}",
+          "POST /api/v1/prediction-records/{record_id}/archive",
+          "POST /api/v1/prediction-records/{record_id}/replay-draft"
+        ],
+        "added_schemas": [
+          "AccessContextActor",
+          "AccessibleProjectView",
+          "ExportAccepted",
+          "ExportCreate",
+          "ExportView",
+          "PredictionDraftExactModelSelection",
+          "PredictionDraftSourceModelSnapshot",
+          "PredictionDraftStructureSnapshot",
+          "SfcCandidateConditions",
+          "SfcCandidateScopeCreate",
+          "SfcCandidateScopeView",
+          "SfcConditionOption",
+          "SfcConditionsOptions",
+          "SuccessEnvelope_ExportAccepted_",
+          "SuccessEnvelope_ExportView_",
+          "SuccessEnvelope_SfcCandidateScopeView_",
+          "SuccessEnvelope_SfcConditionsOptions_",
+          "_EmptyPayload"
+        ],
+        "removed_schemas": [],
+        "changed_schemas": [
+          "AccessContextView",
+          "ArtifactView",
+          "ModelOption",
+          "ModelSnapshot",
+          "NormalizeStructureRequest",
+          "PredictionDraftView",
+          "PredictionRecord",
+          "SfcFullColumnPredictionCreate",
+          "SfcPredictionResult",
+          "SfcResultRow",
+          "SfcSingleColumnPredictionCreate",
+          "StructureCount",
+          "UploadCreate"
+        ],
+        "json_pointer_change_count": 81,
+        "path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+        "sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96"
+      },
+      "candidate_summary_path": "backend/.generated/records-replay-20261004-06-final/openapi/sfc-v1/summary.json",
+      "axes_allowed_keys": [
+        "column",
+        "stationary_phase",
+        "mode",
+        "length_mm",
+        "inner_diameter_mm",
+        "particle_size_um",
+        "column_temperature_c",
+        "flow_rate_ml_min"
+      ]
+    },
+    {
+      "profile": "cc-v1",
+      "paths": 38,
+      "operations": 39,
+      "added_operations": 3,
+      "source_manifest_sha256": "25b8abe0473bd2f4dc0286cd2e4b42cd12a69d93a55d46f7541fa91246654592",
+      "raw_openapi_sha256": "8d434a6e5be2be2a9f75d0aec4e8c00156b2ae43a674b7b7c2a31dd0020f6ad2",
+      "normalized_openapi_sha256": "3cffbdfb7b6a34db7a1b413635ba7330d31126c1729e59eb6434637b67f55599",
+      "summary_sha256": "33e3f55956f5a3f9d17b8da226b7cf2180d962596e1d44ba17883cec4f1bc528",
+      "build_inputs": {
+        "build_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/cc-v1/build-manifest.json",
+          "present": true,
+          "sha256": "10086f9db08b53edf7b8bbfc02dffb1f8dbd2a23c72f5ebca4877b7cdf4726e4"
+        },
+        "source_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/cc-v1/SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "25b8abe0473bd2f4dc0286cd2e4b42cd12a69d93a55d46f7541fa91246654592"
+        },
+        "dependency_lock": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/cc-v1/requirements-profile.txt",
+          "present": true,
+          "sha256": "5cf9b3488d777b0bf5d664bfcce93bf9c9130e3ad981973397e1aeec92f5ab67"
+        }
+      },
+      "path": "cc-v1/openapi.json",
+      "revision": "revision-20261004-04",
+      "schema_count": 104,
+      "candidate_openapi_path": "backend/.generated/records-replay-20261004-06-final/openapi/cc-v1/openapi.normalized.json",
+      "candidate_raw_sha256": "8d434a6e5be2be2a9f75d0aec4e8c00156b2ae43a674b7b7c2a31dd0020f6ad2",
+      "candidate_normalized_sha256": "3cffbdfb7b6a34db7a1b413635ba7330d31126c1729e59eb6434637b67f55599",
+      "semantic_diff": {
+        "old_sha256": "635D75970F64E6D1E25F1BD0A82AF4B3B37181F30F174A88C8CD2DF5F901330D",
+        "new_sha256": "3CFFBDFB7B6A34DB7A1B413635BA7330D31126C1729E59EB6434637B67F55599",
+        "old_counts": {
+          "paths": 35,
+          "operations": 36,
+          "schemas": 93
+        },
+        "new_counts": {
+          "paths": 38,
+          "operations": 39,
+          "schemas": 104
+        },
+        "added_paths": [
+          "/api/v1/exports",
+          "/api/v1/exports/{id}",
+          "/api/v1/prediction-drafts/{draft_id}"
+        ],
+        "removed_paths": [],
+        "added_operations": [
+          "GET /api/v1/exports/{id}",
+          "GET /api/v1/prediction-drafts/{draft_id}",
+          "POST /api/v1/exports"
+        ],
+        "removed_operations": [],
+        "changed_operations": [
+          "GET /api/v1/prediction-records",
+          "GET /api/v1/prediction-records/{record_id}",
+          "POST /api/v1/prediction-records/{record_id}/archive",
+          "POST /api/v1/prediction-records/{record_id}/replay-draft"
+        ],
+        "added_schemas": [
+          "AccessContextActor",
+          "AccessibleProjectView",
+          "ExportAccepted",
+          "ExportCreate",
+          "ExportView",
+          "PredictionDraftExactModelSelection",
+          "PredictionDraftSourceModelSnapshot",
+          "PredictionDraftStructureSnapshot",
+          "SuccessEnvelope_ExportAccepted_",
+          "SuccessEnvelope_ExportView_",
+          "_EmptyPayload"
+        ],
+        "removed_schemas": [],
+        "changed_schemas": [
+          "AccessContextView",
+          "ArtifactView",
+          "CcPredictionCreate",
+          "ModelOption",
+          "ModelSnapshot",
+          "NormalizeStructureRequest",
+          "PredictionDraftView",
+          "PredictionRecord",
+          "StructureCount",
+          "UploadCreate"
+        ],
+        "json_pointer_change_count": 65,
+        "path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+        "sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96"
+      },
+      "candidate_summary_path": "backend/.generated/records-replay-20261004-06-final/openapi/cc-v1/summary.json"
+    },
+    {
+      "profile": "universal-v1",
+      "paths": 120,
+      "operations": 128,
+      "added_operations": 1,
+      "source_manifest_sha256": "b8fd0369910ef6d21a4f9dfedbbaeaba98c90c775d368d1953a329c713e977dd",
+      "raw_openapi_sha256": "024b22ff9744aae71c27a82c927bbf6fcaa07edc4f4626ba92cbff0da9eb3551",
+      "normalized_openapi_sha256": "9d2d4033793bda426be5ea7bc9325d64ead90417718967c336df65c1d5047efa",
+      "summary_sha256": "e846831c7c307f235d7505386b31767a31f6a68cd3c1ef39ef6e6363964714b7",
+      "revision": "revision-20261004-04",
+      "candidate_root": "backend/.generated/priority-launch-contract/revision-20261002-04",
+      "candidate_manifest_sha256": "36dda79327edf4dc36add065ae05d58513a94369820f7e40f494ac63c5a34118",
+      "candidate_sha256sums_sha256": "a8b30455c46a1ca3126936a1931b4473c08659dbfc254737f3ad6aedbe940934",
+      "candidate_audit_sha256": "f80197931f68263f0ba868c51f7ccb476f0f9a0b08377d1cbac229d863a074cc",
+      "candidate_change_summary_sha256": "47e208963d39d8a4c27723593536014dad3df3a09a972013d0905b93d23e71a2",
+      "candidate_source_route_audit_sha256": "592850592726b929940352444a48cc278413b1fc8871fab65bf0e962b52c6d90",
+      "candidate_handoff_sha256": "35bd1ac12707e431ca59edacd374d76da1fcd361bb2bd5b84d518f7d9da87b25",
+      "source_tree_sha256": "672aac39e813c0579581b913a49611c02ba1a53374584fc6950f46dc36ccbccc",
+      "source_file_count": 138,
+      "previous_active": {
+        "path": "contracts/universal-v1/rollback-snapshots/revision-20261003-02-baseline/openapi.json",
+        "sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2"
+      },
+      "qa_report_sha256": "fc939bb93aab4b71ac676b550d8f1ced6829d9780d09a19add416a09bb050fc7",
+      "batch_section_9": {
+        "status": "UNIMPLEMENTED_AND_UNVERIFIED_IN_THIS_SLICE",
+        "frozen": false
+      },
+      "legacy_fields": {
+        "status": "legacy_not_applicable_to_revision-20261002-04",
+        "source_manifest_sha256": "4872e6de3e56ea8593c1f4ffad5795a5fbf1418fab874891df65cd91bb569bd9",
+        "summary_sha256": "aa963c6e1c2973f9dc376e39c0bee47ab08b6d0a3f7113a1b640dad22ba50148",
+        "build_inputs": "The following build_inputs object is retained only as the historical M3/M4 profile-package record; it is not the revision-20261002-04 source binding."
+      },
+      "build_inputs": {
+        "build_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/universal-v1/build-manifest.json",
+          "present": true,
+          "sha256": "d55e52e82ce21cd8f38984f8349fac50cddca32a0b1a39808bf42355ddbd8c68"
+        },
+        "source_manifest": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/universal-v1/SOURCE_MANIFEST.json",
+          "present": true,
+          "sha256": "b8fd0369910ef6d21a4f9dfedbbaeaba98c90c775d368d1953a329c713e977dd"
+        },
+        "dependency_lock": {
+          "path": "backend/.generated/records-replay-20261004-06-final/packages/universal-v1/requirements-profile.txt",
+          "present": true,
+          "sha256": "2c36c93244c8c2fd982242581ff8d3f425af9cc74a16954fc2a5b46c418c3d7e"
+        }
+      },
+      "m2_export_update": {
+        "candidate_path": "contracts/candidates/m2-export/revision-20261003-02/candidate-openapi.json",
+        "candidate_raw_sha256": "c9e1d65c2199dcd57f004c2700db11800f5bb3a1dcbdac4c52b7aa8e7624ee01",
+        "normalized_openapi_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+        "added_paths": [
+          "/api/v1/exports",
+          "/api/v1/exports/{id}"
+        ],
+        "added_schemas": [
+          "ExportCreate",
+          "ExportAccepted",
+          "ExportView",
+          "SuccessEnvelope_ExportAccepted_",
+          "SuccessEnvelope_ExportView_"
+        ],
+        "changed_existing_schema": "ArtifactView.kind.enum appended export_report"
+      },
+      "path": "universal-v1/openapi.json",
+      "schema_count": 332,
+      "candidate_openapi_path": "backend/.generated/records-replay-20261004-06-final/openapi/universal-v1/openapi.normalized.json",
+      "candidate_raw_sha256": "024b22ff9744aae71c27a82c927bbf6fcaa07edc4f4626ba92cbff0da9eb3551",
+      "candidate_normalized_sha256": "9d2d4033793bda426be5ea7bc9325d64ead90417718967c336df65c1d5047efa",
+      "semantic_diff": {
+        "old_sha256": "4A14FCABAEF14ACF20EC7A1297631E0CC503A9AB2C612ED1FFAED4A0281064EC",
+        "new_sha256": "9D2D4033793BDA426BE5EA7BC9325D64EAD90417718967C336DF65C1D5047EFA",
+        "old_counts": {
+          "paths": 119,
+          "operations": 127,
+          "schemas": 329
+        },
+        "new_counts": {
+          "paths": 120,
+          "operations": 128,
+          "schemas": 332
+        },
+        "added_paths": [
+          "/api/v1/prediction-drafts/{draft_id}"
+        ],
+        "removed_paths": [],
+        "added_operations": [
+          "GET /api/v1/prediction-drafts/{draft_id}"
+        ],
+        "removed_operations": [],
+        "changed_operations": [],
+        "added_schemas": [
+          "PredictionDraftExactModelSelection",
+          "PredictionDraftSourceModelSnapshot",
+          "PredictionDraftStructureSnapshot"
+        ],
+        "removed_schemas": [],
+        "changed_schemas": [
+          "PredictionDraftView",
+          "SfcCandidateScopeCreate"
+        ],
+        "json_pointer_change_count": 19,
+        "path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+        "sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96"
+      },
+      "candidate_summary_path": "backend/.generated/records-replay-20261004-06-final/openapi/universal-v1/summary.json"
+    }
+  ],
+  "evidence": [
+    "testing/runs/2026-09-21-candidate-05-parity.md",
+    "testing/runs/2026-09-21-m3-m4-candidate-05-spec-matrix-revalidation.md",
+    "testing/runs/2026-09-21-snapshot-05-root-integrity.md",
+    "contracts/candidates/m2-export/revision-20261003-02/freeze-metadata.json"
+  ],
+  "review_notes": [
+    "Prior DTO/list/strict-body/required-request-header issues checked against the snapshot.",
+    "Three model-center 202 Location response headers declare string without required/uri-reference annotations; snapshot router source explicitly sets Location in all three success paths. Treat annotation consistency as nonblocking documentation follow-up, not missing runtime header."
+  ],
+  "unaccepted": [
+    "real MySQL/Redis/Dramatiq and race/recovery integration",
+    "real PydanticAI provider success",
+    "scientific golden samples and independent evaluation",
+    "complete transitive dependency/platform wheel lock",
+    "clean offline installation",
+    "successful end-to-end business flows"
+  ],
+  "revision_history": [
+    {
+      "revision": "revision-20261002-04",
+      "scope": "historical M3/M4 baseline",
+      "profile": "universal-v1",
+      "normalized_openapi_sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+      "paths": 117,
+      "operations": 125,
+      "added_operations": 13,
+      "immutable_metadata_snapshot": "docs/contract-freeze-snapshots/revision-20261003-02-pre-sync/V1_M3_M4_CONTRACT_FREEZE.json",
+      "snapshot_sha256": "b1c396dbaa927ec58910ac42a2713868b2cebc6872837b85006f8f6aab3b4e98"
+    },
+    {
+      "revision": "revision-20261003-02",
+      "scope": "M2 export contract update on universal-v1",
+      "profile": "universal-v1",
+      "previous_active_sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+      "candidate_raw_sha256": "c9e1d65c2199dcd57f004c2700db11800f5bb3a1dcbdac4c52b7aa8e7624ee01",
+      "normalized_openapi_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+      "paths": 119,
+      "operations": 127,
+      "added_operations": 2
+    },
+    {
+      "revision": "revision-20261004-04",
+      "scope": "Candidate06 formal four-profile OpenAPI freeze; persisted prediction replay-draft public contract",
+      "profiles": [
+        "minimal-structure-v1",
+        "sfc-v1",
+        "cc-v1",
+        "universal-v1"
+      ],
+      "semantic_diff_path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+      "semantic_diff_sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96",
+      "pre_freeze_snapshot": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze",
+      "deployment": "not performed",
+      "runtime_db_revision": "DB0013 unchanged/unverified by this contract-only freeze"
+    }
+  ],
+  "contract_freeze_revision": "revision-20261004-04",
+  "pre_freeze_snapshot": {
+    "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze",
+    "manifest": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/SNAPSHOT-MANIFEST.json",
+    "manifest_sha256": "29A0344CC407C719909E248A68DD5BCC08DDCE0AA68C1A87AAFB81E59D0C50F1"
+  },
+  "candidate06": {
+    "root": "backend/.generated/records-replay-20261004-06-final",
+    "sha256sums_sha256": "FF56733705F8F962688B4EDF6F50FE55574EE24269308FAE1BE0464FA79516DB",
+    "candidate_evidence_sha256": "D49F3A9926E5DA6993113A486831BC730CC690B4637D37275163BFBF33F45768",
+    "packages_openapi_tree_count": 388,
+    "packages_openapi_tree_sha256": "1B30C31929D438701222FD0148417F51DDF07ADF19312842D233FF990248866B",
+    "qa_report": "testing/runs/2026-10-04-candidate06-replay-draft-public-persistence-qa.md",
+    "qa_report_sha256": "B673E11B8EA2263B860399B9D3DC174FF1FEF99FA9264A9ED4184D084F07B37D",
+    "security_gate_sha256": "23C5E0204B1BA0C505D26A7BB35B5A305877E635558E60131A542371CEF958E5",
+    "incremental_physical_contract_qa_sha256": "8ADC1AC17708874BB47E2A4E45A717EE23E30F450FA3E1BDA132EA8F46C1F57F",
+    "semantic_diff_path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+    "semantic_diff_sha256": "1894E8D6532E662569F36C35129B8010BE74AC625782AC3B0CA71D6A79DDFB96"
+  },
+  "compatibility_boundary": {
+    "previous_formal_revision": "revision-20261003-02 for universal-v1; prior profile baselines as recorded in pre-freeze snapshot",
+    "new_contract_revision": "revision-20261004-04",
+    "runtime_boundary": "This freeze updates specifications only. It does not deploy code, apply Alembic migrations, or change runtime DB0013/current serving contract version. The new OpenAPI specification and the older runtime contract version are distinct and require coordinated client/API version rollout.",
+    "client_coordination": [
+      "Regenerate clients from revision-20261004-04 OpenAPI before consuming changed DTOs.",
+      "PredictionDraftView and AccessContextView have newly required response fields; SFC result row/record DTO fields also follow the frozen Candidate06 schema.",
+      "CC/SFC prediction requests and project-scoped record reads have project_id optional where the new schema says so.",
+      "CC/SFC archive and replay-draft now require Idempotency-Key; replay-draft also requires an empty JSON object body. Existing clients omitting these may need changes when pointed at the new runtime.",
+      "GET /api/v1/prediction-drafts/{draft_id} is newly declared for CC/SFC/universal; minimal-structure-v1 remains without replay-draft endpoints.",
+      "SFC candidate scope axes are limited to the eight propertyNames enumerated in SfcCandidateScopeCreate.axes; unknown keys are rejected."
+    ],
+    "batch_candidate": "contracts/universal-v1/target-revisions/revision-20261004-03 remains a separate frozen inactive batch target and is not replaced or activated by this revision."
+  }
+}

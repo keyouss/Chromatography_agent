@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>通用色谱智能平台 · 交互原型 v12</title>
+<style>
+:root{
+  --bg:#f4f7fb;
+  --shell:#f9fbfd;
+  --panel:#f5f8fc;
+  --surface:#ffffff;
+  --surface-2:#fbfcfe;
+  --border:#d7e1eb;
+  --border-strong:#c8d4e3;
+  --text:#1f2d3d;
+  --muted:#66788a;
+  --muted-2:#8fa0b3;
+  --primary:#1890FF;
+  --primary-soft:#eaf5ff;
+  --purple:#177ddc;
+  --purple-soft:#edf6ff;
+  --green:#22a06b;
+  --green-soft:#edf8f2;
+  --amber:#d45f45;
+  --red:#d35656;
+  --shadow:0 1px 3px rgba(20,52,90,.04),0 18px 44px rgba(24,61,106,.08);
+  --primary-deep:#003366;
+  --teal-accent:#15b8a6;
+  --teal-soft:#e8fbf8;
+  --orange-accent:#e56f42;
+  --orange-soft:#fff1ed;
+  --radius-xl:24px;
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:10px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;min-width:1280px;background:radial-gradient(circle at 18% 10%,rgba(24,144,255,.10),transparent 28%),radial-gradient(circle at 88% 18%,rgba(21,184,166,.07),transparent 24%),linear-gradient(135deg,#f7fbff 0%,#f2f7fb 46%,#edf4fa 100%);color:var(--text);font:14px/1.55 Arial,"Microsoft YaHei","Source Han Sans SC",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.page{
+  min-height:100%; padding:26px;
+}
+.shell{
+  height:calc(100vh - 52px); min-height:920px;
+  background:var(--shell); border:1px solid var(--border); border-radius:26px;
+  box-shadow:var(--shadow); overflow:hidden;
+  display:grid; grid-template-columns: 236px minmax(980px,1fr);
+}
+.module-panel{background:linear-gradient(180deg,#e8f2f9 0%,#edf6fb 48%,#e8f1f7 100%); border-right:1px solid #cbdbe8; padding:18px 14px 14px; display:flex; flex-direction:column; min-width:0}
+.module-header{padding:4px 6px 14px; border-bottom:1px solid #cbdbe8}
+.module-header h2{margin:0; font-size:15px; color:#15324b}
+.module-header p{margin:6px 0 0; color:#6e8498; font-size:12px}
+.module-title{margin:20px 6px 10px; color:#5f7991; font-size:12px; font-weight:700; letter-spacing:.02em}
+.module-nav{display:grid; gap:4px}
+.module-nav button,.settings-btn{display:flex; align-items:center; gap:10px; min-height:42px; padding:0 12px; border:1px solid transparent; border-radius:12px; background:transparent; color:#4f6880; text-align:left; font-weight:650}
+.module-nav button:hover,.settings-btn:hover{background:#f8fbfe; border-color:#c8d9e7}
+.module-nav button.active,.settings-btn.active{background:linear-gradient(90deg,#dbeeff 0%,#edf7ff 100%); color:#0b5fb3; border-color:#b9d8f2; box-shadow:0 2px 8px rgba(24,144,255,.08)}
+.micon{width:18px; text-align:center; color:#7895ad}
+.module-nav button.active .micon,.settings-btn.active .micon{color:#1688e8}
+.module-footer{margin-top:auto; padding-top:14px; border-top:1px solid #cbdbe8}
+.status-chip{display:flex; align-items:center; gap:8px; margin:10px 4px 0; color:#5f7b93; font-size:12px}
+.status-chip i{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px #e9f7ee}
+
+.app-panel{display:flex; flex-direction:column; min-width:0; background:linear-gradient(180deg,#fbfdff 0%,#f7fbfe 52%,#f3f8fc 100%)}
+.app-topbar{height:56px; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:0 18px; background:linear-gradient(180deg,#fbfdff 0%,#f5f9fd 100%); border-bottom:1px solid #dbe6f0}
+.app-topbar .left{display:flex; align-items:center; gap:10px; min-width:0}
+.app-topbar .path{display:flex; align-items:center; gap:10px; min-width:0; font-weight:650}
+.app-topbar .path span{color:var(--muted)}
+.search-mini{display:flex; align-items:center; gap:10px; width:340px; height:36px; padding:0 12px; border:1px solid var(--border); border-radius:11px; background:#fff; color:var(--muted)}
+.search-mini input{width:100%; height:100%; border:0; outline:none; background:transparent}
+.app-topbar .right{display:flex; align-items:center; gap:8px}
+.ghost-btn,.primary-btn,.tag-btn{display:inline-flex; align-items:center; justify-content:center; min-height:34px; padding:0 12px; border-radius:10px; font-weight:650}
+.ghost-btn{border:1px solid var(--border); background:#fff; color:#486277}
+.tag-btn{border:1px solid #d8d1f9; background:#f4f1ff; color:#5a4fd2}
+.primary-btn{border:0; background:var(--primary); color:#fff}
+.workspace-body{flex:1; overflow:auto; padding:0}
+.view{display:none; min-height:100%}
+.view.active{display:block}
+.inner-head{display:flex; align-items:flex-start; justify-content:space-between; gap:24px; padding:24px 26px 16px; background:linear-gradient(120deg,#f9fcff 0%,#eef7ff 58%,#eef9f8 100%)}
+.inner-head h1{margin:0 0 4px; font-size:26px; line-height:1.1}
+.inner-head p{margin:0; color:var(--muted)}
+.content-pad{padding:0 26px 28px; background:linear-gradient(180deg,rgba(248,251,254,.92) 0%,rgba(244,249,253,.98) 100%)}
+.grid-cards{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:18px}
+.metric-card{padding:18px 18px 16px; background:#fff; border:1px solid var(--border); border-radius:16px}
+.metric-card h3{margin:0 0 8px; font-size:14px}
+.metric-card .big{font-size:28px; font-weight:800; line-height:1.1}
+.metric-card .meta{margin-top:4px; color:var(--muted)}
+.metric-card .delta{font-weight:700; color:var(--green)}
+.two-col{display:grid; grid-template-columns:1.05fr .95fr; gap:16px}
+.panel{background:linear-gradient(180deg,rgba(255,255,255,.98) 0%,rgba(251,253,255,.98) 100%); border:1px solid #d2e0eb; border-radius:16px; padding:18px; box-shadow:0 8px 24px rgba(24,61,106,.055)}
+.panel h2{margin:0; font-size:15px}
+.panel .sub{margin-top:4px; color:var(--muted); font-size:12px}
+.section-head{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px}
+.list-card{display:grid; gap:12px}
+.person-item,.dept-item,.record-item{border:1px solid var(--border); border-radius:14px; padding:16px; background:#fff}
+.person-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
+.avatar-big{width:44px; height:44px; display:grid; place-items:center; border-radius:50%; background:#3b82f6; color:#fff; font-weight:800}
+.state{display:inline-flex; align-items:center; min-height:26px; padding:0 10px; border-radius:999px; font-size:12px; font-weight:700; color:#16784b; background:#eaf8f0}
+.kv{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:12px; color:#615d56}
+.kv b{display:block; color:#26231f}
+.tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.tag{display:inline-flex; align-items:center; min-height:26px; padding:0 10px; border-radius:999px; border:1px solid var(--border); background:#f8fbfe; color:#5b7184; font-size:12px; font-weight:650}
+.tag.green{background:#eaf8f0; border-color:#ccebd9; color:#1e7b4d}
+.tag.purple{background:#edf6ff; border-color:#cbe4ff; color:#106acb}
+.tag.red{background:#fff0f0; border-color:#f2d5d5; color:#bd4a4a}
+
+.type-tabs{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px; padding:4px; border:1px solid #c9dbe8; border-radius:14px; background:linear-gradient(180deg,#edf5fb 0%,#e7f0f7 100%); width:max-content; max-width:100%}
+.type-tabs button{min-height:38px; padding:0 18px; border:0; border-radius:10px; background:transparent; color:#6a7f92; font-weight:700}
+.type-tabs button.active{background:var(--primary-deep); color:#fff; box-shadow:0 2px 4px rgba(0,51,102,.16)}
+.tool-tabs,.subtabs{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px}
+.tool-tabs button,.subtabs button{min-height:36px; padding:0 14px; border:1px solid #c9dbe8; border-radius:11px; background:#fff; color:#5c7389; font-weight:650}
+.tool-tabs button.active,.subtabs button.active{background:var(--purple-soft); border-color:#cbe4ff; color:#106acb}
+.predict-shell{display:grid; gap:16px}
+.pred-layout{display:grid; grid-template-columns:1.06fr .94fr; gap:16px}
+.pred-layout.single{grid-template-columns:1fr}
+.block{background:linear-gradient(180deg,rgba(255,255,255,.98) 0%,rgba(251,253,255,.98) 100%); border:1px solid #d2e0eb; border-radius:16px; padding:18px; box-shadow:0 8px 24px rgba(24,61,106,.06)}
+.block-title{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px}
+.block-title h2{margin:0; font-size:16px}
+.block-title p{margin:4px 0 0; color:var(--muted); font-size:12px}
+.accent-tag{display:inline-flex; align-items:center; min-height:28px; padding:0 10px; border-radius:999px; background:var(--primary-soft); color:#0f67c7; font-size:12px; font-weight:700; border:1px solid #cbe4ff}
+.form-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.field{display:grid; gap:7px; min-width:0}
+.field label{font-size:12px; color:#5f5a53; font-weight:700}
+.field input,.field select,.field textarea{width:100%; border:1px solid var(--border-strong); border-radius:12px; background:#fff; color:var(--text); outline:none}
+.field input,.field select{height:40px; padding:0 12px}
+.field textarea{min-height:88px; padding:10px 12px; resize:vertical; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#7abaff; box-shadow:0 0 0 3px rgba(24,144,255,.12)}
+.span-2{grid-column:1/-1}
+.notice{margin-top:14px; padding:12px 14px; border-radius:12px; border:1px solid #cbe4ff; background:#edf6ff; color:#2b5f93}
+.notice.info{background:#f8f7f4; border-color:var(--border); color:#5d5851}
+.row-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:16px}
+.btn{display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:0 14px; border-radius:12px; font-weight:700}
+.btn.secondary{background:#fff; border:1px solid var(--border-strong); color:#504b44}
+.btn.primary{background:var(--primary); color:#fff; border:0}
+.molecule-card{display:grid; grid-template-columns:320px minmax(0,1fr); gap:16px; margin-bottom:16px}
+.mol-visual{display:flex; flex-direction:column; gap:10px; align-items:center; justify-content:center; padding:14px; background:#fbfaf8; border:1px solid var(--border); border-radius:16px}
+.mol-badge{display:inline-flex; align-items:center; min-height:26px; padding:0 10px; border-radius:999px; background:#fff; border:1px solid var(--border); color:#655f58; font-size:12px; font-weight:700}
+.mol-visual small{color:var(--muted); text-align:center}
+.mol-entry h3{margin:0 0 6px; font-size:15px}
+.mol-entry p{margin:0 0 12px; color:var(--muted)}
+.mol-meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.mol-meta span{display:inline-flex; align-items:center; min-height:26px; padding:0 10px; border-radius:999px; background:#fbfaf8; border:1px solid var(--border); font-size:12px; color:#5f5a54}
+.mol-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.mol-actions button{min-height:34px; padding:0 12px; border-radius:10px; border:1px solid var(--border); background:#fff; color:#565149; font-weight:650}
+.model-strip{display:grid; grid-template-columns:auto minmax(240px,1fr); gap:16px; align-items:end; margin-bottom:16px}
+.segmented{display:inline-flex; gap:4px; padding:4px; border:1px solid var(--border); border-radius:12px; background:#f5f3ef}
+.segmented button{min-width:88px; height:32px; border:0; border-radius:9px; background:transparent; color:#797269; font-weight:700}
+.segmented button.active{background:#fff; color:#493dc5; box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.result-board{display:grid; gap:12px; padding:18px; border:1px solid #cfe0f2; border-radius:18px; background:linear-gradient(180deg,#f3f8ff,#fff 42%,#fbfdff)}
+.result-head{display:flex; align-items:center; gap:10px}
+.result-head span{font-size:12px; color:#176bc7; font-weight:800; letter-spacing:.08em}
+.result-head h2{margin:0; font-size:18px}
+.result-head em{margin-left:auto; padding:5px 10px; border-radius:999px; background:#edf6ff; color:#176bc7; font-style:normal; font-size:12px; font-weight:700}
+.hero{display:grid; place-items:center; min-height:128px; border-radius:16px; background:linear-gradient(135deg,#1890FF,#3aa0ff 58%,#6fbaf8 118%); color:#fff; text-align:center}
+.hero span{opacity:.9}
+.hero strong{display:block; margin-top:6px; font-size:46px; line-height:1.05}
+.metric-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px}
+.metric-card-sm,.row-card{padding:14px; border:1px solid var(--border); border-radius:14px; background:#fff}
+.metric-card-sm span,.metric bmeta,.row-card span{display:block; color:#817a72; font-size:12px}
+.metric-card-sm strong,.row-card strong{display:block; margin-top:4px; font-size:18px; color:#2a2621}
+.row-stack{display:grid; gap:10px}
+.row-card{display:grid; grid-template-columns:minmax(110px,1fr) repeat(4,minmax(88px,1fr)); gap:12px; align-items:center}
+.row-card.compact{grid-template-columns:minmax(110px,1fr) repeat(3,minmax(88px,1fr))}
+.summary-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:0 0 16px}
+.summary-grid .sum{padding:14px; border-radius:14px; border:1px solid var(--border); background:#fff}
+.summary-grid .sum span{display:block; color:#7f786f; font-size:12px}
+.summary-grid .sum strong{display:block; margin-top:4px; font-size:24px}
+.table-wrap{overflow:auto; border:1px solid var(--border); border-radius:14px; background:#fff}
+.table{width:100%; border-collapse:collapse}
+.table th,.table td{padding:12px 14px; border-bottom:1px solid #efeae4; text-align:left; white-space:nowrap; font-size:12.5px}
+.table th{background:#f7fbff; color:#61788e; font-weight:800}
+.table tbody tr:hover{background:#fcfbf8}
+.rank{width:28px; height:28px; display:grid; place-items:center; border-radius:50%; background:#edf2ff; color:#4461d5; font-weight:800}
+.upload-zone{display:grid; place-items:center; min-height:150px; border:1px dashed #c9d9e8; border-radius:16px; background:#f7fbff; text-align:center; padding:20px}
+.upload-zone strong{display:block; font-size:16px; margin-bottom:4px}
+.upload-zone span{color:var(--muted)}
+.data-tabs,.utility-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px}
+.tab-pane,.utility-pane{display:none}
+.tab-pane.active,.utility-pane.active{display:block}
+.searchbar{display:flex; gap:10px; margin-bottom:16px}
+.searchbar input{flex:1; height:40px; padding:0 12px; border:1px solid var(--border-strong); border-radius:12px}
+.descriptor-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.descriptor{padding:14px; border-radius:14px; background:#fff; border:1px solid var(--border)}
+.descriptor span{display:block; color:#7a746c; font-size:12px}
+.descriptor strong{display:block; margin-top:4px; font-size:18px}
+.chat-layout{display:grid; grid-template-columns:230px minmax(0,1fr); gap:16px;align-items:start}
+.conv-list{display:flex;flex-direction:column;gap:7px;align-self:start;height:auto;max-height:360px;overflow:auto}
+.conversation{padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;min-height:0}
+.conversation.active{border-color:#cbe4ff; background:#edf6ff}
+.conversation b{display:block}
+.conversation span{display:block;color:var(--muted);font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-board{display:grid; gap:12px}
+.chat-window{height:420px; overflow:auto; padding:14px; border:1px solid var(--border); border-radius:16px; background:#fff}
+.message{margin-bottom:14px}
+.role{margin-bottom:6px; color:#6b655e; font-size:12px; font-weight:700}
+.bubble{display:inline-block; max-width:80%; padding:12px 14px; border-radius:14px; background:#f5f2ee}
+.message.user{text-align:right}
+.message.user .bubble{background:#edf6ff}
+.chat-input-row{display:flex; gap:10px}
+.chat-input-row textarea{flex:1; min-height:90px; padding:12px; border:1px solid var(--border-strong); border-radius:14px; resize:vertical}
+.settings-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.service-list{display:grid; gap:10px}
+.service-item{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:#fff}
+.service-item span{display:flex; align-items:center; gap:8px}
+.service-item i{width:9px;height:9px;border-radius:50%;background:var(--green)}
+
+
+.loading-mask{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:12px;background:rgba(251,253,255,.88);border-radius:16px;z-index:5;color:#315d8e;font-weight:700}
+.loading-mask.active{display:flex}
+.loading-spinner{width:24px;height:24px;border:3px solid #cbe4ff;border-top-color:#1890FF;border-radius:50%;animation:spin .75s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.block,.panel{position:relative}
+.empty-state{display:grid;place-items:center;gap:8px;min-height:154px;padding:24px;border:1px dashed #c6d9ea;border-radius:16px;background:#f8fbff;text-align:center;color:#67809a}
+.empty-state strong{color:#234b77;font-size:16px}
+.accent-tag.sfc-tone{background:var(--teal-soft);border-color:#bceee6;color:#0e8d82}
+.accent-tag.gc-tone{background:var(--orange-soft);border-color:#f4c5b8;color:#b95138}
+.result-board.sfc-tone{border-color:#c8efe9;background:linear-gradient(180deg,#eefcf9,#fff 42%,#fbffff)}
+.result-board.sfc-tone .result-head span,.result-board.sfc-tone .result-head em{color:#0e8d82}
+.result-board.sfc-tone .result-head em{background:var(--teal-soft)}
+.result-board.gc-tone{border-color:#f2d1c8;background:linear-gradient(180deg,#fff4f1,#fff 40%,#f8fbff)}
+.result-board.gc-tone .result-head span{color:#b95138}
+.result-board.gc-tone .result-head em{background:#fff0ec;color:#b95138}
+.hero.sfc-tone{background:linear-gradient(135deg,#12a8a2,#30c6bf 58%,#78ded7 118%)}
+.hero.gc-tone{background:linear-gradient(135deg,#e56f42,#f6b25d 48%,#4f8ee8 118%)}
+button.is-loading,.primary-btn.is-loading,.btn.primary.is-loading{opacity:.85;pointer-events:none}
+
+
+/* ===== v8 unified prediction workspace ===== */
+.pred-ref-grid{display:grid;grid-template-columns:44% 56%;gap:18px;align-items:start}
+.pred-ref-panel{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 28px rgba(26,54,93,.06);overflow:hidden;position:relative}
+.pred-ref-hd{min-height:54px;padding:14px 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff}
+.pred-ref-hd h2{font-size:16px;margin:0;color:#183b59}.pred-ref-bd{padding:17px}
+.pred-mode{display:inline-flex;background:#f2f6f9;border-radius:9px;padding:4px}.pred-mode span{padding:7px 13px;border-radius:7px;color:#6e7f91;font-size:12px}.pred-mode span.active{background:#fff;color:#176fb9;box-shadow:0 2px 8px rgba(36,76,112,.10);font-weight:700}
+.pred-section-title{font-size:14px;font-weight:700;margin:17px 0 10px;color:#284b67}.pred-section-title:first-child{margin-top:0}
+.structure-tabs{display:flex;gap:6px;margin-bottom:13px;border-bottom:1px solid var(--border)}
+.structure-tab{border:0;background:transparent;padding:9px 12px;color:#6b7c8c;border-bottom:2px solid transparent;font-weight:600}
+.structure-tab.active{color:#1678cc;border-bottom-color:#1678cc}.structure-pane{display:none}.structure-pane.active{display:block}
+.pred-input, .pred-select,.pred-textarea{width:100%;border:1px solid #d7e2ea;border-radius:8px;background:#fff;padding:9px 10px;color:#18334a;outline:none}.pred-textarea{min-height:74px;resize:vertical;line-height:1.5;font-family:Arial,"Microsoft YaHei",sans-serif}.pred-input:focus,.pred-select:focus,.pred-textarea:focus{border-color:#5aa9eb;box-shadow:0 0 0 3px rgba(24,144,255,.08)}
+.pred-actions{display:flex;gap:8px;margin-top:9px}.pred-small-btn{border:1px solid #d4e2ec;background:#fff;border-radius:8px;padding:8px 12px;color:#2f5876;font-weight:600}.pred-small-btn.primary{border-color:#1890ff;background:#1890ff;color:#fff}
+.ketcher-box{height:190px;border:1px solid #d8e3ec;border-radius:12px;background:#fbfdff;overflow:hidden}.ketcher-toolbar{height:36px;border-bottom:1px solid #e2eaf0;display:flex;align-items:center;gap:7px;padding:0 9px;color:#668196;font-size:12px}.ketcher-canvas{height:154px;display:grid;place-items:center;color:#9aa8b4;background-image:linear-gradient(#eef4f8 1px,transparent 1px),linear-gradient(90deg,#eef4f8 1px,transparent 1px);background-size:18px 18px}
+.pred-upload{height:190px;border:1.5px dashed #b9d1e4;border-radius:12px;background:#f8fbfe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#698197;padding:16px}
+.pred-preview{display:grid;grid-template-columns:205px minmax(0,1fr);gap:14px}.pred-molecule{min-height:205px;border:1px dashed #cfdce6;border-radius:12px;background:radial-gradient(circle at 50% 45%,#fff 0 38%,#f7fbfe 39% 100%);display:grid;place-items:center;position:relative;overflow:hidden}.pred-molecule svg{width:175px;height:165px}.pred-zoom{position:absolute;right:8px;bottom:8px;display:flex;gap:5px}.pred-zoom button{width:28px;height:28px;border:1px solid #dbe6ee;background:#fff;border-radius:6px;color:#526c82}.pred-valid{display:inline-flex;align-items:center;margin-top:9px;padding:4px 8px;border-radius:999px;background:#eaf5ff;color:#1677c8;font-size:11px}.pred-valid.sfc{background:#e8fbf8;color:#168e84}.pred-valid.gc{background:#fff0ec;color:#b95138}
+.pred-params{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.pred-param{border:1px solid #e2eaf0;border-radius:10px;padding:10px;background:#fbfdff}.pred-param label{font-size:12px;color:#60768b;margin-bottom:6px;display:block;font-weight:600}
+.predict-bar{display:flex;align-items:center;justify-content:space-between;margin-top:17px;padding-top:15px;border-top:1px solid var(--border)}.predict-ready{font-size:12px;color:#2a9a63}.predict-main-btn{padding:10px 21px;border:0;border-radius:9px;background:linear-gradient(135deg,#1688e8,#0d6ec3);color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(24,144,255,.18)}.predict-main-btn.sfc{background:linear-gradient(135deg,#0fa89e,#168cc9)}.predict-main-btn.gc{background:linear-gradient(135deg,#e56f42,#367fd8)}
+.pred-result-empty{min-height:620px;display:grid;place-items:center;text-align:center;color:#8595a4;padding:30px}.pred-empty-icon{font-size:42px;margin-bottom:10px;color:#82a8c8}.pred-result-main{display:none}.pred-result-main.active{display:block}
+.pred-chart-card{padding:17px;border-bottom:1px solid var(--border)}.pred-chart-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.pred-chart-title{font-weight:700;font-size:15px;color:#1d3c58}.pred-chart-meta{font-size:12px;color:#76889a}.pred-chart{width:100%;height:280px;border:1px solid #e5edf3;border-radius:12px;background:#fff;position:relative;overflow:hidden}.pred-chart svg{width:100%;height:100%}
+.pred-metrics{padding:17px}.pred-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.pred-metric{border:1px solid #e2eaf0;border-radius:11px;padding:11px;background:#fbfdff}.pred-metric .k{font-size:12px;color:#74879a}.pred-metric .v{font-size:21px;font-weight:700;margin-top:4px;color:#173957}.pred-metric .s{font-size:11px;color:#97a4b1;margin-top:2px}.pred-metric.good{background:#f0fbf7;border-color:#ccefe0}.pred-metric.good .v{color:#1f9a67}.pred-metric.sfc-good{background:#ecfbf8;border-color:#c3eee7}.pred-metric.sfc-good .v{color:#128e84}.pred-metric.gc-accent{background:#fff4f1;border-color:#f0d0c6}.pred-metric.gc-accent .v{color:#b95138}
+.pred-detail{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;margin-top:14px}.pred-result-structure{border:1px solid #e1e9ef;border-radius:10px;padding:10px;display:grid;place-items:center;min-height:145px}.pred-result-table{width:100%;border-collapse:collapse;font-size:12.5px}.pred-result-table th,.pred-result-table td{padding:9px;border-bottom:1px solid #e8eef3;text-align:left}.pred-result-table th{background:#f8fafc;color:#5d7387;font-weight:600}.pred-export{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
+.pred-loading{position:absolute;inset:54px 0 0 0;display:none;place-items:center;background:rgba(255,255,255,.88);z-index:8}.pred-loading.active{display:grid}.pred-loading-inner{text-align:center;color:#446985;font-weight:600}.pred-loading-inner .loading-spinner{margin:0 auto 10px}
+.multi-list{display:grid;gap:8px;margin-top:10px}.multi-item{display:grid;grid-template-columns:36px 52px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid #e2eaf0;border-radius:10px;background:#fbfdff}.multi-thumb{height:42px;border:1px solid #dce7ef;border-radius:7px;display:grid;place-items:center;color:#4c78a1;background:#fff}.multi-smiles{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#536a7d}.multi-actions{display:flex;gap:5px}.multi-actions button{border:0;background:transparent;color:#6f8798}.batch-progress{height:9px;border-radius:999px;background:#e7eef4;overflow:hidden;margin-top:8px}.batch-progress i{display:block;height:100%;width:72%;background:linear-gradient(90deg,#1890ff,#69b1ff);border-radius:inherit}
+.sfc-ranking{margin-top:14px}.sfc-ranking .pred-result-table td:first-child{font-weight:700;color:#0d8f84}
+@media(max-width:1450px){.pred-ref-grid{grid-template-columns:46% 54%;gap:14px}.pred-preview{grid-template-columns:180px minmax(0,1fr)}.pred-metric-grid{grid-template-columns:repeat(2,1fr)}}
+
+@media (max-width:1600px){
+  .shell{grid-template-columns:220px minmax(860px,1fr)}
+  .grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.prototype-flag{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid #d9e3eb;border-radius:8px;background:#f7fafc;color:#62778a;font-size:12px}.prototype-flag i{width:7px;height:7px;border-radius:50%;background:#e5a13a}.context-select{border:1px solid #dce5ec;border-radius:8px;background:#fff;color:#3d566c;padding:7px 10px;font-size:12px}.nav-note{margin:9px 10px 0;padding:9px 10px;border:1px dashed #d8e3eb;border-radius:9px;color:#789;font-size:11px;line-height:1.55;background:#f9fbfc}.module-badge{margin-left:auto;font-size:10px;color:#75889a;border:1px solid #d7e2e9;border-radius:999px;padding:2px 6px}.workflow-tabs{display:flex;gap:5px;padding:5px;border:1px solid var(--border);border-radius:11px;background:#f6f8fa;margin-bottom:14px;overflow:auto}.workflow-tabs button{border:0;background:transparent;padding:8px 12px;border-radius:8px;color:#64798b;white-space:nowrap}.workflow-tabs button.active{background:#fff;color:#193d59;box-shadow:0 1px 4px rgba(28,55,78,.12);font-weight:650}.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-bottom:18px}.step{position:relative;text-align:center;color:#8191a0;font-size:11px}.step:before{content:"";position:absolute;left:50%;right:-50%;top:10px;height:2px;background:#dfe7ed}.step:last-child:before{display:none}.step i{position:relative;z-index:1;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;margin:0 auto 6px;background:#edf2f5;color:#71869a;font-style:normal}.step.done i,.step.active i{background:#1f6f95;color:#fff}.step.done:before{background:#77aac1}.step.active{color:#244c67;font-weight:650}.state-strip{display:flex;gap:6px;flex-wrap:wrap}.state-pill{font-size:11px;padding:5px 8px;border-radius:999px;border:1px solid #dbe4eb;background:#f8fafb;color:#63798b}.state-pill.active{background:#e9f4f8;border-color:#b8d9e5;color:#1f6688}.axis-cell{display:grid;gap:4px}.axis-cell small{color:#8796a3}.warn-inline{padding:10px 12px;border:1px solid #ead9b7;background:#fffaf0;border-radius:9px;color:#7a6334;font-size:12px;line-height:1.55}.conversation-tools{display:flex;gap:5px;margin-top:7px}.conversation-tools button{border:0;background:transparent;color:#7a8d9e;font-size:11px;padding:0}.structure-workbench{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);gap:14px}.code-box{padding:12px;border:1px solid #dfe7ed;background:#f8fafb;border-radius:9px;font:12px/1.6 Consolas,monospace;color:#37546b;word-break:break-all}.ops-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ops-card{border:1px solid #e1e8ee;border-radius:10px;padding:12px;background:#fbfcfd}.ops-card b{display:block;color:#24445d;margin-bottom:5px}.ops-card span{font-size:12px;color:#7a8c9c}.prototype-only{font-size:11px;color:#8a7751}.modal-mask{position:fixed;inset:0;background:rgba(22,36,48,.32);display:none;place-items:center;z-index:20}.modal-mask.active{display:grid}.modal{width:min(680px,calc(100vw - 40px));background:#fff;border-radius:14px;box-shadow:0 24px 80px rgba(25,44,59,.25);padding:20px}.modal h2{margin:0 0 6px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}@media(max-width:1100px){.structure-workbench,.two-col,.settings-grid{grid-template-columns:1fr}.stepper{grid-template-columns:repeat(3,1fr);row-gap:12px}.ops-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="shell">
+
+    <aside class="module-panel">
+      <div class="module-header">
+        <h2>色谱智能平台</h2>
+        <p>Universal chromatography workspace</p>
+      </div>
+      <div class="module-title">Navigation</div>
+      <nav class="module-nav" aria-label="主导航">
+        <button class="active" data-view="predict"><span class="micon">◫</span><span>色谱预测</span></button>
+        <button data-view="data"><span class="micon">▤</span><span>数据与知识中心</span></button>
+        <button data-view="training"><span class="micon">△</span><span>模型训练</span><span class="module-badge">可裁剪</span></button>
+        <button data-view="models"><span class="micon">◎</span><span>模型中心</span><span class="module-badge">可裁剪</span></button>
+        <button data-view="utilities"><span class="micon">⌕</span><span>实用工具</span></button>
+        <button data-view="assistant"><span class="micon">✦</span><span>色谱智能助手</span><span class="module-badge">可裁剪</span></button>
+      </nav>
+      <div class="nav-note">当前展示：通用全功能构建<br>客户交付按构建清单移除未选模块、接口与依赖。</div>
+      <div class="module-footer">
+        <button class="settings-btn" data-view="settings"><span class="micon">⚙</span><span>系统设置</span></button>
+        <div class="status-chip"><i></i><span>Core services healthy</span></div>
+      </div>
+    </aside>
+
+    <section class="app-panel">
+      <header class="app-topbar">
+        <div class="left">
+          <div class="path"><span>◫</span><span>/</span><b id="crumb">色谱预测</b></div>
+        </div>
+        <div class="search-mini"><span>⌕</span><input placeholder="搜索记录、任务或模型" /></div>
+        <div class="right">
+          <select class="context-select" aria-label="项目空间"><option>默认项目空间</option><option>方法开发项目</option></select>
+          <span class="prototype-flag"><i></i>原型演示数据</span>
+          <span class="tag">API :9012</span>
+        </div>
+      </header>
+
+      <main class="workspace-body">
+        <section class="view active" id="predict">
+          <div class="inner-head">
+            <div>
+              <h1>色谱预测</h1>
+              <p>统一网页工作台：所有色谱类型都支持分子结构可视化、条件配置、结果看板与导出。</p>
+            </div>
+            <div style="display:flex;gap:8px"><button class="ghost-btn">保存模板</button><button class="primary-btn">新建预测</button></div>
+          </div>
+          <div class="content-pad">
+            <div class="type-tabs" id="predictTypes"></div>
+            <div class="tool-tabs" id="predictTools"></div>
+            <div id="predictWorkspace"></div>
+          </div>
+        </section>
+
+        <section class="view" id="data">
+          <div class="inner-head">
+            <div>
+              <h1>数据与知识中心</h1>
+              <p>将预测记录、色谱数据和知识中心拆分成清晰的二级工作区。</p>
+            </div>
+            <div style="display:flex;gap:8px"><button class="ghost-btn">刷新</button><button class="primary-btn">导入数据</button></div>
+          </div>
+          <div class="content-pad">
+            <div class="data-tabs subtabs">
+              <button class="active" data-data-tab="records">预测记录</button>
+              <button data-data-tab="dataset">色谱数据</button>
+              <button data-data-tab="knowledge">知识中心</button>
+            </div>
+            <div class="tab-pane active" data-data-pane="records">
+              <div class="searchbar"><input placeholder="搜索记录号、分子 ID、模型版本或来源…"><select class="context-select"><option>全部色谱类型</option><option>TLC</option><option>CC</option><option>HPLC</option><option>GC</option><option>SFC</option></select><select class="context-select"><option>全部状态</option><option>完成</option><option>部分完成</option><option>失败</option></select><button class="primary-btn">搜索</button></div>
+              <div class="summary-grid">
+                <div class="sum"><span>全部记录</span><strong>2,184</strong></div>
+                <div class="sum"><span>近 7 天新增</span><strong>143</strong></div>
+                <div class="sum"><span>批量任务</span><strong>86</strong></div>
+                <div class="sum"><span>Agent 发起</span><strong>27</strong></div>
+              </div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>记录号</th><th>色谱类型</th><th>工具</th><th>主体</th><th>模型</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody><tr><td>PR-2026-0919-0218</td><td>SFC</td><td>全柱预测</td><td>MOL-004218</td><td>sfc-prod-2.0</td><td><span class="tag green">完成</span></td><td>2026-09-19 13:42</td><td>查看详情</td></tr><tr><td>PR-2026-0919-0211</td><td>CC</td><td>单次预测</td><td>MOL-003187</td><td>cc-qgnn-2.4</td><td><span class="tag purple">已保存</span></td><td>2026-09-19 11:08</td><td>重新计算</td></tr><tr><td>PR-2026-0918-0205</td><td>HPLC</td><td>批量预测</td><td>120 records</td><td>hplc-prod-1.8</td><td><span class="tag red">部分完成</span></td><td>2026-09-18 18:27</td><td>查看错误行</td></tr></tbody></table></div>
+              <div class="two-col" style="margin-top:14px"><div class="panel"><div class="section-head"><div><h2>记录详情 · PR-2026-0919-0218</h2><div class="sub">输入、结果和版本均保存为快照</div></div><span class="tag green">SUCCEEDED</span></div><div class="list-card"><div class="record-item"><b>来源与主体</b><div class="sub">Web · deployment-default · 默认项目空间</div></div><div class="record-item"><b>模型与数据</b><div class="sub">sfc-prod-2.0 · 条件库 CV-25-2026.09</div></div><div class="record-item"><b>输入快照</b><div class="sub">结构 str_01K5… · 配置哈希 7f23…9ba1</div></div><div class="record-item"><b>任务事件</b><div class="sub">已排队 → 运行中 → 完成 · 2.8 s</div></div></div><div class="row-actions"><button class="btn secondary">带回预测工具</button><button class="btn secondary">归档</button></div></div><div class="panel"><div class="section-head"><div><h2>关联制品</h2><div class="sub">下载、重新生成、归档均形成审计事件</div></div><button class="ghost-btn">创建导出</button></div><div class="table-wrap"><table class="table"><thead><tr><th>制品</th><th>格式</th><th>状态</th><th>哈希</th></tr></thead><tbody><tr><td>SFC 全柱结果</td><td>XLSX</td><td><span class="tag green">AVAILABLE</span></td><td>6d2a…7e91</td></tr><tr><td>结果证据包</td><td>PDF</td><td><span class="tag">GENERATING</span></td><td>—</td></tr></tbody></table></div><div class="warn-inline" style="margin-top:12px">删除默认执行归档/软删除；永久清理受项目策略与权限控制。</div></div></div>
+            </div>
+            <div class="tab-pane" data-data-pane="dataset">
+              <div class="searchbar"><input placeholder="搜索分子名称、结构、项目来源或数据版本…"><button class="ghost-btn">高级筛选</button><button class="primary-btn">新增导入</button></div>
+              <div class="two-col">
+                <div class="panel">
+                  <div class="section-head"><div><h2>色谱数据总览</h2><div class="sub">分子级索引与数据生命周期入口</div></div></div>
+                  <div class="grid-cards" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:0"><div class="metric-card"><h3>分子条目</h3><div class="big">12,842</div><div class="meta">跨 5 类色谱能力</div></div><div class="metric-card"><h3>数据版本</h3><div class="big">42</div><div class="meta">不可覆盖快照</div></div><div class="metric-card"><h3>近期待审导入</h3><div class="big">3</div><div class="meta">待确认入库</div></div><div class="metric-card"><h3>异常报告</h3><div class="big">6</div><div class="meta">待处理字段问题</div></div></div>
+                </div>
+                <div class="panel">
+                  <div class="section-head"><div><h2>最近数据包</h2><div class="sub">导入校验、版本与来源追溯</div></div></div>
+                  <div class="list-card"><div class="record-item"><b>DV-SFC-2026-09-01</b><div class="sub">SFC · 15,820 records · 已入库</div></div><div class="record-item"><b>DV-CC-2026-08-18</b><div class="sub">CC · 5,220 records · 已引用</div></div><div class="record-item"><b>PKG-HPLC-2026-09-15</b><div class="sub">字段校验失败：2 项缺失</div></div></div>
+                  <div class="empty-state"><strong>暂无异常导入</strong><span>新的字段冲突、重复结构或缺失值问题会在这里集中提示。</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" data-data-pane="knowledge">
+              <div class="two-col">
+                <div class="panel">
+                  <div class="section-head"><div><h2>知识资料</h2><div class="sub">资料、切分、索引与引用关系</div></div><button class="primary-btn">上传资料</button></div>
+                  <div class="table-wrap"><table class="table"><thead><tr><th>资料</th><th>来源</th><th>状态</th><th>切片</th><th>更新时间</th></tr></thead><tbody><tr><td>SFC 方法开发手册.pdf</td><td>内部资料</td><td><span class="tag green">已索引</span></td><td>124</td><td>2026-09-18</td></tr><tr><td>USP 色谱章节.docx</td><td>标准文件</td><td><span class="tag purple">解析完成</span></td><td>86</td><td>2026-09-17</td></tr><tr><td>手性色谱文章汇编.zip</td><td>外部论文</td><td><span class="tag red">待清洗</span></td><td>-</td><td>2026-09-15</td></tr></tbody></table></div>
+                </div>
+                <div class="panel">
+                  <div class="section-head"><div><h2>问答引用配置</h2><div class="sub">控制知识问答范围与引用显示</div></div></div>
+                  <div class="list-card"><div class="record-item"><b>默认引用模式</b><div class="sub">回答中显示资料名称、页码和切片 ID</div></div><div class="record-item"><b>项目隔离</b><div class="sub">不同项目的资料库默认不混用</div></div><div class="record-item"><b>外部服务</b><div class="sub">客户数据默认不发送到未批准的第三方服务</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="training">
+          <div class="inner-head"><div><h1>模型训练</h1><p>采用受控训练模板，把不可变数据版本转化为候选模型；训练成功不会自动发布。</p></div><div style="display:flex;gap:8px"><button class="ghost-btn">对比实验</button><button class="primary-btn" id="newExperiment">新建实验</button></div></div>
+          <div class="content-pad">
+            <div class="workflow-tabs"><button class="active">实验列表</button><button>新建实验</button><button>运行详情</button><button>实验对比</button></div>
+            <div class="grid-cards"><div class="metric-card"><h3>运行中实验</h3><div class="big">6</div><div class="meta">演示数据 · 2 个等待资源</div></div><div class="metric-card"><h3>候选模型</h3><div class="big">18</div><div class="meta">训练仅产出 Candidate</div></div><div class="metric-card"><h3>校验失败</h3><div class="big">2</div><div class="meta">不会进入执行队列</div></div><div class="metric-card"><h3>数据版本</h3><div class="big">12</div><div class="meta">均为不可覆盖快照</div></div></div>
+            <div class="two-col"><div class="panel"><div class="section-head"><div><h2>新建实验 · 配置草稿</h2><div class="sub">固定模板优先，禁止任意脚本执行</div></div><span class="tag">DRAFT</span></div><div class="stepper"><div class="step done"><i>1</i>任务</div><div class="step active"><i>2</i>数据</div><div class="step"><i>3</i>特征</div><div class="step"><i>4</i>参数</div><div class="step"><i>5</i>校验</div><div class="step"><i>6</i>确认</div></div><div class="form-grid"><div class="field"><label>色谱任务</label><select><option>SFC · 分离概率</option><option>CC · 洗脱体积</option><option>GC · 保留时间</option></select></div><div class="field"><label>训练模板</label><select><option>sfc-separation-baseline-v3</option></select></div><div class="field span-2"><label>不可变数据版本</label><select><option>DV-SFC-2026-09-01 · READY · 15,820 条</option></select></div><div class="field"><label>特征版本</label><select><option>FV-RDKIT-PROCESS-03</option></select></div><div class="field"><label>拆分策略</label><select><option>Scaffold split · 8/1/1</option></select></div></div><div class="warn-inline" style="margin-top:12px">启动前将再次显示数据版本、配置哈希、资源预算与评测协议；任何修改都会使原确认失效。</div><div class="row-actions"><button class="btn secondary">保存草稿</button><button class="btn secondary" id="validateExperiment">校验配置</button><button class="btn primary" id="confirmExperiment" disabled>确认并启动</button></div></div><div class="panel"><div class="section-head"><div><h2>运行详情</h2><div class="sub">配置、进度、指标、日志、制品和审计</div></div><span class="tag purple">RUNNING</span></div><div class="state-strip"><span class="state-pill">DRAFT</span><span class="state-pill">VALIDATING</span><span class="state-pill">READY</span><span class="state-pill">QUEUED</span><span class="state-pill active">RUNNING</span><span class="state-pill">SUCCEEDED</span></div><div style="margin:18px 0 7px;font-size:12px;color:#60788b">训练进度　64%</div><div class="batch-progress"><i style="width:64%"></i></div><div class="list-card" style="margin-top:14px"><div class="record-item"><b>EXP-SFC-031</b><div class="sub">数据 DV-SFC-2026-09-01 · 模板 v3 · 配置 87bd…c21a</div></div><div class="record-item"><b>当前阶段：交叉验证 3 / 5</b><div class="sub">浏览器断开不会终止任务，可从任务 ID 恢复查询。</div></div><div class="record-item"><b>候选模型</b><div class="sub">仅在 SUCCEEDED 后创建；FAILED / CANCELED 不产生 Candidate。</div></div></div><div class="row-actions"><button class="btn secondary">查看日志</button><button class="btn secondary">取消任务</button></div></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="models">
+          <div class="inner-head"><div><h1>模型中心</h1><p>模型资产登记与生产治理；生命周期、部署状态和比较角色分开管理。</p></div><div style="display:flex;gap:8px"><button class="ghost-btn">刷新状态</button><button class="primary-btn">登记外部模型包</button></div></div>
+          <div class="content-pad">
+            <div class="workflow-tabs"><button class="active">模型注册表</button><button>待验证</button><button>评测与对比</button><button>发布管理</button><button>审计</button></div>
+            <div class="panel" style="margin-bottom:14px"><div class="section-head"><div><h2>模型注册表</h2><div class="sub">来源、状态、部署和角色均可独立筛选</div></div><button class="ghost-btn">筛选</button></div><div class="table-wrap"><table class="table"><thead><tr><th>模型</th><th>任务 / 来源</th><th>生命周期</th><th>部署状态</th><th>比较角色</th><th>操作</th></tr></thead><tbody><tr><td><b>cc-qgnn-2.4</b><div class="sub">sha256: 9a8c…17d2</div></td><td>CC · 训练产物</td><td><span class="tag green">APPROVED</span></td><td><span class="tag purple">PRODUCTION</span></td><td><span class="tag green">CHAMPION</span></td><td>查看模型卡</td></tr><tr><td><b>sfc-candidate-2.1</b><div class="sub">sha256: 31bc…9e72</div></td><td>SFC · 外部模型包</td><td><span class="tag">CANDIDATE</span></td><td>NOT_DEPLOYED</td><td>CHALLENGER</td><td>查看评测</td></tr><tr><td><b>gc-import-1.5</b><div class="sub">环境检查中</div></td><td>GC · 外部模型包</td><td><span class="tag red">VALIDATING</span></td><td>NOT_DEPLOYED</td><td>—</td><td>查看报告</td></tr></tbody></table></div></div>
+            <div class="two-col"><div class="panel"><div class="section-head"><div><h2>Candidate vs Champion</h2><div class="sub">相同评测协议与数据快照</div></div><span class="tag">EP-SFC-04</span></div><div class="table-wrap"><table class="table"><thead><tr><th>指标</th><th>Champion 2.0</th><th>Candidate 2.1</th></tr></thead><tbody><tr><td>评测数据</td><td colspan="2">EV-SFC-2026-09 · 2,140 条</td></tr><tr><td>分离判定 AUROC</td><td>0.903</td><td><b>0.918</b></td></tr><tr><td>黄金样例</td><td>58 / 58</td><td>58 / 58</td></tr><tr><td>推理 P95</td><td><b>412 ms</b></td><td>438 ms</td></tr></tbody></table></div><div class="warn-inline" style="margin-top:12px">本表为原型演示，不代表真实模型测评结论。</div></div><div class="panel"><div class="section-head"><div><h2>发布确认</h2><div class="sub">明确影响范围与回滚目标</div></div></div><div class="list-card"><div class="record-item"><b>目标范围</b><div class="sub">默认项目 · SFC · 全柱预测</div></div><div class="record-item"><b>当前生产模型</b><div class="sub">sfc-prod-2.0 · Champion</div></div><div class="record-item"><b>目标模型</b><div class="sub">sfc-candidate-2.1 · Approved 后可发布</div></div><div class="record-item"><b>回滚目标</b><div class="sub">sfc-prod-2.0 · 制品完整且可加载</div></div></div><div class="row-actions"><button class="btn secondary">查看模型卡</button><button class="btn primary">提交审批</button></div></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="utilities">
+          <div class="inner-head"><div><h1>实用工具</h1><p>围绕结构处理、信息查找与实验辅助的小工具集合。</p></div><div style="display:flex;gap:8px"><button class="ghost-btn">查看帮助</button></div></div>
+          <div class="content-pad">
+            <div class="utility-tabs subtabs"><button class="active" data-utility="structure">化学结构输入与转换</button><button data-utility="lookup">分子信息查找</button><button data-utility="tlc">TLC 反推溶剂</button></div>
+            <div class="utility-pane active" data-utility-pane="structure"><div class="structure-workbench"><div class="panel"><div class="section-head"><div><h2>化学结构输入与转换</h2><div class="sub">所有交付版本必含的公共核心能力</div></div><span class="tag green">CORE</span></div><div class="structure-tabs"><button class="structure-tab active">SMILES</button><button class="structure-tab">绘制结构</button><button class="structure-tab">ChemDraw / SDF</button></div><div class="ketcher-box"><div class="ketcher-toolbar">↶ ↷　—　═　⌬　△　C　N　O　Cl　▲　▱　橡皮擦</div><div class="ketcher-canvas">Ketcher 结构绘制区域（原型占位）</div></div><div class="row-actions"><button class="btn secondary">清空</button><button class="btn secondary">导入文件</button><button class="btn primary" id="normalizeStructure">校验并标准化</button></div></div><div class="panel"><div class="section-head"><div><h2>标准化结果</h2><div class="sub">保留立体化学并生成可追溯快照</div></div></div><div class="mol-visual" style="height:180px"><span class="mol-badge">2D structure · prototype</span><svg width="230" height="150" viewBox="0 0 230 170" fill="none"><g stroke="#2f5268" stroke-width="2.2" stroke-linecap="round"><path d="M55 86 L88 51 L132 51 L158 86 L132 121 L88 121 Z"/><path d="M88 51 L109 86 L158 86" opacity=".68"/><path d="M158 86 L191 64"/><path d="M132 121 L153 148"/></g><polygon points="88,51 68,38 79,28" fill="#2f819d"/><text x="42" y="92" fill="#2f819d" font-size="14" font-weight="700">OH</text></svg></div><label style="font-size:12px;color:#60768b;display:block;margin:12px 0 6px">规范化 SMILES</label><div class="code-box" id="structureSmiles">C[C@H](O)c1ccc(cc1)C#N</div><div class="pred-valid sfc" style="margin-top:10px">✓ 立体化学标记已保留</div><div class="row-actions"><button class="btn secondary" id="copyStructureSmiles">一键复制 SMILES</button><button class="btn primary">发送到色谱预测</button></div></div></div></div>
+            <div class="utility-pane" data-utility-pane="lookup">
+              <div class="two-col"><div class="panel"><div class="section-head"><div><h2>分子信息查找</h2><div class="sub">支持名称、SMILES、InChIKey、本地解析与描述符计算</div></div></div><div class="form-grid"><div class="field span-2"><label>查询输入</label><input id="lookupInput" value="Aspirin / CC(=O)Oc1ccccc1C(=O)O"></div><div class="field"><label>输入类型</label><select><option>自动识别</option><option>SMILES</option><option>名称</option></select></div><div class="field"><label>来源策略</label><select><option>本地解析优先</option><option>允许外部查询</option></select></div></div><div class="row-actions"><button class="btn secondary" id="copySmiles">复制</button><button class="btn primary" id="lookupButton">开始查找</button></div></div><div class="panel"><div class="section-head"><div><h2>结构与标识信息</h2><div class="sub">示例结果</div></div></div><div class="molecule-card" style="grid-template-columns:260px minmax(0,1fr);margin-bottom:0"><div class="mol-visual"><span class="mol-badge">2D structure</span><svg width="230" height="170" viewBox="0 0 230 170" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="#2f2a35" stroke-width="2.2" stroke-linecap="round"><path d="M62 82 L89 46 L133 46 L157 82 L132 118 L89 118 Z"/><path d="M89 46 L111 82 L157 82" opacity=".78"/><path d="M28 64 L62 82 M157 82 L191 64 M132 118 L152 146"/><path d="M152 146 L186 146"/></g><text x="12" y="60" fill="#7c5cff" font-size="14" font-weight="700">O</text><text x="192" y="60" fill="#d95f9e" font-size="14" font-weight="700">OAc</text></svg><small>本地结构渲染，仅做原型展示</small></div><div class="mol-entry"><h3 id="molName">Aspirin <span style="color:#8e867c">(acetylsalicylic acid)</span></h3><div class="kv"><div><span>Canonical SMILES</span><b id="canonicalSmiles">CC(=O)Oc1ccccc1C(=O)O</b></div><div><span>InChIKey</span><b>BSYNRYMUTXBXSQ-UHFFFAOYSA-N</b></div><div><span>分子式</span><b>C₉H₈O₄</b></div><div><span>Monoisotopic Mass</span><b>180.0423</b></div></div></div></div><div class="descriptor-grid"><div class="descriptor"><span>MW</span><strong>180.16</strong></div><div class="descriptor"><span>cLogP</span><strong>1.21</strong></div><div class="descriptor"><span>TPSA</span><strong>63.6</strong></div><div class="descriptor"><span>HBA / HBD</span><strong>4 / 1</strong></div></div></div></div>
+            </div>
+            <div class="utility-pane" data-utility-pane="tlc"><div class="panel"><div class="section-head"><div><h2>TLC 反推溶剂</h2><div class="sub">根据目标 Rf 区间辅助推荐展开体系</div></div></div><div class="form-grid"><div class="field"><label>目标 Rf</label><input value="0.30 - 0.35"></div><div class="field"><label>固定相</label><select><option>硅胶板</option></select></div><div class="field"><label>候选溶剂 A</label><select><option>石油醚</option></select></div><div class="field"><label>候选溶剂 B</label><select><option>乙酸乙酯</option></select></div></div><div class="notice">示例结果：建议从 PE / EA = 75 / 25 与 70 / 30 开始验证。</div><div class="row-actions"><button class="btn secondary">加入比较</button><button class="btn primary">生成建议</button></div></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="assistant">
+          <div class="inner-head"><div><h1>色谱智能助手</h1><p>持久化会话与受控业务工具调用；刷新后恢复最近会话，任务不依赖聊天连接。</p></div><div style="display:flex;gap:8px"><button class="ghost-btn">搜索历史</button><button class="primary-btn" id="newChat">新建对话</button></div></div>
+          <div class="content-pad">
+            <div class="chat-layout"><aside class="conv-list"><div class="searchbar" style="padding:0;margin-bottom:10px"><input placeholder="搜索对话"></div><div class="conversation active"><b>筛选 SFC 色谱柱</b><span>5 分钟前 · 关联任务 TASK-1042</span><div class="conversation-tools"><button>重命名</button><button>归档</button></div></div><div class="conversation"><b>创建 CC 批量预测</b><span>昨天 · 已完成 120 / 120</span><div class="conversation-tools"><button>重命名</button><button>归档</button></div></div><div class="conversation"><b>训练 SFC 基线模型</b><span>9 月 18 日 · 草稿待确认</span><div class="conversation-tools"><button>重命名</button><button>归档</button></div></div><div class="conversation"><b>查询 Aspirin 分子信息</b><span>9 月 17 日 · 已调用实用工具</span><div class="conversation-tools"><button>重命名</button><button>归档</button></div></div></aside><div class="chat-board"><div class="panel" style="padding-bottom:14px"><div class="section-head" style="margin-bottom:10px"><div><h2 id="chatTitle">筛选 SFC 色谱柱</h2><div class="sub">助手只调用当前构建已纳入且当前主体有权访问的工具。</div></div><span class="tag green">已自动恢复</span></div><div class="chat-window" id="chatBody"><div class="message"><div class="role">色谱智能助手</div><div class="bubble">你好。我可以根据分子结构、历史记录与知识资料，推荐候选 SFC 色谱柱并解释原因。</div></div><div class="message user"><div class="role">你</div><div class="bubble">帮我筛一下这个化合物的 SFC 全柱结果，并说明优先验证哪几根柱。</div></div><div class="message"><div class="role">色谱智能助手 · 工具结果</div><div class="bubble"><b>SFC 全柱预测 · 原型示例</b><br>任务 TASK-1042 已完成。优先验证：Chiralpak IA-U、Chiralcel OD-3、Chiralpak IC。<br><span class="prototype-only">模型 sfc-prod-2.0 · warning 0 · 可跳转完整结果</span></div></div></div><div class="warn-inline" style="margin-bottom:10px">批量预测、模型训练与模型登记均先创建草稿；提交前必须确认配置。模型发布不能由助手自动执行。</div><div class="chat-input-row"><textarea id="chatInput" placeholder="可以问答，也可以创建预测、批量任务、训练草稿或模型登记草稿…"></textarea><button class="primary-btn" id="sendChat">发送</button></div></div></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="settings">
+          <div class="inner-head"><div><h1>系统设置</h1><p>只展示当前构建实际纳入的设置项。</p></div><div style="display:flex;gap:8px"><button class="ghost-btn">刷新状态</button></div></div>
+          <div class="content-pad">
+            <div class="settings-grid"><div class="panel"><div class="section-head"><div><h2>运行状态</h2><div class="sub">核心服务、任务与制品健康</div></div><span class="tag green">正常</span></div><div class="service-list"><div class="service-item"><span><i></i>business-api :9012</span><strong>正常</strong></div><div class="service-item"><span><i></i>model-adapters</span><strong>5 / 5</strong></div><div class="service-item"><span><i></i>redis / worker</span><strong>正常</strong></div><div class="service-item"><span><i></i>mysql</span><strong>正常</strong></div><div class="service-item"><span><i></i>artifact-store</span><strong>正常</strong></div></div></div><div class="panel"><div class="section-head"><div><h2>环境与外部连接</h2><div class="sub">值来自 .env 或受控密钥存储</div></div></div><div class="form-grid"><div class="field"><label>LLM Provider</label><select><option>OpenAI-compatible</option></select></div><div class="field"><label>Model ID</label><input value="configured-at-runtime"></div><div class="field span-2"><label>API URL</label><input value="由安全配置读取；页面不回显密钥"></div><div class="field"><label>前端端口</label><input value="由 FRONTEND_PORT 配置"></div><div class="field"><label>后端 API 端口</label><input value="9012 · 由 API_PORT 配置"></div></div><div class="row-actions"><button class="btn secondary">测试连接</button><button class="btn primary">保存</button></div></div></div>
+            <div class="panel" style="margin-top:14px"><div class="section-head"><div><h2>运维工作区</h2><div class="sub">不泄露密钥、客户原始数据或服务器绝对路径</div></div><button class="ghost-btn">生成诊断包</button></div><div class="ops-grid"><div class="ops-card"><b>任务队列</b><span>运行 6 · 等待 2 · 失败 1</span></div><div class="ops-card"><b>制品存储</b><span>可用 · 最近完整性检查 12 分钟前</span></div><div class="ops-card"><b>备份恢复</b><span>最近备份成功 · 恢复演练待执行</span></div><div class="ops-card"><b>离线升级</b><span>升级包签名与版本兼容性检查</span></div><div class="ops-card"><b>认证升级预留</b><span>AuthProvider → ActorContext；首版无登录</span></div><div class="ops-card"><b>租户隔离预留</b><span>未启用；后续按上下文强制过滤</span></div></div></div>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+</div>
+
+<script>
+const appNames={predict:'色谱预测',data:'数据与知识中心',training:'模型训练',models:'模型中心',utilities:'实用工具',assistant:'色谱智能助手',settings:'系统设置'};
+const moleculeProfiles={
+  TLC:{smiles:'CCOC(=O)N1CCC(c2ccc(Cl)cc2)CC1',note:'TLC / 平面结构预览',hetero:'Cl',tail:'OEt'},
+  CC:{smiles:'COc1ccc(CC(C)N)cc1OC',note:'CC / 洗脱体积分布建模',hetero:'OMe',tail:'NH₂'},
+  HPLC:{smiles:'CC1=CC(=O)NC(=O)N1c2ccc(F)cc2',note:'HPLC / 保留时间估计',hetero:'F',tail:'NH'},
+  GC:{smiles:'CC(C)c1ccc(cc1)C(C)C(=O)O',note:'GC / 挥发性相关结构',hetero:'iPr',tail:'COOH'},
+  SFC:{smiles:'C[C@H](O)c1ccc(cc1)C#N',note:'SFC / 手性中心已保留',hetero:'OH',tail:'CN'}
+};
+const types={
+  TLC:{tools:['单次预测','批量预测','条件比较','反推溶剂'],model:'tlc-rf-2.1'},
+  CC:{tools:['单次预测','批量预测'],model:'cc-qgnn-2.4'},
+  HPLC:{tools:['单次预测','批量预测','手性 LC（可选）'],model:'hplc-prod-1.8'},
+  GC:{tools:['单次预测','批量预测'],model:'gc-prod-1.4'},
+  SFC:{tools:['全柱预测','单柱预测','批量预测'],model:'sfc-prod-2.0'}
+};
+let activeView='predict';
+let activeType='TLC';
+let activeTool='单次预测';
+
+function toggleLoading(scope, show, text){
+  const mask = scope.querySelector('.loading-mask');
+  if(!mask) return;
+  const label = mask.querySelector('span');
+  if(text && label) label.textContent = text;
+  mask.classList.toggle('active', show);
+}
+
+function runAsyncButton(btn, scope, text, doneText, callback, delay=900){
+  if(!btn) return;
+  const original = btn.textContent;
+  btn.classList.add('is-loading');
+  btn.textContent = text;
+  btn.disabled = true;
+  if(scope) toggleLoading(scope, true);
+  setTimeout(()=>{
+    if(scope) toggleLoading(scope, false);
+    btn.disabled = false;
+    btn.classList.remove('is-loading');
+    btn.textContent = doneText;
+    callback && callback();
+    setTimeout(()=>btn.textContent = original, 1200);
+  }, delay);
+}
+
+function moleculeSVG(type){
+  const p=moleculeProfiles[type];
+  const lc = type==='SFC';
+  const gc = type==='GC';
+  const accent = lc ? '#15a99f' : (gc ? '#e56f42' : '#1890ff');
+  const accent2 = gc ? '#367fd8' : (lc ? '#28bdb2' : '#5aa9eb');
+  return `<svg viewBox="0 0 200 200" aria-label="molecule">
+    <g stroke="#284861" stroke-width="3" stroke-linecap="round">
+      <line x1="48" y1="108" x2="84" y2="87"/><line x1="84" y1="87" x2="121" y2="108"/><line x1="121" y1="108" x2="151" y2="87"/><line x1="120" y1="108" x2="120" y2="147"/><line x1="124" y1="108" x2="124" y2="147"/><line x1="84" y1="87" x2="84" y2="48"/><line x1="48" y1="108" x2="32" y2="136"/>
+    </g>
+    <text x="71" y="41" font-size="17" fill="${accent}" font-weight="700">${p.hetero}</text>
+    <text x="151" y="88" font-size="16" fill="${accent2}" font-weight="700">${p.tail}</text>
+    <text x="109" y="167" font-size="17" fill="#d05a51">O</text>
+    ${lc?'<polygon points="84,87 65,73 80,61" fill="#15a99f" opacity=".9"/>':''}
+    <circle cx="84" cy="87" r="5" fill="${accent}"/>
+  </svg>`;
+}
+
+function structureInputBlock(type, contract='default'){
+  const p=moleculeProfiles[type];
+  const tone=type==='SFC'?'sfc':(type==='GC'?'gc':'');
+  const pairContract=type==='HPLC' && contract!=='chiral_lc';
+  const inputValue=pairContract?'N[C@@H](C)C(O)=O, N[C@H](C)C(O)=O':p.smiles;
+  const inputHint=pairContract?'当前 HPLC 基线使用两个对映体 SMILES，以英文逗号分隔。':(type==='SFC'?'保留 @ / @@ 手性标记与双键构型。':'结构已规范化后再提交模型。');
+  return `<div class="pred-section-title">1. 化合物结构输入</div>
+    <div class="structure-tabs"><button class="structure-tab active" data-struct-tab="smiles">SMILES输入</button><button class="structure-tab" data-struct-tab="draw">绘制结构</button><button class="structure-tab" data-struct-tab="upload">上传文件</button></div>
+    <div class="structure-pane active" data-struct-pane="smiles"><label style="font-size:12px;color:#60768b;display:block;margin-bottom:6px">${pairContract?'对映体 SMILES 对':'SMILES'}</label><textarea class="pred-textarea prediction-smiles">${inputValue}</textarea><div class="pred-actions"><button class="pred-small-btn primary js-validate">验证结构</button><button class="pred-small-btn">示例</button><button class="pred-small-btn js-clear-smiles">清空</button></div><div style="font-size:12px;color:#8998a7;margin-top:6px">${inputHint}</div></div>
+    <div class="structure-pane" data-struct-pane="draw"><div class="ketcher-box"><div class="ketcher-toolbar">↶ ↷　—　═　⌬　△　C　N　O　Cl　▲　▱　橡皮擦</div><div class="ketcher-canvas">Ketcher 结构绘制区域（原型占位）</div></div><div class="pred-actions"><button class="pred-small-btn primary">获取 SMILES</button><button class="pred-small-btn">清空画布</button></div></div>
+    <div class="structure-pane" data-struct-pane="upload"><div class="pred-upload"><div style="font-size:30px;margin-bottom:6px">⇧</div><b>拖拽 ChemDraw / SDF 文件到此处</b><span style="font-size:12px;margin-top:5px">支持 .cdx / .cdxml / .mol / .sdf</span><button class="pred-small-btn" style="margin-top:10px">选择文件</button></div></div>
+    <div class="pred-section-title">2. 结构式预览</div>
+    <div class="pred-preview"><div class="pred-molecule">${moleculeSVG(type)}<div class="pred-zoom"><button>−</button><button>＋</button><button>⟳</button></div></div><div><label style="font-size:12px;color:#60768b;display:block;margin-bottom:6px">标准化 SMILES</label><input class="pred-input normalized-smiles" value="${p.smiles}"><div class="pred-valid ${tone}">✓ 结构有效</div><div style="font-size:12px;color:#8998a7;margin-top:9px">${type==='SFC'?'检测到手性信息，已保留立体化学标记。':'结构已规范化，可用于当前模型预测。'}</div></div></div>`;
+}
+
+function paramFields(type, mode='single'){
+  if(type==='TLC') return `<div class="pred-param"><label>固定相 *</label><select class="pred-select"><option>Silica gel 60 F254</option></select></div><div class="pred-param"><label>溶剂体系 *</label><select class="pred-select"><option>石油醚 / 乙酸乙酯</option></select></div><div class="pred-param"><label>石油醚比例 (%) *</label><input class="pred-input" value="70.0"></div><div class="pred-param"><label>乙酸乙酯比例 (%) *</label><input class="pred-input" value="30.0"></div><div class="pred-param"><label>展开距离 (cm)</label><input class="pred-input" value="8.0"></div><div class="pred-param"><label>检测方式</label><select class="pred-select"><option>UV 254 nm</option><option>显色剂</option></select></div>`;
+  if(type==='CC') return `<div class="pred-param"><label>硅胶柱规格 *</label><select class="pred-select"><option>Silica-CS 4 g · 当前模型</option></select></div><div class="pred-param"><label>流速 (mL/min) *</label><input class="pred-input" value="10.0"></div><div class="pred-param"><label>洗脱体系 *</label><select class="pred-select"><option>PE / EA 40 / 1</option></select></div><div class="pred-param"><label>上样溶剂 *</label><select class="pred-select"><option>PE</option><option>EA</option><option>DCM</option></select></div><div class="pred-param"><label>样品质量 (mg) *</label><input class="pred-input" value="99.0"></div><div class="pred-param"><label>上样体积 (μL) *</label><input class="pred-input" value="200"></div>`;
+  if(type==='HPLC') return `<div class="pred-param"><label>手性柱候选 *</label><select class="pred-select"><option>ADH, IA</option></select></div><div class="pred-param"><label>i-PrOH 比例 (0–1) *</label><input class="pred-input" value="0.10"></div><div class="pred-param"><label>流速 (mL/min) *</label><input class="pred-input" value="1.00"></div><div class="pred-param"><label>输入契约</label><select class="pred-select"><option>两个对映体 SMILES · 当前基线</option></select></div>`;
+  if(type==='GC') return `<div class="pred-param"><label>固定相</label><select class="pred-select"><option>5% phenyl / 95% dimethylpolysiloxane</option></select></div><div class="pred-param"><label>温度程序 *</label><select class="pred-select"><option>线性程序</option><option>30 点温度序列</option></select></div><div class="pred-param"><label>初温 (℃) *</label><input class="pred-input" value="40"></div><div class="pred-param"><label>终温 (℃) *</label><input class="pred-input" value="200"></div><div class="pred-param"><label>升温速率 (℃/min) *</label><input class="pred-input" value="20"></div><div class="pred-param"><label>初始保持 (min) *</label><input class="pred-input" value="2"></div>`;
+  if(type==='SFC' && mode==='full') return `<div class="pred-param"><label>候选手性柱 *</label><select class="pred-select"><option>全部 25 根柱</option><option>多糖衍生物柱组</option></select></div><div class="pred-param"><label>改性剂 *</label><select class="pred-select"><option>MeOH / EtOH / IPA</option></select></div><div class="pred-param"><label>改性剂比例候选 (%)</label><input class="pred-input" value="10 / 20 / 30"></div><div class="pred-param"><label>柱温候选 (℃)</label><input class="pred-input" value="30 / 35 / 40"></div><div class="pred-param"><label>背压候选 (bar)</label><input class="pred-input" value="120 / 150"></div><div class="pred-param"><label>流速 (mL/min)</label><input class="pred-input" value="3.0"></div>`;
+  return `<div class="pred-param"><label>手性色谱柱 *</label><select class="pred-select"><option>Chiralpak IA-U</option><option>Chiralcel OD-3</option><option>Chiralpak IC</option></select></div><div class="pred-param"><label>改性剂 *</label><select class="pred-select"><option>MeOH</option><option>EtOH</option><option>IPA</option></select></div><div class="pred-param"><label>改性剂比例 (%) *</label><input class="pred-input" value="20.0"></div><div class="pred-param"><label>柱温 (℃) *</label><input class="pred-input" value="35.0"></div><div class="pred-param"><label>背压 (bar) *</label><input class="pred-input" value="150"></div><div class="pred-param"><label>流速 (mL/min)</label><input class="pred-input" value="3.0"></div>`;
+}
+
+function chromatogramSVG(type){
+  const gc=type==='GC', sfc=type==='SFC', tlc=type==='TLC', cc=type==='CC';
+  const c1=sfc?'#159f98':(gc?'#e56f42':'#1a88d9');
+  const c2=sfc?'#36bfb7':(gc?'#367fd8':'#62aee8');
+  const label=tlc?'Migration response':(cc?'Elution response':'Response');
+  const xlab=tlc?'Rf / distance':(cc?'Elution volume (mL)':'Retention time (min)');
+  return `<svg viewBox="0 0 760 300" preserveAspectRatio="none"><rect width="760" height="300" fill="white"/><g stroke="#e7eef4" stroke-width="1"><line x1="60" y1="25" x2="60" y2="255"/><line x1="60" y1="255" x2="730" y2="255"/><line x1="60" y1="200" x2="730" y2="200"/><line x1="60" y1="145" x2="730" y2="145"/><line x1="60" y1="90" x2="730" y2="90"/></g><text x="14" y="24" font-size="12" fill="#789">${label}</text><text x="620" y="285" font-size="12" fill="#789">${xlab}</text>${gc?`<path d="M60 255 C180 255,300 255,355 252 C373 246,386 120,399 48 C407 20,418 165,440 251 C530 255,640 255,730 255" fill="none" stroke="${c1}" stroke-width="3"/><line x1="407" y1="30" x2="407" y2="255" stroke="${c2}" stroke-dasharray="4 4"/><text x="385" y="52" font-size="13" fill="${c1}">7.42 min</text>`:tlc?`<path d="M60 255 C120 255,180 252,230 238 C285 222,335 170,370 98 C390 56,420 95,455 170 C500 238,585 254,730 255" fill="none" stroke="${c1}" stroke-width="3"/><line x1="385" y1="62" x2="385" y2="255" stroke="${c2}" stroke-dasharray="4 4"/><text x="362" y="52" font-size="13" fill="${c1}">Rf 0.46</text>`:cc?`<path d="M60 255 C130 255,205 254,250 249 C275 243,296 176,310 78 C318 30,328 168,348 247 C380 255,430 254,480 249 C500 242,515 168,528 96 C538 42,548 176,570 249 C620 255,670 255,730 255" fill="none" stroke="${c1}" stroke-width="3"/><line x1="318" y1="38" x2="318" y2="255" stroke="${c1}" stroke-dasharray="4 4"/><line x1="538" y1="48" x2="538" y2="255" stroke="${c2}" stroke-dasharray="4 4"/><text x="285" y="58" font-size="13" fill="${c1}">V1 38.6</text><text x="512" y="68" font-size="13" fill="${c2}">V2 47.1</text>`:`<path d="M60 255 C160 255,225 254,250 252 C265 249,275 180,285 88 C292 26,302 180,320 252 C360 255,400 254,430 252 C445 245,452 150,463 68 C471 18,482 165,500 251 C560 255,650 255,730 255" fill="none" stroke="${c1}" stroke-width="3"/><line x1="292" y1="38" x2="292" y2="255" stroke="${c1}" stroke-dasharray="4 4"/><line x1="471" y1="28" x2="471" y2="255" stroke="${c2}" stroke-dasharray="4 4"/><text x="270" y="58" font-size="13" fill="${c1}">${sfc?'E1 2.84':'Peak 1'}</text><text x="453" y="52" font-size="13" fill="${c2}">${sfc?'E2 4.17':'Peak 2'}</text>`}</svg>`;
+}
+
+function resultMetrics(type, mode='single'){
+  if(type==='TLC') return [['预测 Rf','0.46','median','good'],['可信区间','0.38–0.54','P10–P90',''],['展开距离','8.0','cm',''],['模型置信度','89%','confidence','']];
+  if(type==='CC') return [['V1','38.6','mL',''],['V2','47.1','mL',''],['主洗脱体积','42.8','mL','good'],['预计时间','214','s','']];
+  if(type==='HPLC') return [['最佳分离概率','0.88','ADH','good'],['最大分离值','1.72','model score',''],['候选柱','2','ADH / IA',''],['模型状态','READY','CPU','']];
+  if(type==='GC') return [['RT Q10','6.88','min',''],['RT Q50','7.42','min','gc-accent'],['RT Q90','8.01','min',''],['推理设备','CPU','fixed','good']];
+  return [['对映体 1','2.84','min',''],['对映体 2','4.17','min',''],['ΔtR / Rs','1.33 / 2.15','separation','sfc-good'],['分离概率','93%','confidence','']];
+}
+
+function resultPanel(type, options={}){
+  const mode=options.mode||'single', full=mode==='full';
+  const tone=type==='SFC'?'sfc':(type==='GC'?'gc':'');
+  const metrics=resultMetrics(type,mode);
+  return `<section class="pred-ref-panel prediction-result-panel"><div class="pred-ref-hd"><h2>${full?'全柱筛选结果':'预测结果'}</h2><span class="pred-valid ${tone}">${type} 模型</span></div><div class="pred-result-empty"><div><div class="pred-empty-icon">⌁</div><b>暂无预测结果</b><div style="margin-top:8px;font-size:13px">请在左侧录入化合物结构并设置参数，点击“开始预测”</div></div></div><div class="pred-result-main"><div class="pred-chart-card"><div class="pred-chart-top"><div><div class="pred-chart-title">${full?'最佳候选条件结果示意':'结果趋势示意'}</div><div class="pred-chart-meta">原型可视化；正式产品仅在能力契约支持时生成模拟图</div></div><button class="pred-small-btn">下载图表 PNG</button></div><div class="pred-chart">${chromatogramSVG(type)}</div></div><div class="pred-metrics"><div class="pred-metric-grid">${metrics.map(m=>`<div class="pred-metric ${m[3]}"><div class="k">${m[0]}</div><div class="v">${m[1]}</div><div class="s">${m[2]}</div></div>`).join('')}</div>${full?`<div class="sfc-ranking"><table class="pred-result-table"><tr><th>排名</th><th>手性柱</th><th>最佳条件</th><th>分离概率</th></tr><tr><td>1</td><td>Chiralpak IA-U</td><td>MeOH 20% · 35℃ · 150 bar</td><td>0.93</td></tr><tr><td>2</td><td>Chiralcel OD-3</td><td>EtOH 20% · 35℃ · 150 bar</td><td>0.89</td></tr><tr><td>3</td><td>Chiralpak IC</td><td>MeOH 30% · 30℃ · 120 bar</td><td>0.82</td></tr></table></div>`:`<div class="pred-detail"><div class="pred-result-structure">${moleculeSVG(type)}</div><table class="pred-result-table"><tr><th>字段</th><th>结果</th></tr><tr><td>SMILES</td><td><b>${moleculeProfiles[type].smiles}</b></td></tr><tr><td>模型版本</td><td>${types[type].model}</td></tr><tr><td>任务状态</td><td><span class="pred-valid ${tone}">预测成功</span></td></tr><tr><td>结果说明</td><td>${type==='GC'?'保留时间分位数':type==='SFC'?'对映体保留与分离结果':'当前模型能力契约返回值'}</td></tr></table></div>`}<div class="pred-export"><button class="pred-small-btn">导出 PDF</button><button class="pred-small-btn">导出 Excel</button><button class="pred-small-btn primary">保存到预测记录</button></div></div></div></section>`;
+}
+
+function predictionInputPanel(type, options={}){
+  const mode=options.mode||'single', full=mode==='full';
+  const tone=type==='SFC'?'sfc':(type==='GC'?'gc':'');
+  return `<section class="pred-ref-panel prediction-input-panel"><div class="pred-loading"><div class="pred-loading-inner"><div class="loading-spinner"></div><div>${full?'正在执行全柱筛选…':'正在调用预测模型…'}</div></div></div><div class="pred-ref-hd"><h2>预测输入</h2><div class="pred-mode"><span class="active">${full?'全柱预测':'单化合物预测'}</span><span>${full?'25 columns':'批量模式'}</span></div></div><div class="pred-ref-bd">${structureInputBlock(type)}<div class="pred-section-title">3. 色谱条件</div><div class="pred-params">${paramFields(type,mode)}</div><div class="predict-bar"><div class="predict-ready">✓ 输入完整，可以开始预测</div><button class="predict-main-btn ${tone} js-run">${full?'开始全柱筛选':'开始预测'}</button></div></div></section>`;
+}
+
+function genericSingle(type){ return `<div class="pred-ref-grid">${predictionInputPanel(type)}${resultPanel(type)}</div>`; }
+function sfcSingle(){ return `<div class="pred-ref-grid">${predictionInputPanel('SFC')}${resultPanel('SFC')}</div>`; }
+function sfcFull(){ return `<div class="pred-ref-grid">${predictionInputPanel('SFC',{mode:'full'})}${resultPanel('SFC',{mode:'full'})}</div>`; }
+
+function batchView(type){
+  const tone=type==='SFC'?'sfc':(type==='GC'?'gc':'');
+  return `<div class="pred-ref-grid"><section class="pred-ref-panel prediction-input-panel"><div class="pred-loading"><div class="pred-loading-inner"><div class="loading-spinner"></div><div>正在校验批量文件并创建任务…</div></div></div><div class="pred-ref-hd"><h2>批量预测输入</h2><div class="pred-mode"><span>单化合物</span><span class="active">多化合物预测</span></div></div><div class="pred-ref-bd"><div class="pred-section-title">1. 添加化合物</div><div class="structure-tabs"><button class="structure-tab active">逐个添加</button><button class="structure-tab">Excel 批量导入</button><button class="structure-tab">SDF / ChemDraw</button></div><div class="pred-upload" style="height:126px"><b>拖拽批量文件到此处，或逐个添加 SMILES</b><span style="font-size:12px;margin-top:5px">支持 Excel、CSV、SDF；列表至少支持 20 个化合物</span><button class="pred-small-btn" style="margin-top:10px">选择文件</button></div><div class="pred-section-title">2. 化合物列表</div><div class="multi-list"><div class="multi-item"><b>1</b><div class="multi-thumb">⌬</div><div class="multi-smiles">${moleculeProfiles[type].smiles}</div><div class="multi-actions"><button>↑</button><button>↓</button><button>×</button></div></div><div class="multi-item"><b>2</b><div class="multi-thumb">⌬</div><div class="multi-smiles">CCOC(=O)c1ccc(N)cc1</div><div class="multi-actions"><button>↑</button><button>↓</button><button>×</button></div></div></div><div class="pred-section-title">3. 统一色谱条件</div><div class="pred-params">${paramFields(type,type==='SFC'?'single':'single')}</div><div class="predict-bar"><div class="predict-ready">✓ 2 个化合物已就绪</div><button class="predict-main-btn ${tone} js-run">开始批量预测</button></div></div></section><section class="pred-ref-panel prediction-result-panel"><div class="pred-ref-hd"><h2>批量预测结果</h2><span class="pred-valid ${tone}">${type} 批量任务</span></div><div class="pred-result-empty"><div><div class="pred-empty-icon">▤</div><b>暂无批量预测结果</b><div style="margin-top:8px;font-size:13px">完成文件校验并提交任务后，这里显示进度、色谱图和结果表格</div></div></div><div class="pred-result-main"><div class="pred-chart-card"><div class="pred-chart-top"><div><div class="pred-chart-title">批量预测色谱模拟图</div><div class="pred-chart-meta">多化合物峰叠加显示</div></div><button class="pred-small-btn">下载图表 PNG</button></div><div class="pred-chart">${chromatogramSVG(type)}</div></div><div class="pred-metrics"><div style="font-size:12px;color:#5f7486">任务进度　72%</div><div class="batch-progress"><i></i></div><div class="sfc-ranking"><table class="pred-result-table"><tr><th>#</th><th>SMILES</th><th>主要预测值</th><th>分离指标</th><th>状态</th></tr><tr><td>1</td><td>${moleculeProfiles[type].smiles}</td><td>${type==='CC'?'42.8 mL':type==='TLC'?'Rf 0.46':'6.84 min'}</td><td>${type==='GC'?'RRT 1.00':type==='SFC'?'P 0.93':'High'}</td><td>完成</td></tr><tr><td>2</td><td>CCOC(=O)c1ccc(N)cc1</td><td>${type==='CC'?'51.2 mL':type==='TLC'?'Rf 0.34':'7.91 min'}</td><td>${type==='GC'?'RRT 1.07':type==='SFC'?'P 0.86':'Medium'}</td><td>完成</td></tr></table></div><div class="pred-export"><button class="pred-small-btn">取消任务</button><button class="pred-small-btn primary">导出 Excel</button></div></div></div></section></div>`;
+}
+
+function tlcCompareView(){
+  return `<div class="two-col"><div class="panel"><div class="section-head"><div><h2>TLC 条件比较</h2><div class="sub">同一结构下比较多组展开体系</div></div><span class="tag">三级工具</span></div>${structureInputBlock('TLC')}<div class="row-actions"><button class="btn secondary">添加条件</button><button class="btn primary js-run">开始比较</button></div></div><div class="panel"><div class="section-head"><div><h2>比较结果</h2><div class="sub">原型演示数据，不代表真实实验结论</div></div></div><div class="table-wrap"><table class="table"><thead><tr><th>体系</th><th>比例</th><th>预测 Rf</th><th>建议</th></tr></thead><tbody><tr><td>PE / EA</td><td>70 / 30</td><td>0.46</td><td><span class="tag green">优先验证</span></td></tr><tr><td>PE / EA</td><td>80 / 20</td><td>0.31</td><td>可作为补充</td></tr><tr><td>DCM / MeOH</td><td>95 / 5</td><td>0.62</td><td>迁移偏快</td></tr></tbody></table></div></div></div>`;
+}
+
+function tlcReverseView(){
+  return `<div class="two-col"><div class="panel"><div class="section-head"><div><h2>TLC 反推溶剂</h2><div class="sub">预测工作台入口；与实用工具复用同一服务</div></div></div>${structureInputBlock('TLC')}<div class="form-grid"><div class="field"><label>目标 Rf 下限</label><input value="0.30"></div><div class="field"><label>目标 Rf 上限</label><input value="0.35"></div><div class="field"><label>候选体系</label><select><option>PE / EA</option><option>DCM / MeOH</option></select></div><div class="field"><label>搜索步长</label><select><option>5%</option></select></div></div><div class="row-actions"><button class="btn primary js-run">生成建议</button></div></div><div class="panel"><div class="section-head"><div><h2>候选条件</h2><div class="sub">结果需实验验证</div></div></div><div class="list-card"><div class="record-item"><b>PE / EA = 75 / 25</b><div class="sub">预测 Rf 0.33 · 优先级 1</div></div><div class="record-item"><b>PE / EA = 70 / 30</b><div class="sub">预测 Rf 0.35 · 优先级 2</div></div></div></div></div>`;
+}
+
+function chiralLcView(){
+  return `<div class="pred-ref-grid"><section class="pred-ref-panel prediction-input-panel"><div class="pred-ref-hd"><h2>齐鲁手性 LC 输入契约</h2><span class="pred-valid">可选构建</span></div><div class="pred-ref-bd"><div class="warn-inline">该适配器接受一条含立体信息的 SMILES，并输出对映体 A/B；不复用通用 HPLC 的双 SMILES 表单。</div>${structureInputBlock('HPLC','chiral_lc')}<div class="pred-section-title">3. 手性 LC 条件</div><div class="pred-params"><div class="pred-param"><label>模型能力</label><select class="pred-select"><option>由 /capabilities 返回</option></select></div><div class="pred-param"><label>候选柱范围</label><select class="pred-select"><option>当前模型支持范围</option></select></div></div><div class="predict-bar"><div class="predict-ready">✓ 已检测立体化学信息</div><button class="predict-main-btn js-run">开始手性 LC 预测</button></div></div></section>${resultPanel('HPLC')}</div>`;
+}
+
+function bindPredictionUI(workspace){
+  workspace.querySelectorAll('.structure-tabs').forEach(tabset=>{
+    const root=tabset.closest('.pred-ref-bd'); if(!root) return;
+    tabset.querySelectorAll('[data-struct-tab]').forEach(btn=>btn.onclick=()=>{
+      tabset.querySelectorAll('[data-struct-tab]').forEach(x=>x.classList.toggle('active',x===btn));
+      root.querySelectorAll('[data-struct-pane]').forEach(p=>p.classList.toggle('active',p.dataset.structPane===btn.dataset.structTab));
+    });
+  });
+  workspace.querySelectorAll('.js-clear-smiles').forEach(btn=>btn.onclick=()=>{const ta=btn.closest('.structure-pane').querySelector('.prediction-smiles'); if(ta) ta.value='';});
+  workspace.querySelectorAll('.js-validate').forEach(btn=>btn.onclick=()=>{const original=btn.textContent;btn.textContent='验证中...';btn.disabled=true;setTimeout(()=>{btn.disabled=false;btn.textContent='✓ 结构有效';setTimeout(()=>btn.textContent=original,900)},550)});
+}
+
+function renderPredictNav(){
+  const typeWrap=document.getElementById('predictTypes');
+  const toolWrap=document.getElementById('predictTools');
+  const typeOrder=['TLC','CC','HPLC','GC','SFC'];
+  typeWrap.innerHTML=typeOrder.map(t=>`<button class="${t===activeType?'active':''}" data-type="${t}">${t}</button>`).join('');
+  typeWrap.querySelectorAll('[data-type]').forEach(btn=>btn.onclick=()=>{activeType=btn.dataset.type; activeTool=types[activeType].tools[0]; renderPredictNav(); renderPredictWorkspace();});
+  toolWrap.innerHTML=types[activeType].tools.map(t=>`<button class="${t===activeTool?'active':''}" data-tool="${t}">${t}</button>`).join('');
+  toolWrap.querySelectorAll('[data-tool]').forEach(btn=>btn.onclick=()=>{activeTool=btn.dataset.tool; renderPredictNav(); renderPredictWorkspace();});
+}
+
+function renderPredictWorkspace(){
+  const workspace=document.getElementById('predictWorkspace');
+  if(activeType==='SFC' && activeTool==='全柱预测') workspace.innerHTML=sfcFull();
+  else if(activeType==='SFC' && activeTool==='单柱预测') workspace.innerHTML=sfcSingle();
+  else if(activeType==='TLC' && activeTool==='条件比较') workspace.innerHTML=tlcCompareView();
+  else if(activeType==='TLC' && activeTool==='反推溶剂') workspace.innerHTML=tlcReverseView();
+  else if(activeType==='HPLC' && activeTool==='手性 LC（可选）') workspace.innerHTML=chiralLcView();
+  else if(activeTool==='批量预测') workspace.innerHTML=batchView(activeType);
+  else workspace.innerHTML=genericSingle(activeType);
+  bindPredictionUI(workspace);
+  workspace.querySelectorAll('.js-run').forEach(btn=>btn.onclick=()=>{
+    const panel=btn.closest('.prediction-input-panel');
+    const grid=btn.closest('.pred-ref-grid');
+    if(!panel || !grid){
+      const original=btn.textContent; btn.disabled=true; btn.textContent='处理中…';
+      setTimeout(()=>{btn.disabled=false;btn.textContent='已生成原型结果';setTimeout(()=>btn.textContent=original,1100)},650);
+      return;
+    }
+    const result=grid.querySelector('.prediction-result-panel');
+    const loading=panel.querySelector('.pred-loading');
+    btn.disabled=true; btn.textContent='预测中...'; loading.classList.add('active');
+    setTimeout(()=>{
+      loading.classList.remove('active'); btn.disabled=false; btn.textContent=activeTool==='批量预测'?'开始批量预测':(activeTool==='全柱预测'?'开始全柱筛选':'开始预测');
+      const empty=result.querySelector('.pred-result-empty'); const main=result.querySelector('.pred-result-main');
+      if(empty) empty.style.display='none'; if(main) main.classList.add('active');
+    },850);
+  });
+}
+
+function showView(id){
+  activeView=id;
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  document.getElementById('crumb').textContent=appNames[id];
+}
+
+document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>showView(btn.dataset.view)));
+document.querySelectorAll('[data-data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('[data-data-tab]').forEach(x=>x.classList.toggle('active',x===btn));
+  document.querySelectorAll('[data-data-pane]').forEach(p=>p.classList.toggle('active',p.dataset.dataPane===btn.dataset.dataTab));
+}));
+document.querySelectorAll('[data-utility]').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('[data-utility]').forEach(x=>x.classList.toggle('active',x===btn));
+  document.querySelectorAll('[data-utility-pane]').forEach(p=>p.classList.toggle('active',p.dataset.utilityPane===btn.dataset.utility));
+}));
+document.querySelectorAll('.conversation').forEach(item=>item.addEventListener('click',()=>{
+  document.querySelectorAll('.conversation').forEach(x=>x.classList.remove('active'));
+  item.classList.add('active');
+  document.getElementById('chatTitle').textContent=item.querySelector('b').textContent;
+}));
+document.getElementById('newChat').addEventListener('click',()=>{
+  document.querySelectorAll('.conversation').forEach(x=>x.classList.remove('active'));
+  document.getElementById('chatTitle').textContent='新建对话';
+  document.getElementById('chatBody').innerHTML='<div class="message"><div class="role">色谱智能助手</div><div class="bubble">你好。我可以调用当前构建中已启用的色谱预测、数据检索和实用工具；执行任务前会确认关键参数。</div></div>';
+});
+document.getElementById('sendChat').addEventListener('click',()=>{
+  const input=document.getElementById('chatInput');
+  const btn=document.getElementById('sendChat');
+  if(!input.value.trim()) return;
+  const safe=input.value.replace(/[<>]/g,'');
+  document.getElementById('chatBody').insertAdjacentHTML('beforeend',`<div class="message user"><div class="role">你</div><div class="bubble">${safe}</div></div>`);
+  input.value='';
+  runAsyncButton(btn, document.querySelector('#assistant .panel'), '思考中...', '发送', ()=>{
+    document.getElementById('chatBody').insertAdjacentHTML('beforeend',`<div class="message"><div class="role">色谱智能助手</div><div class="bubble">已收到你的请求。此处在正式产品中可继续调用预测、知识检索和历史记录工具。</div></div>`);
+  }, 800);
+});
+document.getElementById('copySmiles').addEventListener('click',async()=>{
+  const text=document.getElementById('canonicalSmiles').textContent.trim();
+  try{await navigator.clipboard.writeText(text);}catch(e){}
+  document.getElementById('copySmiles').textContent='已复制';
+  setTimeout(()=>document.getElementById('copySmiles').textContent='复制',1000);
+});
+document.getElementById('lookupButton').addEventListener('click',()=>{
+  const btn=document.getElementById('lookupButton');
+  const value=document.getElementById('lookupInput').value.trim() || 'Aspirin';
+  runAsyncButton(btn, document.querySelector('[data-utility-pane="lookup"] .panel'), '查询中...', '开始查找', ()=>{
+    document.getElementById('molName').innerHTML=value + ' <span style="color:#789">(local parse result)</span>';
+    document.getElementById('canonicalSmiles').textContent='CC(=O)Oc1ccccc1C(=O)O';
+  }, 700);
+});
+document.getElementById('copyStructureSmiles').addEventListener('click',async()=>{
+  const btn=document.getElementById('copyStructureSmiles');
+  try{await navigator.clipboard.writeText(document.getElementById('structureSmiles').textContent.trim());}catch(e){}
+  btn.textContent='已复制'; setTimeout(()=>btn.textContent='一键复制 SMILES',1000);
+});
+document.getElementById('normalizeStructure').addEventListener('click',()=>{
+  const btn=document.getElementById('normalizeStructure');
+  const original=btn.textContent; btn.disabled=true; btn.textContent='标准化中…';
+  setTimeout(()=>{btn.disabled=false;btn.textContent='✓ 结构有效';setTimeout(()=>btn.textContent=original,1200)},650);
+});
+document.getElementById('validateExperiment').addEventListener('click',()=>{
+  const btn=document.getElementById('validateExperiment');
+  btn.disabled=true;btn.textContent='校验中…';
+  setTimeout(()=>{btn.textContent='✓ 校验通过';document.getElementById('confirmExperiment').disabled=false},700);
+});
+document.getElementById('confirmExperiment').addEventListener('click',()=>{
+  const btn=document.getElementById('confirmExperiment');btn.disabled=true;btn.textContent='已提交队列';
+});
+
+renderPredictNav();
+renderPredictWorkspace();
+const initialView=new URLSearchParams(location.search).get('view');
+showView(Object.prototype.hasOwnProperty.call(appNames,initialView)?initialView:'predict');
+</script>
+</body>
+</html>

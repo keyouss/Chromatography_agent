@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "scope": "PurifyX frontend behavior migration 2026-10-21",
+  "status": "SOURCE_COMPLETE_FINAL_BUILD_PASS_FOUR_TYPES_BROWSER_REPORTED_PASS",
+  "sources": [
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\assistant\\AssistantText.vue",
+      "sha256": "e736eee4067952be5387891b134c90c70bb4effc74bc04b1b9d088a559d70db6",
+      "dependencies": [
+        "marked@18.1.1",
+        "dompurify@3.4.17",
+        "vue@3.5.22"
+      ],
+      "target": "frontend/src/modules/assistant/AssistantText.vue",
+      "reuse": "Renderer.link chiral atom branch guard",
+      "adaptation": "Keep existing source/copy actions and safe mailto links; exclude retry and assistant state changes"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\PredictionResults.vue",
+      "sha256": "2eaeeb24791a57111a4ec8966a82a9b1d8a8809dd1ee0695f580715ea28fd8f3",
+      "dependencies": [
+        "vue@3.5.22"
+      ],
+      "target": "frontend/src/modules/prediction/PredictionHighlights.vue; frontend/src/modules/prediction/prediction-highlights.ts",
+      "reuse": "Behavior and pure presentation logic",
+      "adaptation": "Reuse result hierarchy and metric keys; bind local DTO, existing metadata validation, platform theme; preserve SFC and warnings"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\forms\\basic\\HplcSingleForm.vue",
+      "sha256": "cfd625e8b445d1acb0db977ac00cfe8c128875fe85c3676dff542b288da7a578",
+      "dependencies": [
+        "vue@3.5.22"
+      ],
+      "target": "frontend/src/modules/prediction/forms/basic/HplcSingleForm.vue",
+      "reuse": "Behavior and pure presentation logic",
+      "adaptation": "Reuse native multi-checkbox interaction; preserve local enantiomer policy and draft API; avoid echo on unchanged arrays"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\forms\\basic\\GcSingleForm.vue",
+      "sha256": "48742fdbf7116155a130cfc5dab2254acc58bfc36bf7b6dfa7ffded0a2e11bbc",
+      "dependencies": [
+        "vue@3.5.22"
+      ],
+      "target": "frontend/src/modules/prediction/forms/basic/GcSingleForm.vue",
+      "reuse": "Behavior and pure presentation logic",
+      "adaptation": "Reuse editable quick-fill interaction with local capability and workspace draft interface"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\forms\\basic\\gc-temperature-program.ts",
+      "sha256": "102845ac8e1fff32374bb1f02f74bc4df489fada64040291aa89c8fcc10a77a8",
+      "dependencies": [
+        "vue@3.5.22"
+      ],
+      "target": "frontend/src/modules/prediction/forms/basic/gc-temperature-program.ts",
+      "reuse": "Behavior and pure presentation logic",
+      "adaptation": "Reuse preset profile values; read current declared temperature point count; no automatic submission"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\workspace.ts",
+      "sha256": "602355cbe354b74704ae309f428108c5e8476f43b96adf1c4092b4794ed48b6f",
+      "dependencies": [
+        "vue@3.5.22",
+        "pinia@3.0.3",
+        "vue-router@4.5.1"
+      ],
+      "target": "frontend/src/shared/prediction/workspace.ts",
+      "reuse": "Selected pure logic and behavior only",
+      "adaptation": "Reuse keyed draft storage and memory fallback, add existing platform actor/project/type/tool boundaries, retain references only"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\modules\\prediction\\PublicPredictionView.vue",
+      "sha256": "fed8d23e9907635c56ee05b4260ce1594914be7f0ed56db5d850ac354bccca6f",
+      "dependencies": [
+        "vue@3.5.22",
+        "pinia@3.0.3",
+        "vue-router@4.5.1"
+      ],
+      "target": "frontend/src/modules/prediction/PredictionView.vue; frontend/src/shared/tlc-reverse/TlcReverseWorkspace.vue",
+      "reuse": "Selected pure logic and behavior only",
+      "adaptation": "Reuse workspace lifecycle behavior and verified example inputs, preserve local five types, independent tools, replay and scientific bindings"
+    },
+    {
+      "source_path": "D:\\1_Undergraduate_111111111111\\group_tasks\\purifyx-work\\purifyx-site\\frontend\\src\\components\\StructureInput.vue",
+      "sha256": "0c913c93eab59b5dd574bfdac00002a0fa119f976799c136e3d385376f2af0fb",
+      "dependencies": [
+        "vue@3.5.22",
+        "pinia@3.0.3",
+        "vue-router@4.5.1"
+      ],
+      "target": "frontend/src/components/StructureInput.vue",
+      "reuse": "Selected pure logic and behavior only",
+      "adaptation": "Reuse response to late initial SMILES; invalidate normalized structures instead of restoring old IDs"
+    }
+  ]
+}

@@ -1,9 +1,0 @@
-{
-  "model_type": "cc_geognn",
-  "source": "GINGraphPooling GeoGNN for CC retention time prediction",
-  "num_model_params": 786192,
-  "best_epoch": 150,
-  "best_valid_loss": 551057.1731085526,
-  "target_unit": "minutes",
-  "seed": 324
-}

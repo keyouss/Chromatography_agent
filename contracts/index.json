@@ -1,0 +1,21 @@
+{
+  "contracts": {
+    "cc-v1": {
+      "path": "cc-v1/openapi.json",
+      "sha256": "37100040f75524449ec2285520e42376b5d3ae7ceeb8f4444e2662750a8a84f3"
+    },
+    "minimal-structure-v1": {
+      "path": "minimal-structure-v1/openapi.json",
+      "sha256": "a56c921c89263a2b2fd91452066b54b27f3af92a348ba1c0e73431fd064ed6cc"
+    },
+    "sfc-v1": {
+      "path": "sfc-v1/openapi.json",
+      "sha256": "dbdf4f22371b50f0146bad2709d197b6326052152a79f373ae9f385e4bbfc342"
+    },
+    "universal-v1": {
+      "path": "universal-v1/openapi.json",
+      "sha256": "4c7cdd28248ef7507c187edca269f19ea5ce6eb0ca88cdd5bb1a82704b568fe5"
+    }
+  },
+  "schema_version": "1.0"
+}

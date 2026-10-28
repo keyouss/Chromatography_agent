@@ -1,0 +1,488 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "V1-01",
+      "requirement": "空环境按文档安装并运行 full/minimal 两种构建，精简源码可独立构建测试",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-02",
+      "requirement": "删除助手/训练/某色谱能力后，前端资源、路由、OpenAPI、依赖、迁移和 Worker 无残留",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-03",
+      "requirement": "旧端口/旧路由不作为依赖、代理或兼容入口；仅新 `/api/v1` 契约",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-04",
+      "requirement": "所有构建保留结构输入、立体信息、渲染与复制；无静默丢失",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-05",
+      "requirement": "HPLC 双对映体与独立 chiral_lc 单结构 schema 不混用",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-06",
+      "requirement": "同一预测从页面和 Agent 提交，得到相同校验、模型解析与结果语义",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-07",
+      "requirement": "模型/解析器缺失返回明确不可用，生产接口不出现演示预测",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-08",
+      "requirement": "批量逐行错误、有效行选择、组合上限、确认摘要与结果关联正确",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-09",
+      "requirement": "记录自动持久化；刷新与 DB 故障不产生“已保存”假状态",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-10",
+      "requirement": "数据更新不改变已引用的数据/特征/评测版本",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-11",
+      "requirement": "知识资料归档/越权后不可被检索或绕过引用接口读取",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-12",
+      "requirement": "PDF 页码/DOCX 段落定位真实；无资料时不生成伪引用",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-13",
+      "requirement": "训练只能选择构建内模板；脚本、命令、entrypoint、动态依赖均被拒绝",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-14",
+      "requirement": "训练失败、取消、超时不生成 Candidate；成功产物需通过登记验证",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-15",
+      "requirement": "不可信模型包不在 API/Agent 进程反序列化执行",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-16",
+      "requirement": "生命周期、部署、Champion 三维独立；发布指针切换原子且可回滚",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-17",
+      "requirement": "修改 revision/预算/模型/数据后旧确认失效，重复确认/提交不重复任务",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-18",
+      "requirement": "Agent 不能自行创建人类确认、批准模型、发布或回滚",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-19",
+      "requirement": "前端伪造 role、tool result、history、actor/tenant/权限被拒绝",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-20",
+      "requirement": "同会话并发消息返回冲突；SSE 重连/切页不重新调用模型",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-21",
+      "requirement": "停止回答不自动取消已提交业务 Job；取消 Job 有真实终态确认",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-22",
+      "requirement": "Worker 重投、崩溃、Redis 重启和 Outbox 重发不重复业务副作用",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-23",
+      "requirement": "中断任务按 handler 能力恢复；无 checkpoint 模板不假称续训",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-24",
+      "requirement": "LLM Call 与工具调用分别有 ID，工具执行账本可去重并保留失败记录",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-25",
+      "requirement": "Context 来源、最终工具 schema、裁剪信息可查看；估算 token 与实报 usage 区分",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-26",
+      "requirement": "Trace 默认不收集敏感内容；内容/制品下载均校验专用权限且审计",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-27",
+      "requirement": "Key/Cookie/Token/隐藏思维链不出现在 SSE、日志、诊断包或 Context 视图",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-28",
+      "requirement": "恶意扫描未配置不显示通过；压缩炸弹/路径穿越/公式注入测试通过",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-29",
+      "requirement": "未批准外部 Provider/查询目标不能发送客户数据；连接测试失败不覆盖可用配置",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-30",
+      "requirement": "默认部署不声称多账号或租户隔离；联网暴露预检明确提示或阻断",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-31",
+      "requirement": "首版不存在 Coding 工具、代码上传执行 API、Sandbox Worker、Docker socket 或算法研发菜单",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-32",
+      "requirement": "全部请求/状态/错误与生成 OpenAPI、TypeScript、fixture 一致",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "V1-33",
+      "requirement": "离线包包含锁定依赖/模型清单；安装、健康、备份、恢复与回滚演练可复核",
+      "source": "PROJECT_PRD.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-01",
+      "requirement": "未构建模块路径/OpenAPI/前端bundle | 路由404、schema/依赖/资源不存在",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-02",
+      "requirement": "对新API传旧SMILES重复字段、command、tenantId | 422 extra_forbidden",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-03",
+      "requirement": "prediction I缺失/同键重放/同键异体 | 400 / 同资源 / 409",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-04",
+      "requirement": "PATCH无If-Match/旧ETag | 428 / 412",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-05",
+      "requirement": "确认后改预算、数据、模型、scope | 提交409；无新Job",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-06",
+      "requirement": "同confirmation不同key并发submit | 同一结果；仅一业务副作用",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-07",
+      "requirement": "伪造actor、tool result、完整history | 422；不影响模型历史",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-08",
+      "requirement": "不同project的artifact/citation/model | 404或403；无存在性泄漏",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-09",
+      "requirement": "file upload内容与size/hash不符 | FAILED/QUARANTINED，不能用于业务",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-10",
+      "requirement": "scanner未配置 | NOT_CONFIGURED，不标PASSED",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-11",
+      "requirement": "压缩炸弹/路径穿越/不可信模型序列化 | 拒绝；无宿主执行",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-12",
+      "requirement": "缺实际模型资产的预测 | 503 MODEL_UNAVAILABLE，不返回fixture",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-13",
+      "requirement": "TLC petroleum_ether与hexane | 视为不同solvent，不静默转换",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-14",
+      "requirement": "HPLC pair与chiral_lc single | 独立schema与错误，不混用",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-15",
+      "requirement": "批量invalid_row_policy改变 | revision变更、确认失效、排除数可见",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-16",
+      "requirement": "批量失败行重试 | 新attempt，只处理选中失败行",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-17",
+      "requirement": "训练输入execution.kind=code_artifact | 422；首版无代码路径",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-18",
+      "requirement": "训练失败/取消/超时 | 不产生Candidate",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-19",
+      "requirement": "成功训练但模型验证失败 | experiment SUCCEEDED + candidate REJECTED",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-20",
+      "requirement": "两个发布同时CAS同pointer | 一个成功，一个409，Champion一致",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-21",
+      "requirement": "Agent调用模型approve/deploy或创建human confirmation | 工具不存在/业务层拒绝",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-22",
+      "requirement": "两条并发消息/重复client_message_id | 一Run成功/重放，另一409 BUSY",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-23",
+      "requirement": "SSE断线后Last-Event-ID恢复 | 不丢持久事件；客户端去重；不新LLM",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-24",
+      "requirement": "SSE超过重放窗口 | 410并要求普通详情恢复",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-25",
+      "requirement": "cancel Agent而训练已提交 | Agent停止，训练不隐式取消",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-26",
+      "requirement": "Dramatiq同消息重复投递/Worker断电 | 按账本恢复，不重复导入/训练提交/发布",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-27",
+      "requirement": "OTel/日志/Context/SSE含Key或reasoning字段 | 字段被禁止/脱敏，测试失败即阻断交付",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-28",
+      "requirement": "无trace content权限访问Context或同artifact下载 | 403/404，不能绕过",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-29",
+      "requirement": "Context逻辑输入与实际发送请求 | 测试HTTP transport捕获与provider_request脱敏视图对应",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-30",
+      "requirement": "Token usage缺失 | null与estimate分开，不伪造cost",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-31",
+      "requirement": "LLM候选连接测试失败 | 原活动配置和新Run不受影响",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-32",
+      "requirement": "未批准外部API URL/重定向/元数据地址 | 拒绝；无客户数据外发",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-33",
+      "requirement": "知识归档/权限撤销/索引失败 | 新检索排除；历史引用状态真实",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-34",
+      "requirement": "生产构建残留Coding路由、table、worker或Docker socket | 构建/验收失败",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-35",
+      "requirement": "OpenAPI→TS类型生成、example schema验证 | CI自动通过；无手写重复DTO",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "API-36",
+      "requirement": "Windows目标环境无可用Worker执行层 | 部署预检明确失败，不虚称完整交付",
+      "source": "PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "status": "NOT_RUN",
+      "evidence": []
+    }
+  ]
+}

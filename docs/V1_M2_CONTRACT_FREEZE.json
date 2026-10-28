@@ -1,0 +1,141 @@
+{
+  "date": "2026-09-21",
+  "decision": "M2 interface subset frozen",
+  "dependency_manifest_scope": "requirements-profile.txt pins direct dependencies only; it is not a complete transitive lock",
+  "evidence": "testing/runs/2026-09-21-m2-be004-revalidation.md",
+  "latest_freeze": {
+    "active_normalized_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+    "active_path": "contracts/universal-v1/openapi.json",
+    "candidate_path": "contracts/candidates/m2-export/revision-20261003-02/candidate-openapi.json",
+    "candidate_raw_sha256": "c9e1d65c2199dcd57f004c2700db11800f5bb3a1dcbdac4c52b7aa8e7624ee01",
+    "counts": {
+      "added_paths": [
+        "/api/v1/exports",
+        "/api/v1/exports/{id}"
+      ],
+      "added_schemas": [
+        "ExportCreate",
+        "ExportAccepted",
+        "ExportView",
+        "SuccessEnvelope_ExportAccepted_",
+        "SuccessEnvelope_ExportView_"
+      ],
+      "changed_existing_schema": "ArtifactView.kind.enum appended export_report",
+      "operations": 127,
+      "paths": 119,
+      "schemas": 329,
+      "unchanged": [
+        "UploadCreate",
+        "all other existing paths and schemas",
+        "other profiles"
+      ]
+    },
+    "date": "2026-10-03",
+    "decision": "approved M2 export contract freeze",
+    "evidence": "contracts/candidates/m2-export/revision-20261003-02/SHA256SUMS.txt",
+    "freeze_metadata_path": "contracts/candidates/m2-export/revision-20261003-02/freeze-metadata.json",
+    "freeze_metadata_sha256": "6b7a4163ab7f40b9e4f2c8d3e33630c5e3d17e7b9181c808a4c360885596602f",
+    "previous_active_sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+    "previous_active_snapshot": "contracts/universal-v1/rollback-snapshots/revision-20261003-02-baseline/openapi.json",
+    "profile": "universal-v1",
+    "revision": "revision-20261003-02"
+  },
+  "physical_package_evidence_status": "SUSPENDED: unselected assistant migration present; current SOURCE_MANIFEST hashes equal original recorded hashes, so post-freeze-only drift is unproven. Preserve contract freeze; re-audit physical evidence and use a new immutable snapshot.",
+  "profiles": [
+    {
+      "added_paths": [],
+      "m1_archive_change": "none",
+      "normalized_sha256": "f5c57950f6c0cfd0a619e375efb191549d78b1ef07da0e645a26b28456f6f45a",
+      "operations": 26,
+      "paths": 25,
+      "profile": "minimal-structure-v1",
+      "removed_paths": [],
+      "source_manifest_sha256": "3a8c04ae3c1c5d726540e70eb13dec3562809f9f33a2b0463909e1c79875f250",
+      "summary_sha256": "05d28645e6705e7717d3478860f718535d6fca06b1e29ccd92c0c1ef199b5e06"
+    },
+    {
+      "added_paths": [
+        "/api/v1/prediction-records",
+        "/api/v1/prediction-records/{record_id}",
+        "/api/v1/prediction-records/{record_id}/archive",
+        "/api/v1/prediction-records/{record_id}/replay-draft",
+        "/api/v1/prediction/types",
+        "/api/v1/prediction/types/{type}",
+        "/api/v1/prediction/types/{type}/models",
+        "/api/v1/prediction/types/{type}/tools/{tool}/schema",
+        "/api/v1/predictions",
+        "/api/v1/predictions/{prediction_id}"
+      ],
+      "m1_archive_change": "schema reference renamed; schema identical",
+      "normalized_sha256": "778ae39484eb6dfd48bebceb1d105e76dc3ded832470ca46c2a71546a21a1f23",
+      "operations": 36,
+      "paths": 35,
+      "profile": "sfc-v1",
+      "removed_paths": [],
+      "source_manifest_sha256": "1f9e0d505cac8b023326777587d81c3d57dee1966ce71015dfbfad3c6f011e63",
+      "summary_sha256": "575272d6ef7f07c214c02318cb18670b0f3a029d137aa517fa5c3f9dfb95e269"
+    },
+    {
+      "added_paths": [
+        "/api/v1/prediction-records",
+        "/api/v1/prediction-records/{record_id}",
+        "/api/v1/prediction-records/{record_id}/archive",
+        "/api/v1/prediction-records/{record_id}/replay-draft",
+        "/api/v1/prediction/types",
+        "/api/v1/prediction/types/{type}",
+        "/api/v1/prediction/types/{type}/models",
+        "/api/v1/prediction/types/{type}/tools/{tool}/schema",
+        "/api/v1/predictions",
+        "/api/v1/predictions/{prediction_id}"
+      ],
+      "m1_archive_change": "schema reference renamed; schema identical",
+      "normalized_sha256": "635d75970f64e6d1e25f1bd0a82af4b3b37181f30f174a88c8cd2df5f901330d",
+      "operations": 36,
+      "paths": 35,
+      "profile": "cc-v1",
+      "removed_paths": [],
+      "source_manifest_sha256": "569033ef61a756ff92a99ab6dfd1c414102548c138864d0548fec44106d8c601",
+      "summary_sha256": "37aa58c0b16bee4bbcb3850871ccc1d441aa8c0e749042f9e76ee3489aff76d2"
+    },
+    {
+      "added_paths": [
+        "/api/v1/data-domains",
+        "/api/v1/data-domains/{domain_id}/schema",
+        "/api/v1/data-imports",
+        "/api/v1/data-imports/{import_id}",
+        "/api/v1/data-imports/{import_id}/commit",
+        "/api/v1/data-imports/{import_id}/validate",
+        "/api/v1/data-imports/{import_id}/validation",
+        "/api/v1/data-versions",
+        "/api/v1/data-versions/{version_id}",
+        "/api/v1/data-versions/{version_id}/archive",
+        "/api/v1/prediction-records",
+        "/api/v1/prediction-records/{record_id}",
+        "/api/v1/prediction-records/{record_id}/archive",
+        "/api/v1/prediction-records/{record_id}/replay-draft",
+        "/api/v1/prediction/types",
+        "/api/v1/prediction/types/{type}",
+        "/api/v1/prediction/types/{type}/models",
+        "/api/v1/prediction/types/{type}/tools/{tool}/schema",
+        "/api/v1/predictions",
+        "/api/v1/predictions/{prediction_id}"
+      ],
+      "m1_archive_change": "schema reference renamed; schema identical",
+      "normalized_sha256": "28ef8c678ab2110fc6bef907f52c13eb52ebb62bf3973dba57572f12a9f06a7d",
+      "operations": 47,
+      "paths": 45,
+      "profile": "universal-v1",
+      "removed_paths": [],
+      "source_manifest_sha256": "e67fb12b020426f4b4153e2c072b29788a03923fe76018bec572f81d3cc2022e",
+      "summary_sha256": "c045d586f2264a87d430f1b8deda07dbf0cf29efd4f02cdf8f02ce6076023dcc"
+    }
+  ],
+  "scope": "contract baseline only; not release readiness",
+  "unaccepted": [
+    "M3/M4",
+    "real MySQL/Redis/Worker integration and races",
+    "offline installation",
+    "model scientific acceptance",
+    "transitive dependency and platform wheel lock"
+  ]
+}

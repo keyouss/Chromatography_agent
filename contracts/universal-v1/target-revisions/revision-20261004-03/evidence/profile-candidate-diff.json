@@ -1,0 +1,146 @@
+{
+  "status": "candidate_only_not_frozen",
+  "formal_manifest_mutations": [],
+  "current_formal_manifest_inventory": [
+    {
+      "build_id": "universal-v1",
+      "manifest_path": "builds/universal-v1.json",
+      "manifest_sha256": "569613e69680a4458e1319449ad98c00e82519d4bcf9b0aeb930f58e24c3a332",
+      "current_prediction_tools": {
+        "tlc": [
+          "single",
+          "condition_compare",
+          "reverse_solvent"
+        ],
+        "cc": [
+          "single"
+        ],
+        "hplc": [
+          "single"
+        ],
+        "sfc": [
+          "single_column",
+          "full_column"
+        ],
+        "gc": [
+          "single"
+        ]
+      },
+      "current_batch_enabled_types": [],
+      "candidate_manifest_modified": false,
+      "candidate_action": "temporary_candidate_add_batch_to_each_selected_type",
+      "candidate_batch_enabled_types": [
+        "cc",
+        "gc",
+        "hplc",
+        "sfc",
+        "tlc"
+      ],
+      "formal_manifest_change": "none",
+      "openapi_candidate": "candidate-openapi.json",
+      "semantic_status": "PASS_EXPECTED_ADDITIVE_BATCH_DELTA",
+      "trim_intent": "candidate contains universal batch routes/DTOs/worker/migrations; runtime model capability remains per-type gated"
+    },
+    {
+      "build_id": "sfc-v1",
+      "manifest_path": "builds/sfc-v1.json",
+      "manifest_sha256": "005ad94228473704842c0c80502752a30107ce83d94aa03d77d0211f62542619",
+      "current_prediction_tools": {
+        "sfc": [
+          "single_column",
+          "full_column"
+        ]
+      },
+      "current_batch_enabled_types": [],
+      "candidate_manifest_modified": false,
+      "candidate_action": "future_recommendation_only",
+      "future_recommendation": "Consider SFC batch only in a separate future candidate after the complete scientific domain, model capability, immutable input/export, configured storage, and real end-to-end gates pass; the current formal manifest remains batch=false.",
+      "candidate_batch_enabled_types": [],
+      "formal_manifest_change": "none",
+      "openapi_candidate_generated": false,
+      "trim_intent": "current sfc-v1 remains batch-free until separate contract approval and science acceptance",
+      "readiness_note": "A pinned golden case is only a temporary reference slice. It does not establish full-column candidate coverage or SFC batch readiness."
+    },
+    {
+      "build_id": "cc-v1",
+      "manifest_path": "builds/cc-v1.json",
+      "manifest_sha256": "f2ba2c7a6d50e69316c83b8abe280541f45385cd9fe5ddfa3836b29327c319ea",
+      "current_prediction_tools": {
+        "cc": [
+          "single"
+        ]
+      },
+      "current_batch_enabled_types": [],
+      "candidate_manifest_modified": false,
+      "candidate_action": "retain_current_trim",
+      "candidate_batch_enabled_types": [],
+      "formal_manifest_change": "none",
+      "trim_intent": "keep CC single-only profile without batch routes/worker/migrations in this candidate"
+    },
+    {
+      "build_id": "minimal-structure-v1",
+      "manifest_path": "builds/minimal-structure-v1.json",
+      "manifest_sha256": "aa34132508dee8cad2a17b0af30ee0019aa06d4d553389851e86d0b90b88ba15",
+      "current_prediction_tools": {},
+      "current_batch_enabled_types": [],
+      "candidate_manifest_modified": false,
+      "candidate_action": "retain_current_trim",
+      "candidate_batch_enabled_types": [],
+      "formal_manifest_change": "none",
+      "trim_intent": "utilities-only profile; no prediction batch DTO/router/worker/migrations"
+    }
+  ],
+  "records_only_profile": {
+    "build_id": "records-only-v1",
+    "status": "NOT_PRESENT",
+    "checked_locations": [
+      "builds/",
+      "backend/.generated/profile-packages/"
+    ],
+    "decision": "Do not create or infer a formal manifest from cc-v1. If introduced in a separate task, keep batch omitted by default."
+  },
+  "universal_batch_semantics": {
+    "selected_types": [
+      "tlc",
+      "cc",
+      "hplc",
+      "sfc",
+      "gc"
+    ],
+    "route_presence_is_not_model_readiness": true,
+    "execution_requires_real_ready_capability_and_configured_artifact_store": true,
+    "per_type_readiness": [
+      {
+        "type": "tlc",
+        "status": "NOT_CLAIMED",
+        "runtime_gate": "real READY model/capability must be present before execution"
+      },
+      {
+        "type": "cc",
+        "status": "NOT_CLAIMED",
+        "runtime_gate": "real READY model/capability must be present before execution"
+      },
+      {
+        "type": "hplc",
+        "status": "NOT_CLAIMED",
+        "runtime_gate": "real READY model/capability must be present before execution"
+      },
+      {
+        "type": "sfc",
+        "status": "NOT_CLAIMED",
+        "runtime_gate": "real READY model/capability must be present before execution"
+      },
+      {
+        "type": "gc",
+        "status": "NOT_CLAIMED",
+        "runtime_gate": "real READY model/capability must be present before execution"
+      }
+    ]
+  },
+  "evidence_sources": [
+    "builds/README.md",
+    "builds/manifest.py",
+    "docs/PROJECT_PRD.md#4.1",
+    "contracts/candidates/batch-complete/semantic-diff.json"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fixture_version": 1,
+  "kind": "offline-reference",
+  "component": "tlc",
+  "input": {
+    "smiles": "O=C(C1=CC=CC=C1)CCCl",
+    "mobile_phase": {
+      "hexane": 0.8,
+      "ethyl_acetate": 0.2,
+      "dichloromethane": 0.0,
+      "methanol": 0.0,
+      "diethyl_ether": 0.0
+    }
+  },
+  "expected_raw": {
+    "predicted_rf": 0.657982,
+    "component_predictions": {
+      "lgb": 0.640312,
+      "xgb": 0.584923,
+      "random_forest": 0.690622,
+      "ann": 0.687027
+    },
+    "units": {"predicted_rf": "unitless", "component_predictions": "unitless"}
+  },
+  "warnings_raw": [
+    "\ufffd\u00fd\ufffd\ufffd\u03aa\ufffd\ufffd\ufffd\ufffd LGB\ufffd\ufffdXGB\ufffd\ufffdRF\ufffd\ufffdANN \ufffd\ufffd\u0524\ufffd\u28ec\ufffd\ufffd\ufffd\u02ba\ufffd\ufffd\ufffd\u03aa\ufffd\ufffd\u02bc\u0579\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u9863",
+    "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u0531\ufffd\u05fc\ufffd\ufffd\ufffd\u0536\ufffd\ufffd\ufffd TLC \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd TLC \ufffd\u5862\u0579\ufffd\ufffd\ufffd\u05e1\ufffd\ufffd\ufffd\u02aa\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u02b5\ufffd\ufffd\u0237\ufffd\u03e1\ufffd"
+  ],
+  "model": {
+    "name": "author_ensemble_LGB_XGB_RF_ANN",
+    "asset_sha256": {
+      "ann": "05119D440F0C224671BEB4FAEC470700598214DBD3FDC56119214EFA0DA3D234",
+      "lgb": "4174408259CBB1605A4B57C0CACC0026C265427F22224D887F9E17164C24B69D",
+      "xgb": "CA24624473FD617C462D1AD687A9B3C082AA2110796CC5C244B265078877D396",
+      "random_forest": "10DBAD5457E8961418F28B42DD5C4350E55DC367574D38DBA421B16A481D7559"
+    },
+    "source_sha256": "978C690B4DDC3BC12087269AF0B81B24C7103080A0E66678041757B2D7D6C3FF"
+  },
+  "evidence": {
+    "raw_json": "backend/.generated/priority-launch-evidence/four-model-inventory/tlc.smoke.json",
+    "raw_json_sha256": "B047CA229F61FBF57A660C49D6B91E4FD77CF608970034897375F0C27DB37EB8",
+    "cli_log_sha256": "8239D60510C54555E722B96A8F484BD275B715C6EC60B0F44FF9BFA3BE3868EA",
+    "stderr_log_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "asset_matrix_sha256": "B7693ED134F4CB6AFAFDD352C25F6668CAD833F625E6CC8D3C6B7B1AA54FEB06",
+    "sha256sums_present": false,
+    "declared_exit_code": 0
+  },
+  "replay": {
+    "command": ["D:\\Anaconda\\envs\\SFC\\python.exe", "predict.py", "--demo"],
+    "repeat_count": 2,
+    "exit_codes": [0, 0],
+    "stdout_sha256": ["2F085E42A457DCD293B7F787462283288C3764076A7A1CDE4038C7BC390B0E3B", "2F085E42A457DCD293B7F787462283288C3764076A7A1CDE4038C7BC390B0E3B"],
+    "stderr_sha256": ["E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855", "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"],
+    "numeric_max_absolute_delta": 0.0,
+    "numeric_max_relative_delta": 0.0,
+    "repeat_derived_tolerance": {"absolute": 0.0, "relative": 0.0, "scientific_accuracy_claim": false}
+  },
+  "license_note": "No bundled LICENSE; source README limits use to public non-commercial research pending author confirmation. This fixture does not copy model assets."
+}

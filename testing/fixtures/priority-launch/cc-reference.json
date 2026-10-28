@@ -1,0 +1,55 @@
+{
+  "fixture_version": 1,
+  "kind": "offline-reference",
+  "component": "cc",
+  "input": {
+    "smiles": "CC(C)CCOC(=O)C1=CC=CC=C1",
+    "column_spec": "4g",
+    "mobile_phase": {"petroleum_ether": 40.0, "ethyl_acetate": 1.0},
+    "loading_solvent": "PE",
+    "density_g_ml": 0.99,
+    "sample_volume_ul": 100.0,
+    "loading_solvent_volume_ul": 200.0,
+    "flow_rate_ml_min": 10.0
+  },
+  "expected_raw": {
+    "V1": {"q10_volume_ml": 5.941706657409668, "q50_volume_ml": 7.20261812210083, "q90_volume_ml": 10.186241149902344, "q10_time_seconds": 35.65023994445801, "q50_time_seconds": 43.21570873260498, "q90_time_seconds": 61.11744689941406},
+    "V2": {"q10_volume_ml": 15.246087074279785, "q50_volume_ml": 16.6307373046875, "q90_volume_ml": 20.14374542236328, "q10_time_seconds": 91.47652244567871, "q50_time_seconds": 99.784423828125, "q90_time_seconds": 120.86247253417969},
+    "units": {"volume": "mL", "time": "s", "flow_rate": "mL/min"},
+    "time_formula": "time_seconds = volume_ml * 60 / flow_rate_ml_min",
+    "formula_check_max_absolute_delta_seconds": 0.0
+  },
+  "warnings_raw": ["This local-data reproduction is only an experimental planning aid. Use the matching Silica-CS column specification and confirm by experiment."],
+  "model": {
+    "name": "qgeognn_silica_4g",
+    "model_asset_sha256": "D6C4C113B2D02B4275B7D1CF3A572AC202D0BD8A1927D0158D0E7AB188EE4C99",
+    "bundle_asset_sha256": {
+      "4g": "D6C4C113B2D02B4275B7D1CF3A572AC202D0BD8A1927D0158D0E7AB188EE4C99",
+      "8g": "C8A410A9DCBF55C4D986F27D4849AA07FB4D35A3F2005324F88398CF49333105",
+      "25g": "86F648FCB39BA47C70F52279B111712E45AEE23203BA68BD6E812BD0CB38C0B3",
+      "40g": "2AFEAD03EBEDBE0E1EFD2BE6664D669469D1360D2A267C1B8C02DC90A45DB9B6"
+    },
+    "registry_sha256": "921EA94276A0E6B289EEFE13C4694F90CBF3F2D44F00A10612776819B01AD0E5",
+    "source_sha256": "B27D578F964F0C29AFEBEE907D0377A37E982BFE0CFE2B9C889E255D48CBAABD"
+  },
+  "evidence": {
+    "raw_json": "backend/.generated/priority-launch-evidence/four-model-inventory/cc.smoke.json",
+    "raw_json_sha256": "ABD9510EB0B8A2402FDD4FC57623345BDA9A5AEE648E4AF49EE047681D37F22F",
+    "cli_log_sha256": "ABD9510EB0B8A2402FDD4FC57623345BDA9A5AEE648E4AF49EE047681D37F22F",
+    "stderr_log_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "asset_matrix_sha256": "B7693ED134F4CB6AFAFDD352C25F6668CAD833F625E6CC8D3C6B7B1AA54FEB06",
+    "sha256sums_present": false,
+    "declared_exit_code": 0
+  },
+  "replay": {
+    "command": ["D:\\Anaconda\\envs\\SFC\\python.exe", "predict.py", "--demo"],
+    "repeat_count": 2,
+    "exit_codes": [0, 0],
+    "stdout_sha256": ["ACD69ABEE2E04CE8981E7BCA08EDAB9E4608E8CB41F88FDA130AD94005CD9AF7", "ACD69ABEE2E04CE8981E7BCA08EDAB9E4608E8CB41F88FDA130AD94005CD9AF7"],
+    "stderr_sha256": ["E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855", "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"],
+    "numeric_max_absolute_delta": 0.0,
+    "numeric_max_relative_delta": 0.0,
+    "repeat_derived_tolerance": {"absolute": 0.0, "relative": 0.0, "scientific_accuracy_claim": false}
+  },
+  "license_note": "No bundled LICENSE; source README requires author confirmation for commercial/re-distribution use. This fixture does not copy model assets."
+}

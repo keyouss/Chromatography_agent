@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-22",
+  "decision": "Approved integrated five-type batch contract freeze; includes documented earlier runtime contract deltas",
+  "previous_baseline": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before",
+  "scope": "API/DTO and isolated physical-source assembly only; not deployed or real batch/scanner acceptance",
+  "public_delta": "contracts/candidates/universal-v1-five-types-batch-20261022-01/layered-public-delta.md",
+  "profiles": [
+    {
+      "profile": "universal-v1",
+      "revision": "revision-20261022-five-types-batch-01",
+      "paths": 142,
+      "operations": 152,
+      "schema_count": 413,
+      "raw_openapi_sha256": "367b75167b8ebac5dd713bbba6db170f14887e90cee7f546c327c9e43c8c72bc",
+      "normalized_openapi_sha256": "4c7cdd28248ef7507c187edca269f19ea5ce6eb0ca88cdd5bb1a82704b568fe5",
+      "candidate_openapi_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-openapi-07/universal-v1/openapi.json",
+      "package_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-packages-07/universal-v1",
+      "source_manifest_sha256": "69fe7029a01176fa09d3790614337c58a80bc0db9cd9ef7c82b16a3dac275bee",
+      "summary_sha256": "48f209d2e913b517fe87b8cb4f9dff7ed0f6283ffe84860132a469aaef3176ec",
+      "path": "universal-v1/openapi.json"
+    },
+    {
+      "profile": "cc-v1",
+      "revision": "revision-20261022-five-types-batch-01",
+      "paths": 40,
+      "operations": 41,
+      "schema_count": 106,
+      "raw_openapi_sha256": "afc2276faecbbcdc1f857048a230bb3c0dba6e09502be161fb8609d689cc74ab",
+      "normalized_openapi_sha256": "37100040f75524449ec2285520e42376b5d3ae7ceeb8f4444e2662750a8a84f3",
+      "candidate_openapi_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-openapi-08/cc-v1/openapi.json",
+      "package_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-packages-08/cc-v1",
+      "source_manifest_sha256": "ad0c5cdc503ed1cf210683ab6e8b7becdc77c5397ffb49231696d93adc651b35",
+      "summary_sha256": "db57a37dda18a48b6701351a2a307953cc0681b120da1e31561502262b843b77",
+      "path": "cc-v1/openapi.json"
+    },
+    {
+      "profile": "sfc-v1",
+      "revision": "revision-20261022-five-types-batch-01",
+      "paths": 43,
+      "operations": 44,
+      "schema_count": 122,
+      "raw_openapi_sha256": "6856af4a8609eb2c0d76664625e9da8083666774b1e8d748152c83a810adc2a5",
+      "normalized_openapi_sha256": "dbdf4f22371b50f0146bad2709d197b6326052152a79f373ae9f385e4bbfc342",
+      "candidate_openapi_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-openapi-08/sfc-v1/openapi.json",
+      "package_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-packages-08/sfc-v1",
+      "source_manifest_sha256": "0d60dddd4a9aa5cd9aa55c7450a7a69ecee900fc8c1d4cb18d557b66222dc69d",
+      "summary_sha256": "ea015e7162c3c89c6a8b874330506b31de0c3310015162516d43fc1bf4c0dbf9",
+      "path": "sfc-v1/openapi.json"
+    },
+    {
+      "profile": "minimal-structure-v1",
+      "revision": "revision-20261022-five-types-batch-01",
+      "paths": 26,
+      "operations": 27,
+      "schema_count": 63,
+      "raw_openapi_sha256": "f5a31ce9ebdf7184615d28d83a6eca92b3f74efa8fe2dce154e92887ec63ee61",
+      "normalized_openapi_sha256": "a56c921c89263a2b2fd91452066b54b27f3af92a348ba1c0e73431fd064ed6cc",
+      "candidate_openapi_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-openapi-06/minimal-structure-v1/openapi.json",
+      "package_path": "contracts/candidates/universal-v1-five-types-batch-20261022-01/physical-packages-06/minimal-structure-v1",
+      "source_manifest_sha256": "07b17341e8105540b994bf48dec911a53601fb10a0ce5dca15e5ac0fb6531b4a",
+      "summary_sha256": "b16af1a7b40d3daffb4540498b9a556303d3ea87873e2a666cce471c9210e24d",
+      "path": "minimal-structure-v1/openapi.json"
+    }
+  ],
+  "runtime_batch_acceptance": "NOT_RUN",
+  "real_scanner_acceptance": "PENDING_HUMAN_AUTHORIZATION",
+  "ddl_required": false
+}

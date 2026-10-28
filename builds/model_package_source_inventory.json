@@ -1,0 +1,54 @@
+{
+  "inventory_version": "1.0",
+  "scope": "fixed-gc-safetensors-package-verification-source",
+  "files": [
+    {
+      "path": "chrom_platform/adapters/gc/package_source_pins.py",
+      "sha256": "04ae4e27dee7f82b304cf58feb8ab9147f14c6a886f8e92dec9514f17da96317"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/package_loader.py",
+      "sha256": "baf935d18886b6a2f6a80a06def2d13167b3ea018b6f338b3a99b76561db68b1"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/package_model.py",
+      "sha256": "c89794db0fed2ad99f072861d5a39bbefebf50b4af2462bc9874c2b63f8ee361"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/runtime.py",
+      "sha256": "d63f1f523d355b1e5a13a5dfb4d938cdc237e66f2ce7454a21f3b308bc54eea2"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/manifest.py",
+      "sha256": "5e9935d02eac84fa041305d64e5c9c4b9320fb5b039e6eb9e6cc6aa0c4ec55b7"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/serving_profile.py",
+      "sha256": "858f8f302f402cfc6ec731ffe959983963813882c989f02c7177c8536bbc5c76"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/source_pins.py",
+      "sha256": "3f6bd57d572338ff861f0be4987c8ee1c28ba5bbbb4f4b76a30c6a22f89bcd90"
+    },
+    {
+      "path": "chrom_platform/adapters/gc/validation.py",
+      "sha256": "0239bd6278a212d0662b13929487f97e4c0dbc1a9150b84e58b92abaa557118a"
+    },
+    {
+      "path": "chrom_platform/artifact_core/model_package_manifest.py",
+      "sha256": "5ffa28cabbe999454106bb0667820be8028936d2aab58e6287f55887e39af2f2"
+    },
+    {
+      "path": "chrom_platform/core/model_load_observation.py",
+      "sha256": "55b5e3a0399e6c06aeea822dfa4ad37b314591917238ee2924ab6f72074a791b"
+    },
+    {
+      "path": "chrom_platform/modules/model_center/package_verification.py",
+      "sha256": "08df9fae02e8167ebba603af10063e25e0ceba2cc8d635f2f0569ad63e0dbebe"
+    },
+    {
+      "path": "chrom_platform/modules/prediction/schemas.py",
+      "sha256": "bcb8dfb03214fafc6b542f721e0207075f3e351fa96d52bc00c6ad9d86531b50"
+    }
+  ]
+}

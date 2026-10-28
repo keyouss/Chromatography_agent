@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "revision": "revision-20261004-03",
+  "profile": "universal-v1",
+  "decision": "approved_target_frozen_not_active",
+  "active": false,
+  "activation_performed": false,
+  "target": {
+    "openapi_path": "openapi.json",
+    "raw_sha256": "7d636941bd62ae45fd320feecb411395dcce1547920c0df58c4272f3da6cc03e",
+    "normalized_path": "openapi.normalized.json",
+    "normalized_sha256": "0586d1ef8213e654ce9caa81cbb89fe13becb9b8fc576fa981270920c09f0386",
+    "build_manifest_path": "builds/target/universal-v1.json",
+    "build_manifest_sha256": "FEE6087C02BB6296B46CC54580A16C631F66BE51F6F44E8E84EBD8BF6C6909F8",
+    "source_manifest_path": "provenance/SOURCE_MANIFEST.json",
+    "source_manifest_sha256": "C0EB5791F7CA495F853F44B002B69084CE4C55E77CFD6DE26C30963165219003",
+    "source_manifest_approved_sha256": "C0EB5791F7CA495F853F44B002B69084CE4C55E77CFD6DE26C30963165219003"
+  },
+  "current_active": {
+    "revision": "revision-20261003-02",
+    "openapi_path": "contracts/universal-v1/openapi.json",
+    "snapshot_path": "active-no-batch-openapi.json",
+    "raw_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+    "normalized_sha256": "4a14fcabaef14acf20ec7a1297631e0cc503a9ab2c612ed1ffaed4a0281064ec",
+    "build_manifest_path": "builds/universal-v1.json",
+    "build_manifest_snapshot_path": "builds/active/universal-v1.json",
+    "build_manifest_sha256": "569613E69680A4458E1319449AD98C00E82519D4BCF9B0AEB930F58E24C3A332",
+    "capability": "universal-v1 no-batch",
+    "retained_as_active": true
+  },
+  "comparison": {
+    "status": "PASS_EXPECTED_ADDITIVE_BATCH_DELTA",
+    "added_paths": 14,
+    "removed_paths": 0,
+    "added_operations": 15,
+    "removed_operations": 0,
+    "changed_operations": 0,
+    "added_schemas": 39,
+    "removed_schemas": 0,
+    "changed_existing_schemas": 0,
+    "public_prediction_input_snapshot_fields": [
+      "structure_refs",
+      "normalized_structures",
+      "input"
+    ],
+    "private_execution_snapshot_exposed_in_openapi": false
+  },
+  "history": {
+    "rollback_index_snapshot": "rollback-index-before.json",
+    "rollback_index_snapshot_sha256": "058F0C4D864A7A0FED455EDEBC39E0F49FAF26694F49D00906CAFE4434CFA094",
+    "prior_active_rollback_snapshots": [
+      {
+        "revision": "pre-revision-20261003-02-active",
+        "path": "universal-v1/rollback-snapshots/revision-20261003-02-baseline/openapi.json",
+        "sha256": "931f2cb5ebd929864f370d196f4355eac9c6aa83efb9ef42e3c7320bbe7f98a2",
+        "bytes": 490444,
+        "role": "previous_active_immutable_rollback"
+      },
+      {
+        "revision": "pre-revision-20261003-01-active",
+        "path": "universal-v1/rollback-snapshots/revision-20261003-01-baseline/openapi.json",
+        "sha256": "ad3506ebf484d59fae92d396cf57114c22638f52ba79086cee2472a94af126f1",
+        "bytes": 490175,
+        "role": "previous_active_immutable_rollback"
+      },
+      {
+        "revision": "pre-revision-20261002-04-active",
+        "path": "universal-v1/rollback-snapshots/revision-20261002-04-baseline/openapi.json",
+        "sha256": "cb4f9b92dde639fc5188a4d898de23efb1e20b22733722bd50d7eff580f84d1a",
+        "bytes": 439923,
+        "role": "previous_active_immutable_rollback"
+      }
+    ],
+    "prior_active_revision": "revision-20261003-02",
+    "historical_snapshot_files_remain_in_existing_immutable_paths": true
+  },
+  "verification_evidence": {
+    "qa_addendum_path": "evidence/qa-addendum.md",
+    "qa_addendum_sha256": "EA6A8B99FBD2DC2ECEA803FE18A5569574FCE3C1D064C0CDD262D3682F8B1899",
+    "qa_addendum_approved_sha256": "EA6A8B99FBD2DC2ECEA803FE18A5569574FCE3C1D064C0CDD262D3682F8B1899",
+    "collected_only_total": 144,
+    "collected_only_not_executed": true,
+    "backend_handoff_reported_executed_total": 112,
+    "backend_handoff_independently_verified": false,
+    "backend_112_and_collection_144_are_distinct_evidence_sets": true,
+    "contract_gates_executed_and_passed": "9 passed, 8 subtests passed; evidence in QA addendum",
+    "raw_openapi_approved_sha256": "7d636941bd62ae45fd320feecb411395dcce1547920c0df58c4272f3da6cc03e",
+    "normalized_openapi_approved_sha256": "0586d1ef8213e654ce9caa81cbb89fe13becb9b8fc576fa981270920c09f0386",
+    "source_manifest_approved_sha256": "C0EB5791F7CA495F853F44B002B69084CE4C55E77CFD6DE26C30963165219003"
+  },
+  "deployment_gates": {
+    "real_database_0013_to_0014_migration": "OPEN_NOT_RUN",
+    "deployed_ARTIFACT_ROOT_put_read_remove_probe": "OPEN_NOT_RUN",
+    "production_api_worker_export": "NOT_ACCEPTED",
+    "legacy_0013_batch_rows": "preserve; require revalidation before execution"
+  },
+  "shared_state": {
+    "contracts_index_modified": false,
+    "active_openapi_modified": false,
+    "rollback_index_modified": false,
+    "formal_build_manifest_modified": false,
+    "shared_freeze_metadata_modified": false,
+    "active_remains_no_batch": true
+  },
+  "handoff": {
+    "shared_index_model": "contracts/index.json expresses active contracts only and cannot express a frozen inactive target alongside active.",
+    "minimum_later_switch": "After SFC freeze is closed, serialize the authorized activation: snapshot current active rollback; update shared universal OpenAPI and index/rollback metadata plus formal universal build manifest in one reviewed step; keep this target revision and historical snapshots immutable; recompute/check hashes and rerun the requested activation gates.",
+    "sfc_freeze_prerequisite": "Complete SFC freeze before any shared index/active contract switch."
+  }
+}

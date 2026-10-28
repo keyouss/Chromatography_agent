@@ -1,0 +1,29 @@
+{
+  "policy": "immutable previous formal baseline",
+  "files": [
+    {
+      "path": "contracts/index.json",
+      "sha256": "1a38cc2b3149818734124d2bc8897ef35573b84ef604d9f91843b3de7ee59f6c"
+    },
+    {
+      "path": "docs/V1_M3_M4_CONTRACT_FREEZE.json",
+      "sha256": "ec9a5825aaa88f903a5985e777c216ba57ef2807b801ada1492e9e9805914f69"
+    },
+    {
+      "path": "contracts/universal-v1/openapi.json",
+      "sha256": "ae3732556b43a16ec5676bc11972a80edf107ff9b27bbec696ae128a820e8d65"
+    },
+    {
+      "path": "contracts/cc-v1/openapi.json",
+      "sha256": "3cffbdfb7b6a34db7a1b413635ba7330d31126c1729e59eb6434637b67f55599"
+    },
+    {
+      "path": "contracts/sfc-v1/openapi.json",
+      "sha256": "e88954fb90593596cbb99765da03c99a6c4e0c01db05095cd04a73f5fdcb0414"
+    },
+    {
+      "path": "contracts/minimal-structure-v1/openapi.json",
+      "sha256": "bf35af8fd7661b9ed2c5709b1deb8629d79ab0a3153f644af8d649e4a73d63ad"
+    }
+  ]
+}

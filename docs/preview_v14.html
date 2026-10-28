@@ -1,0 +1,3683 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>通用色谱智能平台 · 交互原型 v14 · 冷石墨仪器面板</title>
+<style>
+/* ============================================================
+   通用色谱智能平台 · 前端交互原型
+   设计系统：冷石墨仪器面板 (Cold Graphite Instrument Panel)
+   ------------------------------------------------------------
+   视觉主张：这不是一个 SaaS 仪表盘，而是一台科学仪器的控制面。
+   · 分层靠 1px 分隔线与极小色阶差，不靠圆角卡片与软阴影
+   · 圆角仅 2–3px（仪器面板的倒角），阴影只在浮层出现
+   · 全部数值 / ID / SHA / schema / 状态码用等宽 tabular-nums
+   · 唯一强调色是电蓝，语义状态色只用于状态，绝不装饰
+   · 每条结果下方强制 ProvenanceBar：模型 / 版本 / 哈希 / schema
+   ============================================================ */
+
+:root{
+  /* 画布与分层 */
+  --canvas:#eceff3;
+  --panel:#ffffff;
+  --panel-alt:#f6f8fa;
+  --panel-sunk:#eef1f5;
+  --chrome:#171c23;          /* 左栏石墨 */
+  --chrome-2:#1e242c;
+  --chrome-rule:#2b323b;
+
+  /* 分隔线 */
+  --rule:#dee3e9;
+  --rule-mid:#c8d0d9;
+  --rule-strong:#aab4c0;
+
+  /* 文字 */
+  --ink:#141920;
+  --ink-2:#48525d;
+  --ink-3:#77828e;
+  --ink-4:#9aa4ae;
+  --on-dark:#dbe2ea;
+  --on-dark-2:#8d99a6;
+
+  /* 唯一强调色
+     客户前端 PRD §6.2.3 明文：主色调蓝色系 #1890FF 或 #003366
+     --accent      = #1890FF 主色
+     --accent-deep = #003366 深压（客户指定的第二个值）
+     科技感来自数据的精确（等宽数字 / 溯源条 / 真实状态机），
+     不来自发光、渐变或光晕 —— 避免"看着可靠"的视觉错觉。 */
+  --accent:#1890ff;
+  --accent-deep:#003366;
+  --accent-wash:#e7f3ff;
+  --accent-line:#b8d9fb;
+
+  /* 色谱类型辅助色
+     客户 PRD §6.2.3：两个模型可用不同辅助色区分（手性LC 蓝绿、GC 橙蓝）
+     通用平台按色谱类型分配，仅用于类型标识与该类型的图表序列，
+     不参与通用语义（成功/失败/等待）——语义色仍由下方 ok/warn/bad/hold 承担 */
+  --lc:#0d9488;        /* 手性 / 液相：蓝绿 */
+  --lc-wash:#e2f5f3;   --lc-line:#a8ddd8;
+  --gc:#c2621a;        /* 气相：橙蓝 */
+  --gc-wash:#fdf0e3;   --gc-line:#f0c9a0;
+
+  /* 语义状态色（只用于状态） */
+  --ok:#0c7048;      --ok-wash:#e4f2ea;   --ok-line:#b6ddc8;
+  --warn:#8a5606;    --warn-wash:#fcf1dd; --warn-line:#ecd6a8;
+  --bad:#a8241c;     --bad-wash:#fbeae8;  --bad-line:#eec4c0;
+  --hold:#55399f;    --hold-wash:#ece8f9; --hold-line:#cfc5ee;
+  --mute-wash:#eef1f5;
+
+  /* 字体
+     客户 PRD §6.2.3 明文：中文"微软雅黑"/"思源黑体"，英文/数字 Arial
+     界面文字遵此执行；--mono 仅用于数值/ID/SHA/schema 等数据位
+     （等宽 tabular 是科研数据表对齐所需，Arial 在此被更严格地满足） */
+  --sans:"Microsoft YaHei","思源黑体","Source Han Sans SC","Noto Sans CJK SC",
+         -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace;
+
+  --r:3px;           /* 面板倒角 */
+  --r-sm:2px;
+  --sh-pop:0 1px 2px rgba(20,25,32,.06),0 8px 28px rgba(20,25,32,.10);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; min-width:1280px;   /* 客户 PRD §6.2.3：最小宽度 1280px */
+  background:var(--canvas); color:var(--ink);
+  font:13.5px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:var(--r-sm)}
+
+/* ── 等宽数据排版：整个产品的可信度来源 ── */
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1}
+.num{letter-spacing:-.01em}
+/* 机器状态码用等宽大写；人类标签用句首大写 —— 这是刻意的区分 */
+.code{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+/* ============================================================
+   外壳
+   ============================================================ */
+.shell{
+  height:100vh; display:grid;
+  grid-template-columns:238px minmax(0,1fr);
+  overflow:hidden;
+}
+
+/* ── 左栏 ── */
+.rail{
+  background:var(--chrome); color:var(--on-dark);
+  display:flex; flex-direction:column; min-height:0;
+  border-right:1px solid #0d1116;
+}
+.rail-brand{
+  padding:16px 16px 14px; border-bottom:1px solid var(--chrome-rule);
+  display:flex; gap:10px; align-items:center;
+}
+.rail-mark{
+  width:26px;height:26px;flex:none;border-radius:var(--r-sm);
+  background:linear-gradient(180deg,#1c4ea8,var(--accent));
+  display:grid;place-items:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22);
+}
+.rail-mark svg{width:15px;height:15px;display:block}
+.rail-brand h1{margin:0;font-size:13px;font-weight:650;letter-spacing:.01em;color:#f2f6fa}
+.rail-brand .sub{margin-top:2px;font-family:var(--mono);font-size:9.5px;color:var(--on-dark-2);letter-spacing:.06em;text-transform:uppercase}
+
+.rail-scroll{flex:1;min-height:0;overflow:auto;padding:10px 0 14px}
+.rail-sec{margin-top:12px}
+.rail-sec:first-child{margin-top:2px}
+.rail-sec-hd{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 16px 6px;color:var(--on-dark-2);
+  font-size:10.5px;font-weight:600;letter-spacing:.05em;
+}
+.rail-sec-hd .dot{width:3px;height:3px;border-radius:50%;background:#5c6874;flex:none}
+.rail-sec-hd .tail{margin-left:auto;font-family:var(--mono);font-size:9px;color:#5c6874}
+
+.nav-i{
+  width:100%;display:flex;align-items:center;gap:9px;
+  min-height:31px;padding:0 16px 0 17px;
+  color:var(--on-dark);text-align:left;font-size:13px;
+  border-left:2px solid transparent;
+  transition:background .12s linear,color .12s linear;
+}
+.nav-i:hover{background:var(--chrome-2);color:#fff}
+.nav-i.on{background:#12233c;border-left-color:var(--accent);color:#fff;font-weight:600}
+.nav-i .gi{width:15px;height:15px;flex:none;opacity:.62}
+.nav-i.on .gi{opacity:1;color:#79aaf2}
+.nav-i .lb{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-i .bv{font-family:var(--mono);font-size:9px;color:#6d7986;flex:none}
+.nav-i.on .bv{color:#8fb6ef}
+
+/* 二级 */
+.nav-2{margin:1px 0 3px}
+.nav-2 .nav-i{min-height:28px;padding-left:31px;font-size:12.5px;color:#a9b5c1;border-left:0}
+.nav-2 .nav-i .lb{color:inherit}
+.nav-2 .nav-i.on{background:#12233c;border-left:0;color:#fff;font-weight:600;box-shadow:inset 2px 0 0 var(--accent)}
+.nav-2 .nav-i .gi{display:none}
+
+/* 三级（缩进 + 前导短线） */
+.nav-3{margin:0 0 2px 0;padding:1px 0 1px 17px}
+.nav-3 .nav-i{min-height:25px;padding-left:22px;font-size:12px;color:#7e8b98;font-weight:400}
+.nav-3 .nav-i::before{
+  content:"";width:9px;height:1px;background:#4b5661;flex:none;margin-left:-13px;
+}
+.nav-3 .nav-i.on{background:transparent;box-shadow:none;color:#79aaf2;font-weight:600}
+.nav-3 .nav-i.on::before{background:var(--accent)}
+
+.rail-foot{border-top:1px solid var(--chrome-rule);padding:8px 0 10px}
+.rail-build{
+  margin:6px 12px 0;padding:8px 10px;border-radius:var(--r-sm);
+  background:#11151a;border:1px solid var(--chrome-rule);
+  font-family:var(--mono);font-size:9.5px;line-height:1.65;color:var(--on-dark-2);
+}
+.rail-build b{color:#9fb0c2;font-weight:600}
+
+/* ── 主区 ── */
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel)}
+
+.topbar{
+  height:44px;flex:none;display:flex;align-items:center;gap:12px;
+  padding:0 16px;background:var(--panel);border-bottom:1px solid var(--rule);
+}
+.crumb{display:flex;align-items:center;gap:7px;min-width:0;font-size:12.5px}
+.crumb .sep{color:var(--ink-4)}
+.crumb .cur{font-weight:650}
+.crumb .opt{color:var(--ink-3)}
+.searchbox{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+  width:270px;height:28px;padding:0 9px;
+  background:var(--panel-alt);border:1px solid var(--rule);border-radius:var(--r-sm);
+  color:var(--ink-3);font-size:12px;
+}
+.searchbox kbd{
+  margin-left:auto;font-family:var(--mono);font-size:9.5px;
+  padding:1px 4px;border:1px solid var(--rule-mid);border-radius:2px;
+  background:var(--panel);color:var(--ink-4);
+}
+.topbar-r{display:flex;align-items:center;gap:6px}
+
+.tenant{
+  display:flex;align-items:center;gap:7px;height:28px;padding:0 8px 0 7px;
+  border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--panel);font-size:12px;
+}
+.tenant .av{
+  width:19px;height:19px;border-radius:var(--r-sm);flex:none;
+  background:var(--ink);color:#fff;display:grid;place-items:center;
+  font-family:var(--mono);font-size:9px;font-weight:700;
+}
+
+.health{display:flex;align-items:center;gap:6px;padding:0 8px;height:28px;
+  border:1px solid var(--rule);border-radius:var(--r-sm);font-size:11.5px;color:var(--ink-2)}
+.health i{width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none}
+.health.warn i{background:var(--warn)}
+
+/* ── 按钮 ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:28px;padding:0 11px;border-radius:var(--r-sm);
+  border:1px solid var(--rule-mid);background:var(--panel);
+  font-size:12.5px;font-weight:550;color:var(--ink-2);
+  transition:background .12s linear,border-color .12s linear;
+}
+.btn:hover{background:var(--panel-alt);border-color:var(--rule-strong);color:var(--ink)}
+.btn:active{background:var(--panel-sunk)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.pri:hover{background:var(--accent-deep);border-color:var(--accent-deep);color:#fff}
+.btn.danger{color:var(--bad);border-color:var(--bad-line);background:var(--panel)}
+.btn.danger:hover{background:var(--bad-wash)}
+.btn.sm{height:24px;padding:0 8px;font-size:11.5px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;background:var(--panel-alt)}
+.btn .kbd{font-family:var(--mono);font-size:9.5px;opacity:.6}
+
+.seg{display:inline-flex;border:1px solid var(--rule-mid);border-radius:var(--r-sm);overflow:hidden;background:var(--panel)}
+.seg button{padding:0 11px;height:26px;font-size:12px;color:var(--ink-2);border-right:1px solid var(--rule);font-weight:500}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--accent-wash);color:var(--accent-deep);font-weight:650}
+.seg button:hover:not(.on){background:var(--panel-alt)}
+
+/* ============================================================
+   视图容器
+   视图由脚本搬入 #viewHost（.shell 网格内），故需撑满宿主
+   ============================================================ */
+.view{display:none;height:100%;width:100%;min-height:0;flex-direction:column}
+.view.on{display:flex}
+
+/* 工作区标题条：单行，紧凑，不做大标题 */
+.ws-hd{
+  flex:none;padding:13px 18px 12px;border-bottom:1px solid var(--rule);
+  background:var(--panel);
+}
+.ws-hd .r1{display:flex;align-items:flex-start;gap:16px}
+.ws-hd h2{margin:0;font-size:16.5px;font-weight:650;letter-spacing:-.01em;line-height:1.25}
+.ws-hd p{margin:3px 0 0;color:var(--ink-3);font-size:12.5px;max-width:76ch}
+.ws-hd .acts{margin-left:auto;display:flex;align-items:center;gap:7px;flex:none;padding-top:1px}
+
+.ws-body{flex:1;min-height:0;display:flex;overflow:hidden}
+.scrollpane{flex:1;min-width:0;overflow:auto;background:var(--canvas)}
+
+/* ── 分栏 ── */
+.split{display:grid;min-height:100%;width:100%}
+.split.s-58{grid-template-columns:minmax(430px,58fr) minmax(0,42fr)}
+.split.s-50{grid-template-columns:minmax(380px,1fr) minmax(0,1fr)}
+.split.s-40{grid-template-columns:minmax(340px,40fr) minmax(0,60fr)}
+.split.s-64{grid-template-columns:minmax(460px,64fr) minmax(0,36fr)}
+
+.col{min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.col + .col{border-left:1px solid var(--rule)}
+.col .body{flex:1;min-height:0;overflow:auto}
+
+.colhd{
+  flex:none;height:34px;display:flex;align-items:center;gap:9px;
+  padding:0 14px;background:var(--panel-alt);border-bottom:1px solid var(--rule);
+  font-size:12px;font-weight:650;color:var(--ink-2);
+}
+.colhd .n{
+  font-family:var(--mono);font-size:10px;font-weight:600;color:var(--ink-3);
+  padding:1px 5px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+}
+.colhd .r{margin-left:auto;display:flex;align-items:center;gap:6px;font-weight:400}
+
+/* ── 区块 ── */
+.blk{background:var(--panel);border-bottom:1px solid var(--rule);padding:14px}
+.blk:last-child{border-bottom:0}
+.blk-hd{display:flex;align-items:center;gap:8px;margin:0 0 11px}
+.blk-hd h3{margin:0;font-size:12.5px;font-weight:650;color:var(--ink)}
+.blk-hd .hint{font-size:11.5px;color:var(--ink-3);font-weight:400}
+.blk-hd .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.blk-t{font-size:10.5px;color:var(--ink-3);font-weight:600;letter-spacing:.05em;
+  display:flex;align-items:center;gap:8px;margin:0 0 9px}
+.blk-t::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+/* ============================================================
+   状态标记：语义色只在这里出现
+   ============================================================ */
+.st{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:10px;font-weight:650;letter-spacing:.05em;
+  padding:2px 6px;border-radius:2px;border:1px solid;white-space:nowrap;
+}
+.st i{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.st.ok{color:var(--ok);background:var(--ok-wash);border-color:var(--ok-line)}
+.st.warn{color:var(--warn);background:var(--warn-wash);border-color:var(--warn-line)}
+.st.bad{color:var(--bad);background:var(--bad-wash);border-color:var(--bad-line)}
+.st.hold{color:var(--hold);background:var(--hold-wash);border-color:var(--hold-line)}
+.st.mute{color:var(--ink-3);background:var(--mute-wash);border-color:var(--rule-mid)}
+.st.run{color:var(--accent-deep);background:var(--accent-wash);border-color:var(--accent-line)}
+.st.run i{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ============================================================
+   ProvenanceBar —— 本设计的签名组件
+   PRD 要求每条结果显示：模型 ID/版本、制品哈希、输入快照、
+   schema 版本、状态、warning。一律收进这条等宽溯源行。
+   ============================================================ */
+.prov{
+  display:flex;flex-wrap:wrap;align-items:center;gap:0;
+  font-family:var(--mono);font-size:10.5px;line-height:1.5;
+  background:var(--panel-sunk);border:1px solid var(--rule);border-radius:var(--r-sm);
+  overflow:hidden;
+}
+.prov > span{
+  padding:3px 9px;border-right:1px solid var(--rule);color:var(--ink-2);
+  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.prov > span:last-child{border-right:0}
+.prov > span.k{color:var(--ink-4)}
+.prov b{font-weight:650;color:var(--ink)}
+.prov .sha{color:var(--ink-3)}
+.prov .flag{padding:3px 9px;font-weight:650}
+.prov .flag.fixture{background:var(--warn-wash);color:var(--warn);border-right:1px solid var(--warn-line)}
+.prov .flag.prod{background:var(--ok-wash);color:var(--ok);border-right:1px solid var(--rule)}
+
+/* ============================================================
+   表格：科研数据表 —— 紧凑、等宽数值、无斑马纹、悬停才分行
+   ============================================================ */
+table.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+table.tbl th{
+  position:sticky;top:0;z-index:2;
+  text-align:left;font-weight:600;font-size:11px;color:var(--ink-3);
+  padding:7px 10px;background:var(--panel-alt);
+  border-bottom:1px solid var(--rule);white-space:nowrap;
+}
+table.tbl td{
+  padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:middle;
+}
+table.tbl tbody tr:last-child td{border-bottom:0}
+table.tbl tbody tr:hover td{background:var(--accent-wash)}
+table.tbl td.n,table.tbl th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.tbl td.id{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+table.tbl tr.sel td{background:var(--accent-wash);box-shadow:inset 2px 0 0 var(--accent)}
+table.tbl caption{caption-side:top;text-align:left;padding:0 0 8px;color:var(--ink-3);font-size:11.5px}
+
+.tblwrap{overflow:auto;background:var(--panel)}
+
+/* ============================================================
+   表单控件：统一 26px 高，1px 边，聚焦变蓝
+   ============================================================ */
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld > label{font-size:11.5px;color:var(--ink-2);font-weight:550;display:flex;align-items:center;gap:5px}
+.fld > label .req{color:var(--bad)}
+.fld > label .opt{color:var(--ink-4);font-weight:400;font-size:10.5px}
+.fld .note{font-size:11px;color:var(--ink-3);line-height:1.45}
+.inp,select.inp{
+  height:28px;padding:0 9px;width:100%;
+  background:var(--panel);border:1px solid var(--rule-mid);border-radius:var(--r-sm);
+  font-size:12.5px;color:var(--ink);
+}
+.inp.mono{font-family:var(--mono);font-size:11.5px}
+select.inp{appearance:none;padding-right:26px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2377828e' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-wash);outline:none}
+.inp[readonly]{background:var(--panel-sunk);color:var(--ink-3);font-family:var(--mono);font-size:11.5px}
+.inp.bad{border-color:var(--bad);background:var(--bad-wash)}
+.inp.good{border-color:var(--ok-line)}
+textarea.inp{height:auto;padding:7px 9px;resize:vertical;line-height:1.55}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* 复选/单选（方形，仪器面板风） */
+.chk{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.chk input{appearance:none;width:14px;height:14px;flex:none;border:1px solid var(--rule-strong);border-radius:2px;background:var(--panel);position:relative;cursor:pointer}
+.chk input[type=radio]{border-radius:50%}
+.chk input:checked{background:var(--accent);border-color:var(--accent)}
+.chk input:checked::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 1.6px 1.6px 0;transform:rotate(43deg)}
+.chk input[type=radio]:checked::after{left:3.5px;top:3.5px;width:5px;height:5px;border:0;border-radius:50%;background:#fff;transform:none}
+
+/* ============================================================
+   结构输入（化学结构核心） —— 全站必含
+   ============================================================ */
+.struct{border:1px solid var(--rule-mid);border-radius:var(--r-sm);overflow:hidden;background:var(--panel)}
+.struct-hd{
+  height:30px;display:flex;align-items:center;gap:8px;padding:0 10px;
+  background:var(--panel-alt);border-bottom:1px solid var(--rule);font-size:12px;font-weight:600;
+}
+.struct-hd .n{
+  font-family:var(--mono);font-size:9.5px;color:var(--ink-3);
+  border:1px solid var(--rule-mid);border-radius:2px;padding:0 4px;font-weight:600;
+}
+.struct-hd .r{margin-left:auto;display:flex;gap:5px}
+.struct-bd{display:grid;grid-template-columns:minmax(0,1fr) 190px}
+.struct-canvas{
+  background:
+    linear-gradient(var(--rule) 1px,transparent 1px) 0 0/16px 16px,
+    linear-gradient(90deg,var(--rule) 1px,transparent 1px) 0 0/16px 16px,
+    var(--panel);
+  background-position:-1px -1px;
+  display:grid;place-items:center;min-height:150px;padding:10px;
+}
+.struct-side{border-left:1px solid var(--rule);padding:9px 10px;background:var(--panel-alt);min-width:0}
+.struct-side .k{font-family:var(--mono);font-size:9.5px;color:var(--ink-4);letter-spacing:.04em;margin-bottom:3px}
+.struct-side .v{font-family:var(--mono);font-size:11px;color:var(--ink);word-break:break-all;line-height:1.5}
+.struct-ft{border-top:1px solid var(--rule);padding:7px 10px;background:var(--panel-alt)}
+.smiles-in{display:flex;gap:6px;align-items:stretch}
+.smiles-in .inp{flex:1}
+
+/* 对映体双槽：HPLC 专用，顺序绑定，视觉上必须能看出是两个槽 */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot{border:1px solid var(--rule-mid);border-radius:var(--r-sm);overflow:hidden;background:var(--panel)}
+.slot > .t{
+  height:27px;display:flex;align-items:center;gap:6px;padding:0 9px;
+  background:var(--accent-wash);border-bottom:1px solid var(--accent-line);
+  font-size:11.5px;font-weight:650;color:var(--accent-deep);
+}
+.slot > .t .idx{
+  width:15px;height:15px;border-radius:2px;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-family:var(--mono);font-size:9.5px;font-weight:700;flex:none;
+}
+.slot > .t .rule{margin-left:auto;font-family:var(--mono);font-size:9.5px;font-weight:500;color:var(--ink-3)}
+.slot .cv{display:grid;place-items:center;padding:9px;background:var(--panel);min-height:96px}
+.slot .cv canvas,.slot .cv svg{max-width:100%;height:auto}
+.slot .bd{padding:7px 9px;border-top:1px solid var(--rule);background:var(--panel-alt)}
+.slot .bd .lbl{font-family:var(--mono);font-size:9.5px;color:var(--ink-4);margin-bottom:3px}
+.slot .bd .smi{font-family:var(--mono);font-size:10.5px;word-break:break-all;line-height:1.45;color:var(--ink)}
+.slot.err{border-color:var(--bad)}
+.slot.err > .t{background:var(--bad-wash);border-color:var(--bad-line);color:var(--bad)}
+
+.bindbar{
+  display:flex;align-items:center;gap:8px;padding:6px 10px;
+  background:var(--hold-wash);border:1px solid var(--hold-line);border-radius:var(--r-sm);
+  font-size:11.5px;color:#3d2a75;margin-top:9px;
+}
+.bindbar .mono{font-weight:650}
+
+/* ============================================================
+   作业状态机：PRD §11.1 的真实状态，横向节点条
+   ============================================================ */
+.jsm{flex:none;padding:13px 14px 14px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.jsm-t{display:flex;align-items:baseline;gap:9px;margin-bottom:11px}
+.jsm-t .ttl{font-size:12.5px;font-weight:650}
+.jsm-t .jid{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.jsm-t .r{margin-left:auto;display:flex;align-items:center;gap:7px}
+.jsm-rail{display:flex;align-items:flex-start;position:relative}
+.jsm-node{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:0;position:relative}
+.jsm-node .lb{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--ink-4);text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.jsm-node .dt{font-family:var(--mono);font-size:9px;color:var(--ink-4)}
+.jsm-node i{
+  width:9px;height:9px;border-radius:50%;background:var(--panel);
+  border:1.5px solid var(--rule-strong);z-index:1;flex:none;
+  transition:background .2s,border-color .2s;
+}
+.jsm-node::before{
+  content:"";position:absolute;top:4px;left:-50%;width:100%;height:1.5px;background:var(--rule);
+}
+.jsm-node:first-child::before{display:none}
+.jsm-node.done i{background:var(--ok);border-color:var(--ok)}
+.jsm-node.done::before{background:var(--ok)}
+.jsm-node.now i{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash);animation:pulse 1.5s ease-in-out infinite}
+.jsm-node.now::before{background:var(--accent)}
+.jsm-node.now .lb{color:var(--accent-deep);font-weight:700}
+.jsm-node.done .lb{color:var(--ink-2)}
+.jsm-node.bad i{background:var(--bad);border-color:var(--bad)}
+.jsm-node.bad::before{background:var(--bad-line)}
+.jsm-node.bad .lb{color:var(--bad);font-weight:700}
+
+/* ============================================================
+   指标块：等宽大字，无装饰
+   ============================================================ */
+.mets{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden}
+.mets.c2{grid-template-columns:1fr 1fr}
+.mets.c3{grid-template-columns:repeat(3,1fr)}
+.mets.c4{grid-template-columns:repeat(4,1fr)}
+.met{background:var(--panel);padding:9px 11px;min-width:0}
+.met .k{font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:4px}
+.met .v{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-top:3px;
+  display:flex;align-items:baseline;gap:4px;line-height:1.15}
+.met .v .u{font-size:11px;font-weight:500;color:var(--ink-3);letter-spacing:0}
+.met .d{font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-top:2px}
+.met.derived{background:var(--panel-alt)}
+.met.derived .v{color:var(--ink-2)}
+
+/* ============================================================
+   图表容器：技术制图风格
+   ============================================================ */
+.chart{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden}
+.chart-hd{display:flex;align-items:center;gap:9px;padding:8px 11px;border-bottom:1px solid var(--rule);background:var(--panel-alt)}
+.chart-hd .t{font-size:12px;font-weight:650}
+.chart-hd .sub{font-size:11px;color:var(--ink-3);font-family:var(--mono)}
+.chart-hd .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.chart-bd{padding:8px;background:var(--panel)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;padding:7px 11px;border-top:1px solid var(--rule);background:var(--panel-alt);font-size:11px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:13px;height:2px;border-radius:1px;flex:none}
+.legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px);height:2px}
+.legend i.sq{width:8px;height:8px;border-radius:1px}
+
+.origin{
+  display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9.5px;
+  padding:1px 5px;border-radius:2px;border:1px solid;font-weight:650;
+}
+.origin.predicted{color:var(--accent-deep);background:var(--accent-wash);border-color:var(--accent-line)}
+.origin.simulated{color:var(--hold);background:var(--hold-wash);border-color:var(--hold-line)}
+.origin.measured{color:var(--ok);background:var(--ok-wash);border-color:var(--ok-line)}
+.origin.derived{color:var(--ink-3);background:var(--mute-wash);border-color:var(--rule-mid)}
+
+/* 色谱类型徽标
+     客户 PRD §6.2.3：可用不同辅助色区分色谱类型（手性/液相蓝绿、气相橙蓝）
+     通用平台按类型统一分配：LC 族用蓝绿，GC 族用橙蓝，其余沿用主色蓝。
+     类型色仅标识"这是哪类色谱"，成功/失败/等待仍由语义色承担。 */
+.typechip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:10px;font-weight:650;letter-spacing:.05em;
+  padding:2px 6px;border-radius:2px;border:1px solid;white-space:nowrap;
+}
+.typechip i{width:5px;height:5px;border-radius:1px;background:currentColor;flex:none}
+.typechip.lc{color:var(--lc);background:var(--lc-wash);border-color:var(--lc-line)}
+.typechip.gc{color:var(--gc);background:var(--gc-wash);border-color:var(--gc-line)}
+.typechip.base{color:var(--accent-deep);background:var(--accent-wash);border-color:var(--accent-line)}
+
+/* ============================================================
+   告警 / 空态 / 错误
+   ============================================================ */
+.note{
+  display:flex;gap:9px;padding:9px 11px;border-radius:var(--r-sm);
+  font-size:12px;line-height:1.5;border:1px solid;
+}
+.note .ic{flex:none;font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.05em}
+.note b{font-weight:650}
+.note.warn{background:var(--warn-wash);border-color:var(--warn-line);color:#6b4405}
+.note.bad{background:var(--bad-wash);border-color:var(--bad-line);color:#8a1e17}
+.note.info{background:var(--accent-wash);border-color:var(--accent-line);color:var(--accent-deep)}
+.note.mute{background:var(--panel-alt);border-color:var(--rule);color:var(--ink-2)}
+.note .act{margin-left:auto;flex:none}
+
+.empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:52px 24px;text-align:center;color:var(--ink-3);
+}
+.empty .ic{
+  width:38px;height:38px;border-radius:var(--r-sm);
+  border:1px dashed var(--rule-strong);display:grid;place-items:center;color:var(--ink-4);
+}
+.empty .t{font-size:13px;font-weight:600;color:var(--ink-2)}
+.empty .d{font-size:12px;max-width:44ch;line-height:1.55}
+.empty .btn{margin-top:4px}
+
+/* 骨架 */
+.sk{background:linear-gradient(90deg,var(--panel-sunk) 25%,#e4e9ee 37%,var(--panel-sunk) 63%);
+  background-size:400% 100%;animation:shim 1.3s ease infinite;border-radius:2px}
+@keyframes shim{0%{background-position:100% 50%}100%{background-position:0 50%}}
+
+/* ============================================================
+   Toast
+   ============================================================ */
+#toasts{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.toast{
+  min-width:250px;max-width:400px;padding:9px 12px;
+  background:var(--ink);color:#eef2f6;border-radius:var(--r-sm);
+  box-shadow:var(--sh-pop);font-size:12.5px;line-height:1.45;
+  display:flex;gap:9px;align-items:flex-start;
+  animation:tin .18s cubic-bezier(.2,.7,.3,1);
+}
+@keyframes tin{from{opacity:0;transform:translateY(6px)}}
+.toast .st2{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.05em;flex:none;margin-top:1px}
+.toast.ok .st2{color:#5fd39a}
+.toast.bad .st2{color:#ff9d94}
+.toast.info .st2{color:#8fb6ef}
+.toast .m{min-width:0}
+.toast .m b{display:block;font-weight:650;margin-bottom:1px}
+.toast .m span{color:#a9b5c1;font-size:11.5px}
+
+/* ============================================================
+   抽屉（右侧详情面板）
+   ============================================================ */
+.scrim{position:fixed;inset:0;background:rgba(20,25,32,.32);z-index:70;opacity:0;pointer-events:none;transition:opacity .16s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(620px,86vw);z-index:71;
+  background:var(--panel);border-left:1px solid var(--rule-mid);
+  box-shadow:var(--sh-pop);display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .2s cubic-bezier(.3,.8,.3,1);
+}
+.drawer.on{transform:none}
+.drawer-hd{flex:none;padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:10px}
+.drawer-hd h3{margin:0;font-size:14px;font-weight:650}
+.drawer-hd p{margin:3px 0 0;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.drawer-hd .x{margin-left:auto;width:24px;height:24px;border:1px solid var(--rule);border-radius:var(--r-sm);
+  display:grid;place-items:center;color:var(--ink-3);font-size:14px;flex:none}
+.drawer-hd .x:hover{background:var(--panel-alt);color:var(--ink)}
+.drawer-bd{flex:1;min-height:0;overflow:auto}
+
+/* ── 详情键值表 ── */
+.kv{display:grid;grid-template-columns:132px minmax(0,1fr);font-size:12px}
+.kv > dt{padding:6px 10px;background:var(--panel-alt);border-bottom:1px solid var(--rule);
+  border-right:1px solid var(--rule);color:var(--ink-3);font-weight:500}
+.kv > dd{padding:6px 10px;border-bottom:1px solid var(--rule);margin:0;min-width:0;
+  font-family:var(--mono);font-size:11.5px;word-break:break-all;line-height:1.5}
+.kv > dd.plain{font-family:var(--sans);font-size:12px}
+
+/* ── 时间线 ── */
+.tl{padding:4px 0}
+.tl-i{display:grid;grid-template-columns:19px minmax(0,1fr);gap:9px;padding:0 14px}
+.tl-i .ax{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.tl-i .ax i{width:7px;height:7px;border-radius:50%;background:var(--rule-strong);flex:none;border:1.5px solid var(--panel)}
+.tl-i .ax .ln{flex:1;width:1px;background:var(--rule);margin-top:2px}
+.tl-i:last-child .ax .ln{display:none}
+.tl-i .ct{min-width:0;padding-bottom:11px}
+.tl-i .ct .h{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.tl-i .ct .h .tt{font-size:12.5px;font-weight:600}
+.tl-i .ct .m{font-family:var(--mono);font-size:10.5px;color:var(--ink-4)}
+.tl-i .ct .dsc{font-size:12px;color:var(--ink-2);margin-top:3px;line-height:1.5}
+.tl-i.on .ax i{background:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.tl-i.ok .ax i{background:var(--ok)}
+.tl-i.bad .ax i{background:var(--bad)}
+.tl-i.hold .ax i{background:var(--hold);box-shadow:0 0 0 3px var(--hold-wash)}
+.tl-i.mute .ax i{background:var(--rule-strong)}
+
+/* ── 代码/JSON 查看（Context Inspector） ── */
+.code{
+  margin:0;padding:10px 12px;background:#10151b;color:#c8d3de;
+  font-family:var(--mono);font-size:11px;line-height:1.65;
+  border-radius:var(--r-sm);overflow:auto;max-height:340px;
+  border:1px solid #1e252d;white-space:pre;
+}
+.code .k{color:#7fb2f0}
+.code .s{color:#8fd6a8}
+.code .n{color:#e2b478}
+.code .b{color:#c98fd6}
+.code .c{color:#5d6b7a;font-style:italic}
+
+/* ============================================================
+   助手（§4.2：可折叠会话侧栏 + 对话主区 + 可展开详情区）
+   ============================================================ */
+.assist{display:grid;grid-template-columns:224px minmax(0,1fr);height:100%;min-height:0}
+.assist.with-detail{grid-template-columns:224px minmax(0,1fr) 340px}
+.convlist{border-right:1px solid var(--rule);display:flex;flex-direction:column;min-height:0;background:var(--panel-alt)}
+.convlist-hd{flex:none;padding:9px 10px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px}
+.convlist-hd .ttl{font-size:12px;font-weight:650}
+.convlist-hd .r{margin-left:auto;display:flex;gap:4px}
+.convlist-bd{flex:1;min-height:0;overflow:auto;padding:5px 6px}
+.conv-i{
+  width:100%;text-align:left;padding:7px 8px;border-radius:var(--r-sm);
+  border:1px solid transparent;margin-bottom:2px;
+}
+.conv-i:hover{background:var(--panel)}
+.conv-i.on{background:var(--panel);border-color:var(--rule-mid)}
+.conv-i .t{font-size:12.5px;font-weight:550;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv-i .m{display:flex;align-items:center;gap:6px;margin-top:3px;font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.conv-i .m .md{margin-left:auto}
+
+.chatwrap{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--canvas)}
+.chat-hd{flex:none;height:44px;display:flex;align-items:center;gap:9px;padding:0 14px;
+  background:var(--panel);border-bottom:1px solid var(--rule)}
+.chat-hd .ttl{font-size:13px;font-weight:650}
+.chat-hd .sub{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.chat-hd .r{margin-left:auto;display:flex;align-items:center;gap:7px}
+.chat-bd{flex:1;min-height:0;overflow:auto;padding:18px 0}
+.chat-in{max-width:840px;margin:0 auto;padding:0 24px}
+
+.msg{margin-bottom:16px}
+.msg-hd{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.msg-hd .who{font-size:11.5px;font-weight:650;color:var(--ink-2)}
+.msg-hd .mt{font-family:var(--mono);font-size:10px;color:var(--ink-4)}
+.msg-hd .r{margin-left:auto;display:flex;gap:5px;opacity:0;transition:opacity .12s}
+.msg:hover .msg-hd .r{opacity:1}
+.user-bubble{
+  background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--rule-strong);
+  border-radius:var(--r-sm);padding:9px 12px;font-size:13px;line-height:1.6;margin-left:30px;
+}
+.ai-body{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-sm);
+  padding:11px 13px;font-size:13px;line-height:1.68;margin-left:30px}
+.ai-body p{margin:0 0 8px}
+.ai-body p:last-child{margin-bottom:0}
+.ai-body ul{margin:0 0 8px;padding-left:18px}
+.ai-body li{margin-bottom:4px}
+.ai-body code{font-family:var(--mono);font-size:11.5px;background:var(--panel-sunk);
+  padding:1px 4px;border-radius:2px;border:1px solid var(--rule)}
+.ai-body strong{font-weight:650}
+
+/* 思考/工具步骤（PRD 要求不展示隐藏思维链，只展示工具事件） */
+.steps{margin:0 0 8px 30px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--panel-alt);overflow:hidden}
+.steps-hd{display:flex;align-items:center;gap:7px;padding:6px 10px;font-size:11.5px;color:var(--ink-2);width:100%;text-align:left}
+.steps-hd .tg{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.step-i{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:8px;padding:5px 10px;
+  border-top:1px solid var(--rule);font-size:11.5px;align-items:center}
+.step-i .ti{font-family:var(--mono);font-size:9.5px;font-weight:700;text-align:center}
+.step-i.ok .ti{color:var(--ok)}
+.step-i.run .ti{color:var(--accent)}
+.step-i.hold .ti{color:var(--hold)}
+.step-i.bad .ti{color:var(--bad)}
+.step-i .tn{font-family:var(--mono);font-size:11px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis}
+.step-i .tm{font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+
+/* 引用卡 */
+.cites{margin:8px 0 0 30px;display:grid;gap:6px}
+.cite{
+  border:1px solid var(--rule);border-left:2px solid var(--ok);border-radius:var(--r-sm);
+  background:var(--panel);padding:8px 11px;font-size:12px;
+}
+.cite .h{display:flex;align-items:center;gap:7px}
+.cite .h b{font-size:12px;font-weight:600}
+.cite .h .loc{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.cite .sn{margin-top:4px;color:var(--ink-2);line-height:1.55;font-size:11.5px}
+.cite .ft{margin-top:6px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.cite .arch{color:var(--warn);font-weight:650}
+
+/* 确认卡（PRD §10.3：确认不是聊天文本） */
+.confcard{
+  margin:9px 0 0 30px;border:1px solid var(--hold-line);border-radius:var(--r-sm);
+  background:var(--hold-wash);overflow:hidden;
+}
+.confcard-hd{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#e2dbf6;
+  border-bottom:1px solid var(--hold-line)}
+.confcard-hd .t{font-size:12.5px;font-weight:650;color:#3d2a75}
+.confcard-hd .ttl{margin-left:auto;font-family:var(--mono);font-size:10px;color:#4a3787}
+.confcard-bd{padding:11px 12px;background:var(--panel)}
+.confcard-bd .why{font-size:12.5px;line-height:1.6;color:var(--ink-2);margin-bottom:10px}
+.confcard-bd .why b{color:var(--ink);font-weight:650}
+.conf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden;margin-bottom:10px}
+.conf-grid > div{background:var(--panel-alt);padding:6px 9px;min-width:0}
+.conf-grid .k{font-size:10.5px;color:var(--ink-3)}
+.conf-grid .v{font-family:var(--mono);font-size:11.5px;font-weight:550;margin-top:2px;word-break:break-all}
+.conf-ft{display:flex;align-items:center;gap:8px}
+.conf-ft .exp{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.conf-ft .exp b{color:var(--warn)}
+
+/* 助手输入区 */
+.chat-ft{flex:none;border-top:1px solid var(--rule);background:var(--panel);padding:11px 0 13px}
+.chat-in .composer{max-width:840px;margin:0 auto;padding:0 24px}
+.comp{
+  border:1px solid var(--rule-mid);border-radius:var(--r-sm);background:var(--panel);
+  transition:border-color .12s,box-shadow .12s;
+}
+.comp:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.comp textarea{
+  width:100%;border:0;outline:none;resize:none;padding:9px 11px 4px;
+  font-size:13px;line-height:1.6;background:transparent;min-height:22px;max-height:180px;
+}
+.comp textarea::placeholder{color:var(--ink-4)}
+.comp-ft{display:flex;align-items:center;gap:8px;padding:5px 7px 6px 9px;border-top:1px solid var(--rule)}
+.comp-ft .att{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-3);
+  border:1px dashed var(--rule-strong);border-radius:var(--r-sm);padding:2px 7px}
+.comp-ft .sp{margin-left:auto}
+.comp-hint{font-size:11px;color:var(--ink-4);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.comp-hint span{display:inline-flex;align-items:center;gap:4px}
+.comp-hint .warnb{color:var(--warn)}
+
+/* 详情抽屉（Agent Run / 工具 / LLM） */
+.ardetail{border-left:1px solid var(--rule);display:flex;flex-direction:column;min-height:0;background:var(--panel)}
+.ardetail-hd{flex:none;padding:9px 12px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px}
+.ardetail-hd .t{font-size:12px;font-weight:650}
+.ardetail-hd .r{margin-left:auto;display:flex;gap:4px}
+.ardetail-bd{flex:1;min-height:0;overflow:auto}
+
+/* ============================================================
+   筛选条 / 工具条
+   ============================================================ */
+.filters{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--panel);
+  border-bottom:1px solid var(--rule);flex-wrap:wrap;flex:none}
+.filters .fl{font-size:11px;color:var(--ink-3);font-weight:550}
+.filters .inp,.filters select.inp{height:26px;width:auto;min-width:104px;font-size:12px}
+.filters .grow{margin-left:auto;display:flex;align-items:center;gap:8px}
+.chipbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;
+  border:1px solid var(--rule-mid);border-radius:var(--r-sm);background:var(--panel);
+  font-size:11.5px;color:var(--ink-2);
+}
+.chip:hover{background:var(--panel-alt)}
+.chip.on{background:var(--accent-wash);border-color:var(--accent-line);color:var(--accent-deep);font-weight:650}
+.chip .c{font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.chip.on .c{color:var(--accent)}
+
+/* ============================================================
+   三维状态（模型中心 §9.2）—— 三个独立维度，绝不合并成一个字段
+   ============================================================ */
+.dims{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden}
+.dim{background:var(--panel);padding:9px 11px;min-width:0}
+.dim .k{font-size:10.5px;color:var(--ink-3);display:flex;align-items:center;gap:5px}
+.dim .v{margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+
+.rolechip{
+  display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;font-weight:700;
+  letter-spacing:.04em;padding:2px 6px;border-radius:2px;border:1px solid;
+}
+.rolechip.champ{color:#8a5a00;background:#fdf3dd;border-color:#e8cf9d}
+.rolechip.chal{color:var(--accent-deep);background:var(--accent-wash);border-color:var(--accent-line)}
+.rolechip.none{color:var(--ink-3);background:var(--mute-wash);border-color:var(--rule-mid)}
+
+/* ============================================================
+   数据版本 / 不可变标记
+   ============================================================ */
+.verbar{display:flex;align-items:center;gap:0;border:1px solid var(--rule);border-radius:var(--r-sm);
+  overflow:hidden;background:var(--panel)}
+.verbar > div{flex:1;padding:7px 10px;border-right:1px solid var(--rule);min-width:0}
+.verbar > div:last-child{border-right:0}
+.verbar .k{font-size:10.5px;color:var(--ink-3)}
+.verbar .v{font-family:var(--mono);font-size:12px;font-weight:600;margin-top:2px;display:flex;align-items:center;gap:6px}
+.immutable{
+  display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9.5px;
+  color:var(--ink-3);border:1px solid var(--rule-mid);border-radius:2px;padding:1px 5px;background:var(--panel-alt);
+}
+
+/* ============================================================
+   训练：状态机图 + 指标轨迹
+   ============================================================ */
+.expstates{display:flex;flex-wrap:wrap;gap:0;align-items:center;font-family:var(--mono);font-size:10px}
+.expstates .s{padding:2px 7px;border:1px solid var(--rule-mid);border-radius:2px;color:var(--ink-3);background:var(--panel)}
+.expstates .s.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.expstates .s.past{background:var(--ok-wash);border-color:var(--ok-line);color:var(--ok)}
+.expstates .s.bad{background:var(--bad-wash);border-color:var(--bad-line);color:var(--bad)}
+.expstates .ar{color:var(--ink-4);padding:0 5px}
+
+/* ============================================================
+   批量：行级校验结果
+   ============================================================ */
+.rowstat{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;font-weight:650}
+.rowstat.ok{color:var(--ok)}
+.rowstat.bad{color:var(--bad)}
+.rowstat.skip{color:var(--ink-3)}
+.progress{height:5px;background:var(--panel-sunk);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .4s cubic-bezier(.3,.8,.3,1)}
+.progress.ok i{background:var(--ok)}
+.progress.bad i{background:var(--bad)}
+.progress.warn i{background:var(--warn)}
+
+/* ============================================================
+   杂项
+   ============================================================ */
+.muted{color:var(--ink-3)}
+.tiny{font-size:11px}
+.strike{text-decoration:line-through;color:var(--ink-4)}
+.hl{background:#fff2a8;padding:0 2px;border-radius:2px}
+.divider{height:1px;background:var(--rule);margin:11px 0}
+.divider.v{width:1px;height:auto;align-self:stretch;margin:0 11px}
+.nowrap{white-space:nowrap}
+.ell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row{display:flex;align-items:center;gap:8px}
+.row.wrap{flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:8px}
+.push{margin-left:auto}
+.mt6{margin-top:6px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt12{margin-top:12px}.mt14{margin-top:14px}
+.mb6{margin-bottom:6px}.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}
+.hide{display:none !important}
+
+/* 窄屏 */
+@media (max-width:1360px){
+  .assist.with-detail{grid-template-columns:200px minmax(0,1fr) 300px}
+  .split.s-58{grid-template-columns:minmax(400px,55fr) minmax(0,45fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body><div class="shell">
+
+<!-- ══════════════════════════════════════════════════════════
+     左栏：构建期注册的一级 / 二级 / 三级导航
+     顺序严格遵循 PRD §4.1，助手固定末位，设置固定左下角
+     ══════════════════════════════════════════════════════════ -->
+<nav class="rail">
+  <div class="rail-brand">
+    <div class="rail-mark">
+      <!-- 三重峰：一次进样、三类色谱 -->
+      <svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round">
+        <path d="M1.5 12.5h13"/>
+        <path d="M4 12.5V9"/><path d="M4.6 9c.6-4.4 2-6.5 2.9-6.5s2.3 2.1 2.9 6.5"/>
+        <path d="M9.6 12.5V7.5"/>
+      </svg>
+    </div>
+    <div>
+      <h1>通用色谱智能平台</h1>
+      <div class="sub">Universal Chromatography Platform</div>
+    </div>
+  </div>
+
+  <div class="rail-scroll">
+    <!-- 一级 1：色谱预测 -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>色谱预测<span class="tail">5 TYPES</span></div>
+      <button class="nav-i on" data-v="pred" data-g="pred">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+          <path d="M1.5 13h13"/><path d="M8 13V2"/><path d="M8 2.6c2.6 3.4 3.8 6.3 3.8 8.4"/>
+        </svg>
+        <span class="lb">预测工作台</span><span class="bv">TLC·CC·HPLC·SFC·GC</span>
+      </button>
+      <div class="nav-2">
+        <button class="nav-i" data-v="pred-tlc" data-g="pred-tlc">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2.5" width="12" height="11" rx="1"/><path d="M2 9h12" stroke-dasharray="2 2"/></svg>
+          <span class="lb">TLC 薄层色谱</span>
+        </button>
+        <div class="nav-3">
+          <button class="nav-i on" data-v="pred-tlc" data-g="pred-tlc"><span class="lb">单次预测</span></button>
+          <button class="nav-i" data-v="pred-tlc-cmp" data-g="pred-tlc-cmp"><span class="lb">条件比较</span></button>
+          <button class="nav-i" data-v="pred-tlc-rev" data-g="pred-tlc-rev"><span class="lb">溶剂反推</span></button>
+          <button class="nav-i" data-v="pred-tlc-batch" data-g="pred-tlc-batch"><span class="lb">批量预测</span></button>
+        </div>
+
+        <button class="nav-i" data-v="pred-cc" data-g="pred-cc">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="8" height="12" rx="1"/><path d="M4 10.5h8" stroke-dasharray="1.5 1.5"/></svg>
+          <span class="lb">CC 柱色谱</span>
+        </button>
+        <div class="nav-3">
+          <button class="nav-i" data-v="pred-cc" data-g="pred-cc"><span class="lb">单次预测</span></button>
+          <button class="nav-i" data-v="pred-cc-batch" data-g="pred-cc-batch"><span class="lb">批量预测</span></button>
+        </div>
+
+        <button class="nav-i" data-v="pred-hplc" data-g="pred-hplc">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2.5" y="4" width="11" height="8" rx="1"/><path d="M5 4v8M9.5 4v8" stroke-dasharray="1.2 1.2"/></svg>
+          <span class="lb">HPLC 手性拆分</span>
+        </button>
+        <div class="nav-3">
+          <button class="nav-i" data-v="pred-hplc" data-g="pred-hplc"><span class="lb">单次预测</span></button>
+          <button class="nav-i" data-v="pred-hplc-batch" data-g="pred-hplc-batch"><span class="lb">批量预测</span></button>
+        </div>
+
+        <button class="nav-i" data-v="pred-sfc" data-g="pred-sfc">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 13V5.5L8 2l5 3.5V13z"/><path d="M3 8h10" stroke-dasharray="2 1.6"/></svg>
+          <span class="lb">SFC 超临界流体</span>
+        </button>
+        <div class="nav-3">
+          <button class="nav-i" data-v="pred-sfc" data-g="pred-sfc"><span class="lb">单柱预测</span></button>
+          <button class="nav-i" data-v="pred-sfc-full" data-g="pred-sfc-full"><span class="lb">全柱筛选</span></button>
+          <button class="nav-i" data-v="pred-sfc-batch" data-g="pred-sfc-batch"><span class="lb">批量预测</span></button>
+        </div>
+
+        <button class="nav-i" data-v="pred-gc" data-g="pred-gc">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 12.5l4-7 3 5 2-3 3 5z"/></svg>
+          <span class="lb">GC 气相色谱</span>
+        </button>
+        <div class="nav-3">
+          <button class="nav-i" data-v="pred-gc" data-g="pred-gc"><span class="lb">单次预测</span></button>
+          <button class="nav-i" data-v="pred-gc-batch" data-g="pred-gc-batch"><span class="lb">批量预测</span></button>
+        </div>
+
+        <!-- 可选独立适配器：不与 HPLC 混用表单 -->
+        <button class="nav-i" data-v="pred-chiral" data-g="pred-chiral">
+          <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="8" r="3.4"/><circle cx="10" cy="8" r="3.4"/></svg>
+          <span class="lb">手性 LC</span><span class="bv">独立</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 一级 2：数据与知识中心（二级固定顺序：预测记录/色谱数据/知识中心） -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>数据与知识中心<span class="tail">3 MODULES</span></div>
+      <button class="nav-i" data-v="records" data-g="records">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="3" width="12" height="3" rx="1"/><rect x="2" y="8.5" width="12" height="3" rx="1"/></svg>
+        <span class="lb">预测记录</span>
+      </button>
+      <button class="nav-i" data-v="datasets" data-g="datasets">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="8" cy="4" rx="5.5" ry="2.2"/><path d="M2.5 4v8c0 1.2 2.5 2.2 5.5 2.2s5.5-1 5.5-2.2V4"/><path d="M2.5 8c0 1.2 2.5 2.2 5.5 2.2s5.5-1 5.5-2.2"/></svg>
+        <span class="lb">色谱数据</span>
+      </button>
+      <button class="nav-i" data-v="knowledge" data-g="knowledge">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 2.5h6.5a2 2 0 012 2V14a1.5 1.5 0 00-1.5-1.5H3z"/><path d="M3 2.5V14"/></svg>
+        <span class="lb">知识中心</span>
+      </button>
+    </div>
+
+    <!-- 一级 3：模型训练 -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>模型训练</div>
+      <button class="nav-i" data-v="training" data-g="training">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 2.2l5.2 3v6.6l-5.2 3-5.2-3V5.2z"/><circle cx="8" cy="8" r="2.2"/></svg>
+        <span class="lb">训练实验</span>
+      </button>
+      <button class="nav-i" data-v="templates" data-g="templates">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="3" width="12" height="3.5" rx="1"/><rect x="2" y="9.5" width="12" height="3.5" rx="1"/></svg>
+        <span class="lb">模板与数据版本</span>
+      </button>
+    </div>
+
+    <!-- 一级 4：模型中心 -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>模型中心</div>
+      <button class="nav-i" data-v="models" data-g="models">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><circle cx="8" cy="8" r="3"/><path d="M8 1.2v1.3M8 13.5v1.3M1.2 8h1.3M13.5 8h1.3"/></svg>
+        <span class="lb">模型库</span>
+      </button>
+      <button class="nav-i" data-v="deploy" data-g="deploy">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 13.5V7"/><path d="M5 9.5l3-3 3 3"/><path d="M2.5 2.5h11v2.6h-11z"/></svg>
+        <span class="lb">发布与回滚</span>
+      </button>
+    </div>
+
+    <!-- 一级 5：实用工具 -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>实用工具</div>
+      <button class="nav-i" data-v="structure" data-g="structure">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="4" cy="4" r="1.7"/><circle cx="12" cy="4" r="1.7"/><circle cx="4" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><path d="M5.6 4.8l4.8 0M5.6 11.2l4.8 0M4 5.7v4.6M12 5.7v4.6"/></svg>
+        <span class="lb">结构处理</span><span class="bv">必含</span>
+      </button>
+      <button class="nav-i" data-v="lookup" data-g="lookup">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4L14 14"/></svg>
+        <span class="lb">分子查找</span>
+      </button>
+    </div>
+
+    <!-- 一级 6：助手（固定末位） -->
+    <div class="rail-sec">
+      <div class="rail-sec-hd"><i class="dot"></i>色谱智能助手</div>
+      <button class="nav-i" data-v="assistant" data-g="assistant">
+        <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2.5 11.5V5a2 2 0 012-2h7a2 2 0 012 2v6.5"/><path d="M2.5 11.5l2.2-2.2h6.6l2.2 2.2"/><circle cx="6" cy="7" r=".9" fill="currentColor"/><circle cx="10" cy="7" r=".9" fill="currentColor"/></svg>
+        <span class="lb">对话与助手</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 系统设置固定左下角，不与业务导航混排 -->
+  <div class="rail-foot">
+    <button class="nav-i" data-v="settings" data-g="settings">
+      <svg class="gi" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6M3.7 3.7l1.1 1.1M11.2 11.2l1.1 1.1M12.3 3.7l-1.1 1.1M4.8 11.2l-1.1 1.1"/></svg>
+      <span class="lb">系统设置</span>
+    </button>
+    <!-- 构建身份来自产物内不可变 manifest，不由 .env 选择模块 -->
+    <div class="rail-build">
+      <b>BUILD</b> universal-v1<br>
+      <b>API</b> 1.0 · req_a91f…<br>
+      <b>MODE</b> deployment_default
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     主区
+     ══════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <header class="topbar">
+    <div class="crumb" id="crumb">
+      <span>色谱预测</span><span class="sep">/</span>
+      <span class="opt">TLC 薄层色谱</span><span class="sep">/</span>
+      <span class="cur">单次预测</span>
+    </div>
+
+    <div class="searchbox">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4L14 14"/></svg>
+      <span>搜索记录、结构、模型…</span>
+      <kbd>/</kbd>
+    </div>
+
+    <div class="topbar-r">
+      <!-- 队列与 Worker 心跳：PRD §19.2 队列缺失不得伪造正常 -->
+      <div class="health"><i></i><span class="mono" id="queueHealth">5 workers</span></div>
+      <div class="tenant">
+        <div class="av">DP</div>
+        <div>
+          <div style="font-weight:600;font-size:11.5px">deployment_default</div>
+          <div class="mono" style="font-size:9px;color:var(--ink-4)">单主体受控部署</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="viewHost" style="flex:1;min-height:0;display:flex;overflow:hidden"></div>
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     以下为各业务视图。由脚本在启动时搬入 #viewHost，
+     使其成为 .shell 网格内的第二个格子（main 之后）。
+     ══════════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════════════
+     视图 1：色谱预测 · TLC 单次预测
+     签名元素 —— 底部 ProvenanceBar 承载模型/版本/SHA/schema/来源
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view on" id="v-pred-tlc">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>TLC 薄层色谱 · 单次预测</h2>
+        <p>输入化合物结构与展开体系，预测 Rf。结果仅来自能力契约声明的真实模型，缺失模型时该能力显示不可用。</p>
+      </div>
+      <div class="acts">
+        <div class="seg"><button class="on">单次</button><button data-goto="pred-tlc-batch">批量</button><button data-goto="pred-tlc-cmp">条件比较</button></div>
+        <button class="btn" data-toast="info">重新载入上次输入</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-58">
+
+      <!-- ── 输入栏 ── -->
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>预测输入<span class="r"><span class="muted tiny">必含结构核心</span></span></div>
+        <div class="body">
+
+          <div class="blk">
+            <div class="blk-hd">
+              <h3>化合物结构</h3>
+              <span class="hint">结构核心在全部构建中保留</span>
+              <div class="r">
+                <button class="btn sm" data-toast="info">绘制</button>
+                <button class="btn sm" data-toast="info">导入 CDX / SDF</button>
+              </div>
+            </div>
+
+            <!-- 三种输入方式共用同一结构对象 -->
+            <div class="chipbar mb10">
+              <button class="chip on">SMILES</button>
+              <button class="chip">Ketcher 绘制</button>
+              <button class="chip">结构文件</button>
+              <button class="chip">历史记录</button>
+            </div>
+
+            <div class="struct">
+              <div class="struct-hd">
+                <span class="n">STRUCT</span>
+                <span>结构对象</span>
+                <span class="muted tiny" style="font-weight:400">归一化后绑定 schema v1.4</span>
+                <div class="r">
+                  <button class="btn sm" data-toast="info">复制 SMILES</button>
+                  <button class="btn sm" data-toast="info">PNG</button>
+                </div>
+              </div>
+              <div class="struct-bd">
+                <div class="struct-canvas">
+                  <!-- 苯环示意：结构渲染位 -->
+                  <svg width="176" height="112" viewBox="0 0 176 112" fill="none">
+                    <g stroke="#141920" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M62 22l24 14v28l-24 14-24-14V36z" opacity=".9"/>
+                      <path d="M86 36l24 14v28l-24 14" opacity=".35"/>
+                      <path d="M38 36v-6" opacity=".9"/>
+                      <path d="M110 50h9" opacity=".9"/>
+                      <path d="M119 50v-7" opacity=".9"/>
+                      <path d="M119 50l7 4" opacity=".9"/>
+                    </g>
+                    <g stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round">
+                      <path d="M38 30c-4-3-6-6-6-9" opacity=".85"/>
+                      <path d="M32 21l-4 2"/>
+                    </g>
+                    <text x="119" y="70" font-family="JetBrains Mono,Consolas,monospace" font-size="10" fill="var(--accent)">C</text>
+                    <text x="30" y="22" font-family="JetBrains Mono,Consolas,monospace" font-size="8.5" fill="#48525d">OH</text>
+                    <text x="62" y="96" font-family="JetBrains Mono,Consolas,monospace" font-size="8.5" fill="#9aa4ae">C₈H₁₀O₂</text>
+                  </svg>
+                </div>
+                <div class="struct-side">
+                  <div class="k">STRUCTURE_ID</div>
+                  <div class="v" style="margin-bottom:8px">str_9f2c41a7</div>
+                  <div class="k">CANONICAL (ISOMERIC)</div>
+                  <div class="v" style="margin-bottom:8px">CC(=O)c1ccc(O)cc1</div>
+                  <div class="k">STEREO</div>
+                  <div class="v" style="color:var(--ok);margin-bottom:8px">NONE DEFINED</div>
+                  <div class="k">NORMALIZED HASH</div>
+                  <div class="v" style="font-size:9.5px;color:var(--ink-3)">sha256:4b1e…9ca7</div>
+                </div>
+              </div>
+              <div class="struct-ft">
+                <div class="smiles-in">
+                  <input class="inp mono" value="CC(=O)c1ccc(O)cc1" spellcheck="false" />
+                  <button class="btn">归一化</button>
+                </div>
+                <div class="row mt6" style="gap:12px">
+                  <span class="tiny muted">保留立体信息 <b class="mono" style="color:var(--ok)">@/@@</b> · 盐与电荷不改写</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TLC 专属：溶剂组分 2–5，fraction 和为 1，不自动归一化 -->
+          <div class="blk">
+            <div class="blk-hd"><h3>展开体系</h3><span class="hint">组分 2–5，比例和在 1±1e-6</span></div>
+            <div class="col" style="gap:7px">
+              <div class="row">
+                <div class="fld" style="width:min(280px,60%)"><label>溶剂 <span class="req">*</span></label>
+                  <select class="inp"><option>正己烷 hexane</option><option>石油醚 petroleum_ether</option><option>乙酸乙酯 ethyl_acetate</option></select>
+                </div>
+                <div class="fld" style="width:110px"><label>体积分数 <span class="req">*</span></label>
+                  <input class="inp mono num" value="0.70" /></div>
+                <button class="btn" style="margin-top:19px" data-toast="info">+ 组分</button>
+              </div>
+              <div class="row">
+                <div class="fld" style="width:min(280px,60%)"><label>溶剂 <span class="req">*</span></label>
+                  <select class="inp"><option>乙酸乙酯 ethyl_acetate</option><option>甲醇 methanol</option></select>
+                </div>
+                <div class="fld" style="width:110px"><label>体积分数 <span class="req">*</span></label>
+                  <input class="inp mono num" value="0.30" /></div>
+                <button class="btn" style="margin-top:19px" data-toast="bad">移除</button>
+              </div>
+            </div>
+            <!-- PRD §6.2：石油醚不得被当作正己烷 -->
+            <div class="note mute mt10">
+              <span class="ic">INFO</span>
+              <span><b>petroleum_ether</b> 与 <b>hexane</b> 是不同溶剂 ID，系统不自动互相替换。是否允许该二元体系由模型白名单决定。</span>
+            </div>
+            <div class="row mt10" style="gap:9px">
+              <div style="flex:1">
+                <div class="row tiny muted" style="justify-content:space-between;margin-bottom:4px">
+                  <span>比例和校验</span><span class="mono">0.70 + 0.30</span>
+                </div>
+                <div class="progress ok"><i style="width:100%"></i></div>
+              </div>
+              <span class="st ok"><i></i>SUM 1.000</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>模型选择</h3><span class="hint">只接受能力声明的精确模型与处理配置</span></div>
+            <div class="grid2">
+              <div class="fld"><label>model_id <span class="req">*</span></label>
+                <input class="inp mono" value="tlc-rf-amylose-v3" readonly /></div>
+              <div class="fld"><label>model_version <span class="req">*</span></label>
+                <input class="inp mono" value="1.2.0" readonly /></div>
+              <div class="fld"><label>preprocessing_profile_id</label>
+                <input class="inp mono" value="tlc_pre_norm_7" readonly /></div>
+              <div class="fld"><label>profile sha256</label>
+                <input class="inp mono" value="9d2f…71ac" readonly /></div>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <div class="row" style="gap:8px">
+              <button class="btn pri" style="height:32px;padding:0 18px" data-run="tlc">开始预测</button>
+              <button class="btn" style="height:32px">存为草稿</button>
+              <span class="tiny muted push">提交后自动创建 202 任务并写入预测记录</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 结果栏 ── -->
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>预测结果<span class="r"><span class="st mute" id="tlcBadge">IDLE</span></span></div>
+        <div class="body">
+
+          <div id="tlcIdle" class="empty">
+            <div class="ic"><svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 16h12M7 16V8M7 8c1.2-3 2-4 2.6-4S11 5 11.6 8"/><path d="M12 16v-5"/></svg></div>
+            <div class="t">尚无预测结果</div>
+            <div class="d">在左侧完成结构与展开体系设置后提交。单次预测与批量使用同一套异步任务契约。</div>
+            <button class="btn" data-toast="info">查看 TLC 能力契约</button>
+          </div>
+
+          <div id="tlcRun" class="hide">
+            <!-- 真实任务状态机，非假进度 -->
+            <div class="jsm">
+              <div class="jsm-t">
+                <span class="ttl">TLC Rf 预测</span>
+                <span class="jid">job_tlc_4b1e92</span>
+                <div class="r"><span class="st run" id="tlcState"><i></i>RUNNING</span><button class="btn sm" data-toast="info">取消任务</button></div>
+              </div>
+              <div class="jsm-rail">
+                <div class="jsm-node done"><i></i><div class="lb">QUEUED</div><div class="dt">10:24:01</div></div>
+                <div class="jsm-node now"><i></i><div class="lb">RUNNING</div><div class="dt">10:24:03</div></div>
+                <div class="jsm-node"><i></i><div class="lb">SUCCEEDED</div><div class="dt"></div></div>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="mets c2">
+                <div class="met">
+                  <div class="k">预测 Rf <span class="origin model">MODEL</span></div>
+                  <div class="v" id="tlcRf">0.46</div>
+                  <div class="d">mol·L⁻¹ 无量纲</div>
+                </div>
+                <div class="met">
+                  <div class="k">展开距离比 <span class="origin derived">DERIVED</span></div>
+                  <div class="v" id="tlcDist">2.3<span class="u">cm</span></div>
+                  <div class="d">按基线固定 5.0 cm 折算</div>
+                </div>
+              </div>
+
+              <!-- TLC 板：预测点 vs 真实无对比时不画实测点 -->
+              <div class="chart mt10">
+                <div class="chart-hd">
+                  <span class="t">TLC 板位示意</span>
+                  <span class="origin predicted">predicted</span>
+                  <div class="r"><button class="btn sm" data-toast="info">下载 PNG</button></div>
+                </div>
+                <div class="chart-bd">
+                  <svg width="100%" height="150" viewBox="0 0 340 150">
+                    <defs>
+                      <linearGradient id="sol" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#f3f7fb"/><stop offset="1" stop-color="#e7edf4"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- 基线 -->
+                    <line x1="26" y1="128" x2="322" y2="128" stroke="#48525d" stroke-width="1.5"/>
+                    <!-- 溶剂前沿 -->
+                    <line x1="26" y1="22" x2="322" y2="22" stroke="#aab4c0" stroke-width="1" stroke-dasharray="4 3"/>
+                    <text x="26" y="17" font-family="monospace" font-size="8.5" fill="#9aa4ae">溶剂前沿 5.0 cm</text>
+                    <text x="26" y="142" font-family="monospace" font-size="8.5" fill="#77828e">基线</text>
+                    <!-- 展开方向 -->
+                    <path d="M170 122v6M167 125l3-3 3 3" stroke="#aab4c0" stroke-width="1" fill="none"/>
+                    <!-- 预测点 -->
+                    <g id="tlcSpot">
+                      <ellipse cx="112" cy="66" rx="20" ry="8" fill="var(--accent)" opacity=".14"/>
+                      <ellipse cx="112" cy="66" rx="9" ry="4" fill="var(--accent)" opacity=".55"/>
+                      <circle cx="112" cy="66" r="2" fill="var(--accent-deep)"/>
+                    </g>
+                    <!-- 尺规 -->
+                    <g stroke="#c8d0d9" stroke-width="1">
+                      <line x1="308" y1="128" x2="308" y2="22"/>
+                      <line x1="305" y1="128" x2="311" y2="128"/>
+                      <line x1="305" y1="22" x2="311" y2="22"/>
+                    </g>
+                    <text x="313" y="80" font-family="monospace" font-size="8.5" fill="#77828e">5.0 cm</text>
+                  </svg>
+                </div>
+                <div class="legend">
+                  <span><i class="sq" style="background:var(--accent)"></i>模型预测位置</span>
+                  <span class="muted">无实验对照数据时不绘制实测点</span>
+                </div>
+              </div>
+
+              <!-- 应用范围提醒（PRD §1.1） -->
+              <div class="note warn mt10">
+                <span class="ic">WARN</span>
+                <span>平台结果用于实验前筛选与条件建议，<b>不替代实验验证</b>，不直接控制生产仪器。适用范围见下方能力快照。</span>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">结果溯源</div>
+              <div class="prov">
+                <span class="flag prod">production</span>
+                <span><span class="k">MODEL</span><b>tlc-rf-amylose-v3</b></span>
+                <span><span class="k">VER</span><b>1.2.0</b></span>
+                <span><span class="k">ARTIFACT</span><span class="sha">sha256:3f8a…c1d4</span></span>
+                <span><span class="k">IN</span><b>tlc/single@1.0</b></span>
+                <span><span class="k">OUT</span><b>tlc_result@1.1</b></span>
+                <span><span class="k">STRUCT</span><span class="sha">str_9f2c41a7</span></span>
+              </div>
+              <div class="prov mt6">
+                <span><span class="k">JOB</span><span class="sha">job_tlc_4b1e92</span></span>
+                <span><span class="k">ATTEMPT</span><b>1</b></span>
+                <span><span class="k">SOURCE</span><b>web</b></span>
+                <span><span class="k">WARNINGS</span><b>2</b></span>
+                <span><span class="k">ELAPSED</span><span class="sha">1.84 s</span></span>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">warnings</div>
+              <div class="col" style="gap:6px">
+                <div class="note warn"><span class="ic">W01</span><span>该结构含苯环共轭体系，外推到含杂环或强吸电子基的类似物时误差可能增大。</span></div>
+                <div class="note warn"><span class="ic">W02</span><span>模型训练数据未覆盖此展开体系的温湿度条件，<b>需实验确认</b>；当前无独立泛化评测证据。</span></div>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">操作</div>
+              <div class="row wrap" style="gap:7px">
+                <button class="btn sm">导出 CSV</button>
+                <button class="btn sm">导出 JSON</button>
+                <button class="btn sm">导出 XLSX</button>
+                <button class="btn sm" data-toast="info">导出 PDF（未构建）</button>
+                <span class="divider v"></span>
+                <button class="btn sm" data-toast="info">用当前输入再算一次</button>
+                <button class="btn sm" data-toast="info">归档记录</button>
+              </div>
+              <div class="tiny muted mt8">PDF、PNG 与组合 ZIP 由独立导出能力构建；依赖未交付时导出入口显示不可用，而不是生成空文件。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     视图 2：HPLC 单次预测 —— schema 1.1
+     双对映体有序槽位，UI 必须让"保序 + 逐槽绑定"可见
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-pred-hplc">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>HPLC 手性拆分 · 单次预测 <span class="typechip lc"><i></i>LC</span></h2>
+        <p>接收<strong>恰好两个有序对映体结构引用</strong>，本次提交的两条原始 SMILES 与槽位逐一对应并随快照冻结。</p>
+      </div>
+      <div class="acts">
+        <div class="seg"><button class="on">单次</button><button data-goto="pred-hplc-batch">批量</button></div>
+        <button class="btn" data-goto="pred-chiral">改用手性 LC 适配器</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>预测输入<span class="r"><span class="st mute">SCHEMA 1.1</span></span></div>
+        <div class="body">
+
+          <div class="blk">
+            <div class="blk-hd"><h3>对映体结构对</h3><span class="hint">2 个结构引用，顺序有意义</span></div>
+
+            <div class="dual">
+              <!-- 槽 A -->
+              <div class="slot" id="hplcSlotA">
+                <div class="t"><span class="idx">A</span>对映体 A<span class="rule">slot 0</span></div>
+                <div class="cv">
+                  <svg width="128" height="92" viewBox="0 0 128 92" fill="none">
+                    <g stroke="#141920" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M52 20l22 13v26L52 72 30 59V33z"/>
+                      <path d="M52 20V7"/><path d="M52 85v-13"/>
+                    </g>
+                    <g stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round">
+                      <path d="M46 7L34 12"/><path d="M38 4l-5 8"/>
+                    </g>
+                    <text x="20" y="16" font-family="monospace" font-size="9" fill="var(--accent)">N</text>
+                    <text x="82" y="24" font-family="monospace" font-size="8.5" fill="#77828e">CO₂H</text>
+                  </svg>
+                </div>
+                <div class="bd">
+                  <div class="lbl">本次提交原文 RAW SMILES</div>
+                  <div class="smi" id="hplcRawA">N[C@@H](C)C(O)=O</div>
+                </div>
+              </div>
+
+              <!-- 槽 B -->
+              <div class="slot" id="hplcSlotB">
+                <div class="t"><span class="idx">B</span>对映体 B<span class="rule">slot 1</span></div>
+                <div class="cv">
+                  <svg width="128" height="92" viewBox="0 0 128 92" fill="none">
+                    <g stroke="#141920" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M52 20l22 13v26L52 72 30 59V33z"/>
+                      <path d="M52 20V7"/><path d="M52 85v-13"/>
+                    </g>
+                    <g stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="2.5 2.5">
+                      <path d="M58 7l12 5"/>
+                    </g>
+                    <text x="70" y="16" font-family="monospace" font-size="9" fill="var(--accent)">N</text>
+                    <text x="82" y="24" font-family="monospace" font-size="8.5" fill="#77828e">CO₂H</text>
+                  </svg>
+                </div>
+                <div class="bd">
+                  <div class="lbl">本次提交原文 RAW SMILES</div>
+                  <div class="smi" id="hplcRawB">N[C@H](C)C(O)=O</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 保序绑定的可视化说明 -->
+            <div class="bindbar">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5.5 8.5l2 2 4-4.5"/><rect x="1.5" y="5" width="4.5" height="6" rx="1"/><rect x="10" y="5" width="4.5" height="6" rx="1"/></svg>
+              <span><b class="mono">model_input_smiles[0]</b> 绑定槽 A，<b class="mono">[1]</b> 绑定槽 B。两组严格保序，canonical SMILES <b>不能替代</b>模型输入。</span>
+            </div>
+
+            <div class="grid2 mt10">
+              <div class="fld"><label>结构 A <span class="opt">structure_ref</span></label>
+                <input class="inp mono" value="str_ent_alanine_r" readonly /></div>
+              <div class="fld"><label>结构 B <span class="opt">structure_ref</span></label>
+                <input class="inp mono" value="str_ent_alanine_s" readonly /></div>
+            </div>
+
+            <div class="note warn mt10">
+              <span class="ic">WARN</span>
+              <span>模型输入对 SMILES 表示可能敏感。训练端原始表示与缓存 provenance 尚未确认，正式结果持续显示该限制及<b>实验确认、无独立泛化证据</b>提示。</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>分离条件</h3></div>
+            <div class="grid2">
+              <div class="fld"><label>异丙醇比例 <span class="req">*</span> <span class="opt">[0,1]</span></label>
+                <input class="inp mono num" value="0.10" /></div>
+              <div class="fld"><label>流速 mL/min <span class="req">*</span></label>
+                <input class="inp mono num" value="1.0" /></div>
+            </div>
+            <div class="fld mt10"><label>候选手性柱 <span class="req">*</span> <span class="opt">不重复，须在能力声明内</span></label>
+              <div class="chipbar mt6">
+                <button class="chip on">ADH</button><button class="chip on">IA</button><button class="chip">OD</button>
+                <button class="chip">IA-U</button><button class="chip">OJ</button><button class="chip">Amylose</button>
+                <button class="chip">+ 添加</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>模型与处理配置</h3><span class="hint">mode 必须为 exact</span></div>
+            <div class="grid2">
+              <div class="fld"><label>mode</label><input class="inp mono" value="exact" readonly /></div>
+              <div class="fld"><label>model_id / version</label><input class="inp mono" value="hplc-chiral-pair-v2 / 2.1.0" readonly /></div>
+              <div class="fld"><label>preprocessing_profile_id</label><input class="inp mono" value="hplc_pre_norm_4" readonly /></div>
+              <div class="fld"><label>profile sha256</label><input class="inp mono" value="e0a7…33b8" readonly /></div>
+            </div>
+            <div class="note mute mt10">
+              <span class="ic">INFO</span>
+              <span>模型制品哈希由服务端解析校验并绑定模型快照，<b>不作为客户端字段提交</b>。缺少 profile pair、raw 或过期 profile 一律拒绝。</span>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <div class="row" style="gap:8px">
+              <button class="btn pri" style="height:32px;padding:0 18px" data-run="hplc">开始预测</button>
+              <button class="btn" style="height:32px">存为草稿</button>
+              <span class="tiny muted push">schema 1.0 历史记录仅只读展示与导出，不可重放重试</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>预测结果<span class="r"><span class="st mute" id="hplcBadge">IDLE</span></span></div>
+        <div class="body">
+          <div id="hplcIdle" class="empty">
+            <div class="ic"><svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 16h14"/><path d="M6 16V9l3-4 3 4v7"/><path d="M12 16v-4h3v4"/></svg></div>
+            <div class="t">尚无预测结果</div>
+            <div class="d">需提交两个有序对映体结构与精确模型选择。缺任一槽位、profile 不匹配或顺序错误都会被服务端拒绝。</div>
+          </div>
+
+          <div id="hplcRun" class="hide">
+            <div class="jsm">
+              <div class="jsm-t">
+                <span class="ttl">HPLC 对映体拆分预测</span>
+                <span class="jid">job_hplc_71c3</span>
+                <div class="r"><span class="st run"><i></i>RUNNING</span><button class="btn sm" data-toast="info">取消任务</button></div>
+              </div>
+              <div class="jsm-rail">
+                <div class="jsm-node done"><i></i><div class="lb">QUEUED</div><div class="dt">10:31:07</div></div>
+                <div class="jsm-node now"><i></i><div class="lb">RUNNING</div><div class="dt">10:31:09</div></div>
+                <div class="jsm-node"><i></i><div class="lb">SUCCEEDED</div><div class="dt"></div></div>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="mets c4">
+                <div class="met"><div class="k">保留时间 A</div><div class="v">6.84<span class="u">min</span></div><div class="d">slot 0</div></div>
+                <div class="met"><div class="k">保留时间 B</div><div class="v">7.91<span class="u">min</span></div><div class="d">slot 1</div></div>
+                <div class="met"><div class="k">分离度 α</div><div class="v">1.28</div><div class="d">model output</div></div>
+                <div class="met"><div class="k">最佳柱</div><div class="v" style="font-size:15px">ADH</div><div class="d">2 candidates</div></div>
+              </div>
+
+              <!-- 双峰色谱图：技术制图 -->
+              <div class="chart mt10">
+                <div class="chart-hd">
+                  <span class="t">预测色谱图 · ADH · IPA 10%</span>
+                  <span class="origin predicted">predicted</span>
+                  <div class="r"><button class="btn sm" data-toast="info">下载 PNG</button></div>
+                </div>
+                <div class="chart-bd">
+                  <svg width="100%" height="170" viewBox="0 0 360 170">
+                    <g stroke="#eef1f5" stroke-width="1">
+                      <line x1="40" y1="20" x2="352" y2="20"/><line x1="40" y1="55" x2="352" y2="55"/>
+                      <line x1="40" y1="90" x2="352" y2="90"/><line x1="40" y1="125" x2="352" y2="125"/>
+                    </g>
+                    <line x1="40" y1="145" x2="352" y2="145" stroke="#48525d" stroke-width="1.3"/>
+                    <line x1="40" y1="16" x2="40" y2="145" stroke="#48525d" stroke-width="1.3"/>
+                    <!-- 峰 A -->
+                    <path d="M40 145 L86 145 C104 145 108 118 118 66 C126 26 133 26 141 66 C151 118 156 145 174 145 L352 145"
+                          fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+                    <path d="M40 145 L86 145 C104 145 108 130 118 108 C126 90 133 90 141 108 C151 130 156 145 174 145 L352 145"
+                          fill="var(--accent)" opacity=".09"/>
+                    <!-- 峰 B -->
+                    <path d="M40 145 L118 145 C136 145 140 122 150 78 C158 38 165 38 173 78 C183 122 188 145 206 145 L352 145"
+                          fill="none" stroke="#0c7048" stroke-width="1.6" stroke-dasharray="5 2.5"/>
+                    <!-- 标注 -->
+                    <g font-family="monospace" font-size="9">
+                      <line x1="129" y1="30" x2="129" y2="16" stroke="#aab4c0" stroke-dasharray="2 2"/>
+                      <text x="129" y="12" fill="var(--accent)" text-anchor="middle">A 6.84</text>
+                      <line x1="161" y1="42" x2="161" y2="16" stroke="#aab4c0" stroke-dasharray="2 2"/>
+                      <text x="168" y="12" fill="#0c7048">B 7.91</text>
+                    </g>
+                    <g font-family="monospace" font-size="8.5" fill="#77828e">
+                      <text x="196" y="160">t / min</text>
+                      <text x="6" y="24">mAU</text>
+                      <text x="40" y="160">0</text><text x="348" y="160" text-anchor="end">12</text>
+                    </g>
+                  </svg>
+                </div>
+                <div class="legend">
+                  <span><i style="background:var(--accent)"></i>对映体 A（slot 0）</span>
+                  <span><i class="dash" style="color:#0c7048"></i>对映体 B（slot 1）</span>
+                  <span class="muted">预测曲线与实验曲线在界面上明确区分</span>
+                </div>
+              </div>
+
+              <div class="note warn mt10">
+                <span class="ic">WARN</span>
+                <span><b>表示敏感性未确认</b> · <b>训练端 provenance 未确认</b> · <b>需实验验证</b> · <b>无独立泛化证据</b></span>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">候选柱比较</div>
+              <table class="tbl">
+                <thead><tr><th>手性柱</th><th class="n">α</th><th class="n">tR A / min</th><th class="n">tR B / min</th><th>适用性</th></tr></thead>
+                <tbody>
+                  <tr class="sel"><td class="mono">ADH</td><td class="n">1.28</td><td class="n">6.84</td><td class="n">7.91</td><td><span class="st ok"><i></i>IN SCOPE</span></td></tr>
+                  <tr><td class="mono">IA</td><td class="n">1.11</td><td class="n">8.02</td><td class="n">8.86</td><td><span class="st ok"><i></i>IN SCOPE</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">结果溯源 · raw 与 profile pair 随快照冻结</div>
+              <div class="prov">
+                <span class="flag prod">production</span>
+                <span><span class="k">MODEL</span><b>hplc-chiral-pair-v2</b></span>
+                <span><span class="k">VER</span><b>2.1.0</b></span>
+                <span><span class="k">ARTIFACT</span><span class="sha">sha256:b27e…55af</span></span>
+                <span><span class="k">SCHEMA</span><b>hplc/single@1.1</b></span>
+              </div>
+              <div class="prov mt6">
+                <span><span class="k">RAW[0]</span><span class="sha">N[C@@H](C)C(O)=O</span></span>
+                <span><span class="k">RAW[1]</span><span class="sha">N[C@H](C)C(O)=O</span></span>
+                <span><span class="k">PROFILE</span><span class="sha">hplc_pre_norm_4 · e0a7…33b8</span></span>
+                <span><span class="k">PRED</span><span class="sha">pred_hplc_2c88</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 3：手性 LC（独立适配器）
+     PRD：不得静默转成 HPLC 双结构输入
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-pred-chiral">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>齐鲁手性 LC · 单次预测 <span class="typechip lc"><i></i>LC</span></h2>
+        <p>独立适配器：接收<strong>一条含立体信息的结构</strong>并输出对映体 A/B，<strong>不复用</strong> HPLC 的双 SMILES 表单。</p>
+      </div>
+      <div class="acts"><span class="st mute">OPTIONAL BUILD</span></div>
+    </div>
+  </div>
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>输入契约</div>
+        <div class="body">
+          <div class="blk">
+            <div class="note bad mb12">
+              <span class="ic">DIFF</span>
+              <span>该适配器与 HPLC 使用<b>不同 schema</b>：structure_refs=1 而非 2。不提供"粘贴两个 SMILES"的兼容入口。</span>
+            </div>
+            <div class="struct">
+              <div class="struct-hd"><span class="n">STRUCT</span><span>含立体信息的单结构</span>
+                <div class="r"><button class="btn sm" data-toast="info">复制</button></div></div>
+              <div class="struct-bd">
+                <div class="struct-canvas">
+                  <svg width="168" height="112" viewBox="0 0 168 112" fill="none">
+                    <g stroke="#141920" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M60 24l22 13v26L60 76 38 63V37z"/>
+                      <path d="M60 24V11"/><path d="M60 88V76"/>
+                    </g>
+                    <g stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round">
+                      <path d="M55 11L42 15"/>
+                    </g>
+                    <circle cx="41" cy="16" r="2.6" fill="#fff" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="30" y="34" font-family="monospace" font-size="9" fill="var(--accent)">N</text>
+                    <text x="88" y="28" font-family="monospace" font-size="8.5" fill="#77828e">Ph</text>
+                  </svg>
+                </div>
+                <div class="struct-side">
+                  <div class="k">RAW SMILES</div><div class="v" style="margin-bottom:8px">C[C@@H](N)c1ccccc1</div>
+                  <div class="k">STEREO CENTERS</div><div class="v" style="color:var(--ok);margin-bottom:8px">1 DEFINED</div>
+                  <div class="k">CIP</div><div class="v" style="margin-bottom:8px">(R)</div>
+                  <div class="k">STRUCTURE_ID</div><div class="v">str_7d1a90bf</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 对映体生成只在适配器声明支持时进行，带预览与人工确认 -->
+            <div class="blk-t" style="margin-top:14px">对映体预览</div>
+            <div class="note info">
+              <span class="ic">PRE</span>
+              <span>由该单结构生成对映体 A/B 并冻结。<b>多个立体中心、未指定中心或不支持的立体形式不会任意反转其中一个中心充当对映体</b>，这种情况直接拒绝并提示。</span>
+            </div>
+            <div class="dual mt10">
+              <div class="slot"><div class="t"><span class="idx">A</span>对映体 A</div>
+                <div class="bd"><div class="lbl">PROPOSAL</div><div class="smi">C[C@@H](N)c1ccccc1</div></div></div>
+              <div class="slot"><div class="t"><span class="idx">B</span>对映体 B</div>
+                <div class="bd"><div class="lbl">PROPOSAL</div><div class="smi">C[C@H](N)c1ccccc1</div></div></div>
+            </div>
+            <div class="row mt10" style="gap:8px">
+              <span class="st hold">EP_7d1a90bf</span>
+              <button class="btn sm" data-toast="info">刷新预览</button>
+              <span class="tiny muted push">确认后随请求提交</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>方法条件</h3><span class="hint">版本化模型，非任意 map</span></div>
+            <div class="fld"><label>method_profile_id <span class="req">*</span></label>
+              <select class="inp"><option>mp_chiral_lc_std_2</option></select>
+            </div>
+            <div class="note mute mt10"><span class="ic">INFO</span>
+              <span>未提供 method profile 规范时该能力显示不可用，不用 HPLC 表单字段绕过。</span></div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <button class="btn pri" style="height:32px;padding:0 18px" data-run="chiral">开始手性 LC 预测</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>预测结果</div>
+        <div class="body">
+          <div id="chiralIdle" class="empty">
+            <div class="ic"><svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7.5" cy="10" r="4"/><circle cx="12.5" cy="10" r="4"/></svg></div>
+            <div class="t">尚无预测结果</div>
+            <div class="d">提交含立体信息的单结构与已确认的对映体提案，结果来自该适配器自身声明的模型。</div>
+          </div>
+          <div id="chiralRun" class="hide">
+            <div class="blk">
+              <div class="mets c2">
+                <div class="met"><div class="k">分离度 α</div><div class="v">1.34</div></div>
+                <div class="met"><div class="k">最佳条件</div><div class="v" style="font-size:14px">MeOH 22%</div></div>
+              </div>
+              <div class="prov mt10">
+                <span class="flag prod">production</span>
+                <span><span class="k">ADAPTER</span><b>chiral_lc</b></span>
+                <span><span class="k">MODEL</span><b>ql-chiral-lc-v1</b></span>
+                <span><span class="k">SCHEMA</span><b>chiral_lc/single@1.0</b></span>
+                <span><span class="k">PROPOSAL</span><span class="sha">ep_7d1a90bf</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     视图 4：SFC 全柱筛选
+     PRD：无上限笛卡尔积或无授权全库扫描不被允许
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-pred-sfc-full">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>SFC 超临界流体 · 全柱筛选 <span class="typechip lc"><i></i>LC</span></h2>
+        <p>在能力声明的候选范围内做受限筛选。候选总数<b>先计算后执行</b>，不接受任意库路径或 SQL。</p>
+      </div>
+      <div class="acts">
+        <div class="seg"><button data-goto="pred-sfc">单柱</button><button class="on">全柱</button><button data-goto="pred-sfc-batch">批量</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>筛选输入</div>
+        <div class="body">
+          <div class="blk">
+            <div class="blk-hd"><h3>对映体结构</h3><span class="hint">2 个不同结构，服务端校验</span></div>
+            <div class="dual">
+              <div class="slot"><div class="t"><span class="idx">A</span>对映体 A</div>
+                <div class="bd"><div class="lbl">RAW</div><div class="smi">COc1ccc2[nH]c([C@@H](C)CC)cc2c1</div></div></div>
+              <div class="slot"><div class="t"><span class="idx">B</span>对映体 B</div>
+                <div class="bd"><div class="lbl">RAW</div><div class="smi">COc1ccc2[nH]c([C@H](C)CC)cc2c1</div></div></div>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>改性剂与候选条件</h3></div>
+            <div class="grid3">
+              <div class="fld"><label>总改性剂比例 <span class="req">*</span></label>
+                <input class="inp mono num" value="0.20" /></div>
+              <div class="fld"><label>温度 ℃</label><input class="inp mono num" value="35" /></div>
+              <div class="fld"><label>压力 bar</label><input class="inp mono num" value="150" /></div>
+            </div>
+            <div class="fld mt10"><label>改性剂组分 <span class="req">*</span> <span class="opt">fraction 和=1</span></label>
+              <div class="chipbar mt6">
+                <button class="chip on">甲醇 methanol 1.00</button>
+                <button class="chip">+ 组分</button>
+              </div>
+            </div>
+            <div class="fld mt10"><label>候选范围 <span class="req">*</span> <span class="opt">服务端创建并绑定项目/模型/版本</span></label>
+              <select class="inp"><option>scope_sfc_default · 25 columns</option></select></div>
+            <div class="fld mt10"><label>Top-k</label><input class="inp mono num" value="5" /></div>
+          </div>
+
+          <!-- 预算确认：PRD §16.3 每批展开上限 100,000 -->
+          <div class="blk">
+            <div class="blk-hd"><h3>展开预算</h3><span class="hint">提交前确认</span></div>
+            <div class="mets c3">
+              <div class="met"><div class="k">候选手性柱</div><div class="v">25</div><div class="d">from scope</div></div>
+              <div class="met"><div class="k">条件组合</div><div class="v">4</div><div class="d">比例 × 温度</div></div>
+              <div class="met"><div class="k">展开总量</div><div class="v">100</div><div class="d">上限 100,000</div></div>
+            </div>
+            <div class="progress mt10"><i style="width:8%"></i></div>
+            <div class="note mute mt10"><span class="ic">INFO</span>
+              <span>单次条件扫描上限 <b>200</b> 候选，超出需转入有确认的批量流程，不无限自动扫描。</span></div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <button class="btn pri" style="height:32px;padding:0 18px" data-run="sfc">开始全柱筛选</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>筛选结果<span class="r"><span class="st mute" id="sfcBadge">IDLE</span></span></div>
+        <div class="body">
+          <div id="sfcIdle" class="empty">
+            <div class="ic"><svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 16h14"/><path d="M4 16V9M8 16V5M12 16v-7M16 16V7"/></svg></div>
+            <div class="t">尚无筛选结果</div>
+            <div class="d">提交后按分离概率排序返回候选手性柱，并标注每根柱对应的条件与模型警告。</div>
+          </div>
+
+          <div id="sfcRun" class="hide">
+            <div class="jsm">
+              <div class="jsm-t">
+                <span class="ttl">全柱筛选</span><span class="jid">job_sfc_2a6e</span>
+                <div class="r"><span class="st run"><i></i>RUNNING</span></div>
+              </div>
+              <div class="jsm-rail">
+                <div class="jsm-node done"><i></i><div class="lb">QUEUED</div><div class="dt">10:36:12</div></div>
+                <div class="jsm-node now"><i></i><div class="lb">RUNNING</div><div class="dt">10:36:13</div></div>
+                <div class="jsm-node"><i></i><div class="lb">SUCCEEDED</div><div class="dt"></div></div>
+              </div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">按分离概率排序 · Top-k = 5</div>
+              <table class="tbl">
+                <thead><tr><th>#</th><th>手性柱</th><th>最佳条件</th><th class="n">P(分离)</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr class="sel"><td class="mono">1</td><td class="mono">Chiralpak IA-U</td><td class="tiny">MeOH 20% · 35℃ · 150 bar</td><td class="n">0.93</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                  <tr><td class="mono">2</td><td class="mono">Chiralcel OD-3</td><td class="tiny">EtOH 20% · 35℃ · 150 bar</td><td class="n">0.89</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                  <tr><td class="mono">3</td><td class="mono">Chiralpak IC</td><td class="tiny">MeOH 30% · 30℃ · 120 bar</td><td class="n">0.82</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                  <tr><td class="mono">4</td><td class="mono">Daicel Chiralcel OJ</td><td class="tiny">MeOH 25% · 40℃ · 150 bar</td><td class="n">0.74</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                  <tr><td class="mono">5</td><td class="mono">Phenomenex Lux 5 μm</td><td class="tiny">IPA 15% · 25℃ · 100 bar</td><td class="n">0.61</td><td><span class="st warn"><i></i>WARNED</span></td></tr>
+                </tbody>
+              </table>
+              <div class="tiny muted mt8">分数表示模型对该分离结果的输出，不作为答案正确概率或置信区间。</div>
+            </div>
+
+            <div class="blk">
+              <div class="blk-t">结果溯源</div>
+              <div class="prov">
+                <span class="flag prod">production</span>
+                <span><span class="k">MODEL</span><b>sfc-rs12-amylose-dmpc-v1</b></span>
+                <span><span class="k">VER</span><b>1</b></span>
+                <span><span class="k">SCOPE</span><span class="sha">scope_sfc_default</span></span>
+                <span><span class="k">ARTIFACT</span><span class="sha">sha256:77de…9012</span></span>
+                <span><span class="k">SCHEMA</span><b>sfc/full_column@1.1</b></span>
+              </div>
+              <div class="note warn mt10"><span class="ic">WARN</span>
+                <span>第 5 名超出模型训练覆盖的柱型范围，已单独标注；<b>需实验验证</b>，当前无独立泛化评测证据。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 5：GC 单次预测 —— 温度程序字段严格来自能力契约
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-pred-gc">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>GC 气相色谱 · 单次预测 <span class="typechip gc"><i></i>GC</span></h2>
+        <p>温度程序字段来自模型能力契约。前端不自行补充模型未支持的柱、载气或检测器。</p>
+      </div>
+      <div class="acts"><div class="seg"><button class="on">单次</button><button data-goto="pred-gc-batch">批量</button></div></div>
+    </div>
+  </div>
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>输入</div>
+        <div class="body">
+          <div class="blk">
+            <div class="blk-hd"><h3>结构</h3></div>
+            <div class="struct">
+              <div class="struct-hd"><span class="n">STRUCT</span><span>单一结构</span></div>
+              <div class="struct-bd">
+                <div class="struct-canvas">
+                  <svg width="160" height="96" viewBox="0 0 160 96" fill="none" stroke="#141920" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M20 48h30l10-16 12 32 11-22 10 14h47"/>
+                  </svg>
+                </div>
+                <div class="struct-side">
+                  <div class="k">RAW SMILES</div><div class="v" style="margin-bottom:8px">CC(C)=CCCC(C)=CC=O</div>
+                  <div class="k">STRUCTURE_ID</div><div class="v">str_3b7e2d10</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 判别联合：linear 与 series 不得混传 -->
+          <div class="blk">
+            <div class="blk-hd"><h3>温度程序</h3><span class="hint">mode 为判别联合</span>
+              <div class="r"><div class="seg"><button class="on">linear</button><button>series</button></div></div>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label>初温 ℃ <span class="req">*</span></label><input class="inp mono num" value="40" /></div>
+              <div class="fld"><label>终温 ℃ <span class="req">*</span> <span class="opt">≥ 初温</span></label><input class="inp mono num" value="200" /></div>
+              <div class="fld"><label>升温率 ℃/min <span class="req">*</span> <span class="opt">&gt; 0</span></label><input class="inp mono num" value="20" /></div>
+              <div class="fld"><label>初保持 min <span class="req">*</span> <span class="opt">multipleOf 1，客户端不静默取整</span></label><input class="inp mono num" value="2" /></div>
+            </div>
+            <div class="note mute mt10"><span class="ic">INFO</span>
+              <span>序列模式使用 <span class="mono">temperature_series_c</span>（当前参考模型 30 点），<b>不得混传两种模式字段</b>。</span></div>
+            <!-- 温度程序示意 -->
+            <div class="chart mt10">
+              <div class="chart-hd"><span class="t">程序示意</span><span class="origin derived">DERIVED</span></div>
+              <div class="chart-bd">
+                <svg width="100%" height="120" viewBox="0 0 320 120">
+                  <line x1="36" y1="98" x2="308" y2="98" stroke="#48525d" stroke-width="1.2"/>
+                  <line x1="36" y1="10" x2="36" y2="98" stroke="#48525d" stroke-width="1.2"/>
+                  <path d="M36 92 L52 92 L156 22 L308 22" fill="none" stroke="var(--accent)" stroke-width="1.7"/>
+                  <circle cx="52" cy="92" r="2.4" fill="var(--accent)"/><circle cx="156" cy="22" r="2.4" fill="var(--accent)"/>
+                  <g font-family="monospace" font-size="8.5" fill="#77828e">
+                    <text x="36" y="112">0</text><text x="308" y="112" text-anchor="end">12.9 min</text>
+                    <text x="8" y="18">℃</text>
+                    <text x="46" y="86">40</text><text x="150" y="16">200</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-hd"><h3>模型</h3></div>
+            <div class="grid2">
+              <div class="fld"><label>model_id / version</label><input class="inp mono" value="gc-rri-column-a-v1 / 1.0.0" readonly /></div>
+              <div class="fld"><label>preprocessing_profile</label><input class="inp mono" value="gc_pre_norm_2 · 41bd…9c07" readonly /></div>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <button class="btn pri" style="height:32px;padding:0 18px" data-run="gc">开始预测</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>预测结果</div>
+        <div class="body">
+          <div id="gcIdle" class="empty">
+            <div class="ic"><svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 16l4-7 3 5 2-3 3 5z"/></svg></div>
+            <div class="t">尚无预测结果</div>
+            <div class="d">提交后返回该模型实际提供的保留时间与相对保留时间分位数，不捏造置信区间。</div>
+          </div>
+          <div id="gcRun" class="hide">
+            <div class="blk">
+              <div class="mets c4">
+                <div class="met"><div class="k">tR p10</div><div class="v">5.2<span class="u">min</span></div></div>
+                <div class="met"><div class="k">tR p50</div><div class="v">6.8<span class="u">min</span></div></div>
+                <div class="met"><div class="k">tR p90</div><div class="v">8.4<span class="u">min</span></div></div>
+                <div class="met"><div class="k">RRT</div><div class="v">1.00</div><div class="d">reference</div></div>
+              </div>
+              <div class="note warn mt10"><span class="ic">WARN</span>
+                <span>分位数区间来自模型输出范围，<b>不是统计置信区间</b>。需实验验证。</span></div>
+              <div class="prov mt10">
+                <span class="flag prod">production</span>
+                <span><span class="k">MODEL</span><b>gc-rri-column-a-v1</b></span>
+                <span><span class="k">ARTIFACT</span><span class="sha">sha256:1c9e…7742</span></span>
+                <span><span class="k">SCHEMA</span><b>gc/single@1.1</b></span>
+                <span><span class="k">WARNINGS</span><b>1</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 6：批量预测向导
+     PRD §6.3：有效行/无效行/跳过行/失败行明确区分，不静默跳过
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-pred-tlc-batch">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>TLC 薄层色谱 · 批量预测</h2>
+        <p>CSV / XLSX 上传 → 字段映射 → 逐行校验 → <b>确认行数、模型、组合与预算</b>后异步执行。</p>
+      </div>
+      <div class="acts"><button class="btn">保存为草稿</button><button class="btn" data-toast="info">重建草稿</button></div>
+    </div>
+  </div>
+
+  <!-- 向导步骤：真实流程不是页面点亮 -->
+  <div class="ws-body">
+    <div class="split s-40">
+      <div class="col">
+        <div class="colhd"><span class="n">1–4</span>批量向导</div>
+        <div class="body">
+          <div class="blk">
+            <div class="expstates mb12">
+              <span class="s past">1 上传文件</span><span class="ar">→</span>
+              <span class="s past">2 字段映射</span><span class="ar">→</span>
+              <span class="s on">3 逐行校验</span><span class="ar">→</span>
+              <span class="s">4 确认提交</span>
+            </div>
+
+            <div class="fld mb10"><label>数据文件</label>
+              <div style="border:1px dashed var(--rule-strong);border-radius:var(--r-sm);padding:14px;text-align:center;background:var(--panel-alt)">
+                <div class="tiny muted">tlc_batch_2026-10.csv · SHA-256 <span class="mono">7c1a…e904</span></div>
+                <div class="tiny muted mt6">已通过类型、大小、哈希与编码校验 · 隔离区已释放</div>
+              </div>
+            </div>
+
+            <div class="fld mb10"><label>字段映射 <span class="hint">逐字段，不自动猜测</span></label>
+              <div class="col" style="gap:6px">
+                <div class="row"><span class="tiny mono" style="width:130px">化合物名称</span><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#9aa4ae" stroke-width="1.4"><path d="M2 8h12M9 4l4 4-4 4"/></svg><select class="inp" style="flex:1"><option>name</option></select></div>
+                <div class="row"><span class="tiny mono" style="width:130px">SMILES</span><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#9aa4ae" stroke-width="1.4"><path d="M2 8h12M9 4l4 4-4 4"/></svg><select class="inp" style="flex:1"><option>smiles</option></select></div>
+                <div class="row"><span class="tiny mono" style="width:130px">展开体系</span><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#9aa4ae" stroke-width="1.4"><path d="M2 8h12M9 4l4 4-4 4"/></svg><select class="inp" style="flex:1"><option>solvent_system</option></select></div>
+              </div>
+            </div>
+
+            <!-- 行级校验：四类明确区分 -->
+            <div class="blk-t">逐行校验结果</div>
+            <div class="mets c4 mb10">
+              <div class="met"><div class="k">有效行</div><div class="v" style="color:var(--ok)">42</div></div>
+              <div class="met"><div class="k">无效行</div><div class="v" style="color:var(--bad)">3</div></div>
+              <div class="met"><div class="k">跳过行</div><div class="v" style="color:var(--ink-3)">5</div></div>
+              <div class="met"><div class="k">失败行</div><div class="v">0</div><div class="d">尚未执行</div></div>
+            </div>
+
+            <table class="tbl">
+              <thead><tr><th>行</th><th>内容</th><th>结果</th></tr></thead>
+              <tbody>
+                <tr><td class="n">1</td><td class="id">CC(=O)c1ccc(O)cc1</td><td><span class="rowstat ok">✓ VALID</span></td></tr>
+                <tr><td class="n">6</td><td class="id">C1CC[C@@H</td><td><span class="rowstat bad">✗ INVALID</span></td></tr>
+                <tr><td class="n">9</td><td class="id">—</td><td><span class="rowstat skip">⊘ SKIPPED</span></td></tr>
+                <tr><td class="n">12</td><td class="id">Cc1ccccc1</td><td><span class="rowstat bad">✗ INVALID</span></td></tr>
+                <tr><td class="n">18</td><td class="id">Oc1ccccc1C=O</td><td><span class="rowstat skip">⊘ SKIPPED</span></td></tr>
+              </tbody>
+            </table>
+            <div class="col mt8" style="gap:5px">
+              <div class="note bad" style="padding:7px 10px"><span class="ic">R06</span><span>SMILES 解析失败：括号不闭合。</span></div>
+              <div class="note bad" style="padding:7px 10px"><span class="ic">R12</span><span>展开体系 <span class="mono">ether/petroleum_ether</span> 不在模型白名单内。</span></div>
+              <div class="note mute" style="padding:7px 10px"><span class="ic">R09</span><span>该行为空行，按模板规则跳过。</span></div>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <label class="chk mb10"><input type="checkbox" checked /><span>只提交有效行（42 行）</span></label>
+            <div class="note warn mb10">
+              <span class="ic">EXCL</span>
+              <span>将排除 <b>3</b> 个无效行与 <b>5</b> 个跳过行，共 <b>8</b> 行。排除数量在提交前明确显示，不静默跳过。</span>
+            </div>
+            <button class="btn pri" style="height:32px;padding:0 18px" data-toast="ok">确认并提交批量任务</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>任务执行<span class="r"><span class="st run"><i></i>RUNNING</span></span></div>
+        <div class="body">
+          <div class="jsm">
+            <div class="jsm-t"><span class="ttl">TLC 批量预测</span><span class="jid">job_batch_88f1</span>
+              <div class="r"><button class="btn sm" data-toast="info">取消任务</button></div></div>
+            <div class="progress mb10"><i style="width:72%"></i></div>
+            <div class="row tiny mono" style="justify-content:space-between;margin-bottom:9px">
+              <span id="batchProg">30 / 42 行完成</span><span>attempt 1</span>
+            </div>
+            <div class="jsm-rail">
+              <div class="jsm-node done"><i></i><div class="lb">QUEUED</div></div>
+              <div class="jsm-node done"><i></i><div class="lb">RUNNING</div></div>
+              <div class="jsm-node now"><i></i><div class="lb">SUCCEEDED</div></div>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">行级结果 · 成功行不被重试覆盖</div>
+            <table class="tbl">
+              <thead><tr><th>#</th><th>SMILES</th><th class="n">Rf</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td class="n">1</td><td class="id">CC(=O)c1ccc(O)cc1</td><td class="n">0.46</td><td><span class="st ok"><i></i>DONE</span></td></tr>
+                <tr><td class="n">2</td><td class="id">CCOC(=O)c1ccc(N)cc1</td><td class="n">0.34</td><td><span class="st ok"><i></i>DONE</span></td></tr>
+                <tr><td class="n">4</td><td class="id">c1ccccc1</td><td class="n">—</td><td><span class="st bad"><i></i>FAILED</span></td></tr>
+              </tbody>
+            </table>
+            <div class="row wrap mt10" style="gap:7px">
+              <button class="btn sm" data-toast="info">重试失败行（新 Attempt）</button>
+              <button class="btn sm">导出 CSV</button>
+              <button class="btn sm">导出 XLSX</button>
+            </div>
+            <div class="tiny muted mt8">重试生成新 Attempt，保留原结果与行级关联，不重复覆盖成功行。</div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">确认摘要（提交时已绑定）</div>
+            <div class="conf-grid" style="grid-template-columns:1fr">
+              <div><div class="k">action</div><div class="v">batch.submit</div></div>
+              <div><div class="k">config_hash</div><div class="v">b81f…3c07</div></div>
+              <div><div class="k">row_selection</div><div class="v">42 valid / 8 excluded</div></div>
+              <div><div class="k">model</div><div class="v">tlc-rf-amylose-v3 @ 1.2.0</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     视图 7：预测记录（二级导航固定顺序 1/3）
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-records">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>预测记录</h2>
+        <p>所有页面与助手提交的预测自动持久化。"保存"是标记/归档动作，不存在结果未保存却显示成功的分叉。</p>
+      </div>
+      <div class="acts">
+        <button class="btn" data-toast="info">导出所选</button>
+        <button class="btn" data-goto="structure">新建结构</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <span class="fl">项目</span>
+    <select class="inp"><option>project-default</option></select>
+    <span class="fl">类型</span>
+    <div class="chipbar">
+      <button class="chip on">全部<span class="c">128</span></button>
+      <button class="chip">TLC<span class="c">41</span></button>
+      <button class="chip">CC<span class="c">12</span></button>
+      <button class="chip">HPLC<span class="c">28</span></button>
+      <button class="chip">SFC<span class="c">35</span></button>
+      <button class="chip">GC<span class="c">12</span></button>
+    </div>
+    <div class="grow">
+      <select class="inp"><option>全部来源</option><option>web</option><option>assistant</option><option>service</option></select>
+      <select class="inp"><option>全部状态</option><option>SUCCEEDED</option><option>FAILED</option><option>RUNNING</option></select>
+      <span class="tiny muted nowrap">游标分页 · 每页 50</span>
+    </div>
+  </div>
+
+  <div class="scrollpane">
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:26px"><label class="chk"><input type="checkbox" /></label></th>
+          <th>记录</th><th>类型 / 工具</th><th>模型</th><th>结果</th><th>warnings</th><th>来源</th><th>创建时间</th></tr>
+      </thead>
+      <tbody id="recBody"></tbody>
+    </table>
+    <div class="row" style="padding:11px 14px;border-top:1px solid var(--rule);background:var(--panel)">
+      <span class="tiny muted">显示 50 / 共 128 · cursor: <span class="mono">eyJvIjoxMjUsInMiOiJyYzQwIn0</span></span>
+      <div class="push row" style="gap:6px">
+        <button class="btn sm" disabled>上一页</button>
+        <button class="btn sm">下一页</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 8：色谱数据 —— 不可变数据版本
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-datasets">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>色谱数据</h2>
+        <p>统一分子身份关联多类色谱实验数据；项目、来源、权限与用途独立。提交产生<b>不可变数据版本</b>，被训练或评测引用的版本不得覆盖。</p>
+      </div>
+      <div class="acts"><button class="btn pri" data-toast="info">新建数据导入</button></div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-40">
+      <div class="col">
+        <div class="colhd">数据导入<span class="r"><span class="st mute">DRAFT</span></span></div>
+        <div class="body">
+          <div class="blk">
+            <div class="blk-hd"><h3>导入目标</h3><span class="hint">必须指定目标数据域</span></div>
+            <div class="fld mb10"><label>目标数据域 <span class="req">*</span></label>
+              <select class="inp"><option>domain_hplc_method_default · v2</option></select></div>
+            <div class="fld mb10"><label>导入模式</label>
+              <div class="chipbar">
+                <button class="chip on">append</button><button class="chip">upsert</button>
+              </div>
+              <div class="note mute mt8" style="padding:7px 10px"><span class="ic">INFO</span>
+                <span>替换整个生产库<b>不作为通用 import_mode</b>。逻辑数据域映射由服务端控制，不暴露任意数据库连接、表名或 SQL。</span></div>
+            </div>
+            <div class="fld mb10"><label>数据文件</label>
+              <input class="inp mono" value="artifact_b1f2…8d90" readonly />
+              <div class="tiny muted mt6">SHA-256 校验通过 · schema 与单位已按数据域校验</div>
+            </div>
+            <div class="fld mb10"><label>来源描述 <span class="opt">科学来源，非认证来源</span></label>
+              <input class="inp" value="2026 Q3 方法开发实测数据" /></div>
+          </div>
+
+          <!-- 差异预览：确认后才提交 -->
+          <div class="blk">
+            <div class="blk-hd"><h3>校验与差异</h3><span class="hint">显示差异后确认提交</span></div>
+            <div class="mets c4 mb10">
+              <div class="met"><div class="k">新增 new</div><div class="v" style="color:var(--ok)">318</div></div>
+              <div class="met"><div class="k">更新 updated</div><div class="v">46</div></div>
+              <div class="met"><div class="k">未变 unchanged</div><div class="v">1,204</div></div>
+              <div class="met"><div class="k">重复 duplicate</div><div class="v" style="color:var(--warn)">12</div></div>
+            </div>
+            <div class="col" style="gap:5px">
+              <div class="note warn" style="padding:7px 10px"><span class="ic">DUP</span><span>12 条记录与现有分子身份重复，按去重策略处理。</span></div>
+              <div class="note warn" style="padding:7px 10px"><span class="ic">UNIT</span><span>3 条流速单位为 mL/s，已按数据域规范转换。</span></div>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <div class="conf-grid mb10" style="grid-template-columns:1fr">
+              <div><div class="k">action</div><div class="v">data_import.commit</div></div>
+              <div><div class="k">config_hash / revision</div><div class="v">9f21…a04c / rev 3</div></div>
+              <div><div class="k">target_domain</div><div class="v">domain_hplc_method_default v2</div></div>
+            </div>
+            <button class="btn pri" style="height:32px;padding:0 18px" data-toast="ok">确认并提交为新版本</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd">数据版本<span class="r"><span class="immutable">IMMUTABLE</span></span></div>
+        <div class="body">
+          <div class="blk">
+            <div class="verbar mb10">
+              <div><div class="k">版本</div><div class="v">v7</div></div>
+              <div><div class="k">记录数</div><div class="v">1,568</div></div>
+              <div><div class="k">状态</div><div class="v"><span class="st ok"><i></i>READY</span></div></div>
+              <div><div class="k">被引用</div><div class="v">3 <span class="tiny muted">次</span></div></div>
+            </div>
+            <div class="prov">
+              <span><span class="k">ID</span><span class="sha">dv_7c2a91f0</span></span>
+              <span><span class="k">SHA-256</span><span class="sha">a03e…b741</span></span>
+              <span><span class="k">SCHEMA</span><b>record_schema@2</b></span>
+              <span><span class="k">IMPORT</span><span class="sha">di_3f88c0</span></span>
+            </div>
+            <div class="note info mt10">
+              <span class="ic">LOCK</span>
+              <span>该版本已被 <b>2</b> 个训练实验与 <b>1</b> 个评测协议引用，<b>不可覆盖</b>。更新数据会生成新版本并保留旧版本快照。</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">版本历史</div>
+            <table class="tbl">
+              <thead><tr><th>版本</th><th class="n">记录</th><th>SHA-256</th><th>状态</th><th>引用</th><th>创建</th></tr></thead>
+              <tbody>
+                <tr class="sel"><td class="mono">v7</td><td class="n">1,568</td><td class="id">a03e…b741</td><td><span class="st ok"><i></i>READY</span></td><td class="n">3</td><td class="mono tiny">10-14</td></tr>
+                <tr><td class="mono">v6</td><td class="n">1,204</td><td class="id">5d92…1c8f</td><td><span class="st ok"><i></i>READY</span></td><td class="n">1</td><td class="mono tiny">09-28</td></tr>
+                <tr><td class="mono">v5</td><td class="n">980</td><td class="id">b710…3a6e</td><td><span class="st mute"><i></i>ARCHIVED</span></td><td class="n">0</td><td class="mono tiny">09-10</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">分子身份</div>
+            <div class="note mute mb10" style="padding:8px 10px"><span class="ic">INFO</span>
+              <span>相同 InChIKey <b>不</b>导致跨项目自动合并。接口权限与业务记录不跨项目泄露。</span></div>
+            <table class="tbl">
+              <thead><tr><th>分子</th><th>关联色谱类型</th><th class="n">记录数</th><th>质量</th></tr></thead>
+              <tbody>
+                <tr><td class="id">CC(=O)c1ccc(O)cc1</td><td><span class="st mute">HPLC · TLC</span></td><td class="n">18</td><td><span class="st ok"><i></i>VERIFIED</span></td></tr>
+                <tr><td class="id">COc1ccc2[nH]c(C)cc2c1</td><td><span class="st mute">SFC · HPLC</span></td><td class="n">24</td><td><span class="st warn"><i></i>CHECK</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 9：知识中心 —— 真实定位，NEEDS_OCR 不被伪装成功
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-knowledge">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>知识中心</h2>
+        <p>资料与训练数据分开管理。首版解析 TXT / Markdown / 文本型 PDF / DOCX；定位来自真实分页来源，<b>不杜撰 PDF 页码</b>。</p>
+      </div>
+      <div class="acts"><button class="btn pri" data-toast="info">上传资料</button></div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd">资料列表</div>
+        <div class="body">
+          <div class="blk">
+            <div class="filters" style="padding:0 0 11px;border:0;background:transparent">
+              <div class="chipbar">
+                <button class="chip on">全部<span class="c">34</span></button>
+                <button class="chip">READY<span class="c">28</span></button>
+                <button class="chip">需 OCR<span class="c">2</span></button>
+                <button class="chip">索引失败<span class="c">1</span></button>
+                <button class="chip">已归档<span class="c">3</span></button>
+              </div>
+            </div>
+            <table class="tbl">
+              <thead><tr><th>资料</th><th>类型</th><th class="n">切片</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr class="sel"><td><b style="font-size:12px">SFC 手性分离方法说明</b><div class="tiny muted mono">v3 · sha 41da…9c02</div></td><td><span class="st mute">internal</span></td><td class="n">86</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                <tr><td><b style="font-size:12px">手性固定相选择综述</b><div class="tiny muted mono">v1 · sha 8b07…33e5</div></td><td><span class="st mute">paper</span></td><td class="n">212</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                <tr><td><b style="font-size:12px">TLC 展开体系 SOP</b><div class="tiny muted mono">v5 · sha cc18…7a4f</div></td><td><span class="st mute">internal</span></td><td class="n">44</td><td><span class="st ok"><i></i>READY</span></td></tr>
+                <tr><td><b style="font-size:12px">扫描版分离手册（影印）</b><div class="tiny muted mono">v1 · sha 5e37…b902</div></td><td><span class="st mute">standard</span></td><td class="n">—</td><td><span class="st warn"><i></i>NEEDS_OCR</span></td></tr>
+                <tr><td><b style="font-size:12px">GC 温度程序优化笔记</b><div class="tiny muted mono">v2 · sha a911…c470</div></td><td><span class="st mute">internal</span></td><td class="n">—</td><td><span class="st bad"><i></i>INDEX FAILED</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="blk">
+            <!-- 失败不能隐藏，且必须说明如何修 -->
+            <div class="note bad mb10">
+              <span class="ic">OCR</span>
+              <span><b>扫描版分离手册</b>无可用文本层，已标记 <span class="mono">NEEDS_OCR</span>。本版<b>不悄悄使用外部 OCR</b>，该资料暂不参与检索。</span>
+            </div>
+            <div class="note bad">
+              <span class="ic">IDX</span>
+              <span><b>GC 温度程序优化笔记</b>最近一次索引失败。上一个已完成可见索引版本 <span class="mono">index_v2</span> 仍可检索，失败原因见切片日志。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd">检索与切片<span class="r"><span class="st mute" id="kBadge">IDLE</span></span></div>
+        <div class="body">
+          <div class="blk">
+            <div class="smiles-in mb10">
+              <input class="inp" placeholder="SFC 改性剂对手性分离的影响" value="SFC 改性剂对手性分离的影响" />
+              <button class="btn" data-retrieve="1">检索</button>
+            </div>
+            <div class="row tiny muted mb10" style="gap:10px">
+              <span class="mono">strategy: mysql_ngram_v1</span>
+              <span>top_k <span class="mono">8</span></span>
+              <span class="push">分数表示关键词相关性，不是答案正确概率</span>
+            </div>
+            <div id="kResults"></div>
+          </div>
+
+          <div class="blk" id="kEmpty">
+            <div class="empty" style="padding:26px 12px">
+              <div class="t" style="font-size:12.5px">检索当前有权访问的资料</div>
+              <div class="d" style="font-size:11.5px">document_ids 留空表示当前项目可见资料，<b>不是全库所有项目</b>。权限条件在数据库查询中完成，不靠前端过滤。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     视图 10：模型训练 · 实验工作区
+     PRD §8：只允许预注册模板，不运行任意脚本；candidate 与训练终态分开
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-training">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>模型训练 · 实验</h2>
+        <p>只负责"不可变数据版本 → Candidate"。训练模板为部署时审核纳入的实现，<b>禁止从 HTTP 参数或上传包动态导入</b>。</p>
+      </div>
+      <div class="acts">
+        <button class="btn">对比实验（2–10）</button>
+        <button class="btn pri" data-toast="info">新建实验草稿</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-58">
+      <div class="col">
+        <div class="colhd"><span class="n">1</span>实验配置<span class="r"><span class="st mute" id="expBadge">DRAFT</span></span></div>
+        <div class="body">
+          <div class="blk">
+            <div class="expstates mb12">
+              <span class="s on">DRAFT</span><span class="ar">→</span>
+              <span class="s">VALIDATING</span><span class="ar">→</span>
+              <span class="s">READY</span><span class="ar">→</span>
+              <span class="s">QUEUED</span><span class="ar">→</span>
+              <span class="s">RUNNING</span><span class="ar">→</span>
+              <span class="s">SUCCEEDED</span>
+            </div>
+
+            <div class="note bad mb12">
+              <span class="ic">LIMIT</span>
+              <span><b>execution.kind 仅 <span class="mono">template</span></b>。请求不得包含脚本、命令、服务器路径、自由依赖清单或任意 entrypoint —— 这些字段在 schema 层被拒绝（422 <span class="mono">extra_forbidden</span>）。</span>
+            </div>
+
+            <div class="fld mb10"><label>实验名称 <span class="req">*</span></label><input class="inp" value="SFC 手性分离基线训练 2026-Q4" /></div>
+            <div class="fld mb10"><label>任务类型</label><select class="inp"><option>sfc_separation</option></select></div>
+
+            <div class="fld mb10"><label>训练模板 <span class="req">*</span> <span class="opt">仅已构建模板，来自真实登记</span></label>
+              <select class="inp"><option>sfc_baseline @ v3 · health READY</option></select>
+              <div class="row tiny muted mt6" style="gap:14px">
+                <span>code_version <span class="mono">a3f9c21</span></span>
+                <span>lock hash <span class="mono">7c11…0e42</span></span>
+                <span>checkpoint <span class="mono">SUPPORTED</span></span>
+              </div>
+            </div>
+
+            <div class="grid2 mb10">
+              <div class="fld"><label>数据版本 <span class="req">*</span></label>
+                <select class="inp"><option>dv_7c2a91f0 · v7 · 1,568 条</option></select></div>
+              <div class="fld"><label>特征版本 <span class="req">*</span></label>
+                <select class="inp"><option>fv_morgan_ecfp6_r2</option></select></div>
+            </div>
+
+            <div class="fld mb10"><label>标签字段</label><select class="inp"><option>separation_label</option></select></div>
+
+            <div class="fld mb10"><label>划分策略 <span class="opt">发生在拟合预处理之前，防止数据泄漏</span></label>
+              <div class="grid2">
+                <select class="inp"><option>scaffold</option><option>random</option><option>group</option><option>predefined</option></select>
+                <input class="inp mono num" value="seed 42" readonly />
+              </div>
+              <div class="row tiny muted mt6" style="gap:12px">
+                <span>train 0.80</span><span>val 0.10</span><span>test 0.10</span>
+                <span class="mono" style="color:var(--ok)">Σ = 1.000</span>
+              </div>
+            </div>
+
+            <div class="fld mb10"><label>评测协议</label>
+              <select class="inp"><option>ep_sfc_default @ v1 · 阈值由部署审核</option></select></div>
+
+            <div class="fld"><label>资源预算</label>
+              <div class="grid4">
+                <input class="inp mono num" value="4" title="cpu_cores" />
+                <input class="inp mono num" value="8192" title="memory_mb" />
+                <input class="inp mono num" value="0" title="gpu_count" />
+                <input class="inp mono num" value="14400" title="max_runtime_s" />
+              </div>
+              <div class="row tiny muted mt6" style="gap:10px"><span>cpu</span><span>mem MB</span><span>gpu</span><span>max s</span></div>
+            </div>
+          </div>
+
+          <div class="blk" style="border-bottom:0">
+            <div class="row" style="gap:8px">
+              <button class="btn" data-toast="info">校验</button>
+              <button class="btn pri" data-toast="ok">校验并准备确认</button>
+              <span class="tiny muted push">修改草稿会使已验证与已确认失效</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd"><span class="n">2</span>执行与候选</div>
+        <div class="body">
+          <!-- PRD §8.2：训练终态与 candidate_status 分开记录 -->
+          <div class="blk">
+            <div class="blk-t">运行状态与候选状态（两个独立维度）</div>
+            <div class="dims mb10">
+              <div class="dim"><div class="k">experiment.status</div><div class="v"><span class="st ok"><i></i>SUCCEEDED</span></div></div>
+              <div class="dim"><div class="k">candidate_status</div><div class="v"><span class="st ok"><i></i>CREATED</span></div></div>
+              <div class="dim"><div class="k">candidate_model_id</div><div class="v"><span class="mono tiny">mdl_1c4f8a20</span></div></div>
+            </div>
+            <div class="note info">
+              <span class="ic">NOTE</span>
+              <span><b>训练成功不等于候选已通过验证。</b>产物需经模型登记校验才成为 Candidate；训练失败、取消或超时<b>不得</b>创建 Candidate。</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">attempt 与产物</div>
+            <div class="verbar mb10">
+              <div><div class="k">attempt</div><div class="v">2</div></div>
+              <div><div class="k">resume_mode</div><div class="v">checkpoint</div></div>
+              <div><div class="k">耗时</div><div class="v">2 h 14 m</div></div>
+              <div><div class="k">产物哈希</div><div class="v" style="font-size:10.5px">d4a7…90fe</div></div>
+            </div>
+            <div class="note mute" style="padding:8px 10px"><span class="ic">RES</span>
+              <span>模板声明支持 checkpoint，本次从 <span class="mono">ckpt_step_18000</span> 恢复。不支持 checkpoint 的模板中断后标记 <span class="mono">INTERRUPTED</span>，受控重试从头训练，<b>不宣称任意任务都能断点续训</b>。</span></div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">指标 · 最终值带协议与 split</div>
+            <table class="tbl">
+              <thead><tr><th>指标</th><th class="n">val</th><th class="n">test</th><th>阈值</th><th>结果</th></tr></thead>
+              <tbody>
+                <tr><td>separation_auc</td><td class="n">0.914</td><td class="n">0.887</td><td class="mono tiny">≥ 0.85</td><td><span class="st ok"><i></i>PASS</span></td></tr>
+                <tr><td>top3_hit_rate</td><td class="n">0.782</td><td class="n">0.741</td><td class="mono tiny">≥ 0.70</td><td><span class="st ok"><i></i>PASS</span></td></tr>
+                <tr><td>calibration_error</td><td class="n">0.061</td><td class="n">0.074</td><td class="mono tiny">≤ 0.10</td><td><span class="st ok"><i></i>PASS</span></td></tr>
+              </tbody>
+            </table>
+            <div class="prov mt10">
+              <span><span class="k">PROTOCOL</span><span class="sha">ep_sfc_default@1</span></span>
+              <span><span class="k">DATA</span><span class="sha">dv_7c2a91f0</span></span>
+              <span><span class="k">SPLIT</span><span class="sha">sha256:2f8b…c013</span></span>
+              <span><span class="k">TEMPLATE</span><span class="sha">sfc_baseline@3</span></span>
+            </div>
+            <div class="tiny muted mt8">候选与 Champion 只有在任务、协议、数据与 split 兼容时才可比较，不跨指标类型硬比高低。</div>
+          </div>
+
+          <!-- 指标轨迹 -->
+          <div class="blk">
+            <div class="blk-t">指标轨迹</div>
+            <div class="chart">
+              <div class="chart-hd"><span class="t">separation_auc</span><span class="sub">step 0–20000 · attempt 2</span></div>
+              <div class="chart-bd">
+                <svg width="100%" height="112" viewBox="0 0 330 112">
+                  <g stroke="#eef1f5" stroke-width="1"><line x1="30" y1="20" x2="320" y2="20"/><line x1="30" y1="50" x2="320" y2="50"/><line x1="30" y1="80" x2="320" y2="80"/></g>
+                  <line x1="30" y1="94" x2="320" y2="94" stroke="#48525d" stroke-width="1.2"/>
+                  <line x1="30" y1="8" x2="30" y2="94" stroke="#48525d" stroke-width="1.2"/>
+                  <!-- 阈值线 -->
+                  <line x1="30" y1="70" x2="320" y2="70" stroke="#8a5606" stroke-width="1" stroke-dasharray="4 3"/>
+                  <text x="316" y="66" font-family="monospace" font-size="8" fill="#8a5606" text-anchor="end">threshold 0.85</text>
+                  <path d="M30 88 L64 80 L98 74 L132 71 L166 64 L200 58 L234 54 L268 51 L302 49 L320 48"
+                        fill="none" stroke="var(--accent)" stroke-width="1.7"/>
+                  <!-- attempt 1 中断段：虚线表示，不假装连续 -->
+                  <line x1="98" y1="16" x2="98" y2="94" stroke="#a8241c" stroke-width="1" stroke-dasharray="3 2"/>
+                  <text x="102" y="14" font-family="monospace" font-size="8" fill="#a8241c">attempt1 INTERRUPTED</text>
+                  <g font-family="monospace" font-size="8" fill="#77828e">
+                    <text x="30" y="108">0</text><text x="320" y="108" text-anchor="end">20000</text>
+                    <text x="5" y="24">1.0</text><text x="5" y="92">0.5</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 11：模型中心 —— 三个维度分开记录，绝不合并
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-models">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>模型库</h2>
+        <p><b>资产生命周期</b>、<b>部署状态</b>、<b>比较角色</b>是三个独立维度。一个模型可在不同 scope 有不同部署与角色。</p>
+      </div>
+      <div class="acts">
+        <button class="btn" data-toast="info">登记外部模型包</button>
+        <button class="btn pri" data-goto="deploy">准备发布</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <span class="fl">scope</span>
+    <select class="inp"><option>scope_sfc_default</option></select>
+    <div class="chipbar">
+      <button class="chip on">生命周期</button>
+      <button class="chip">CANDIDATE</button>
+      <button class="chip">APPROVED</button>
+      <button class="chip">RETIRED</button>
+    </div>
+    <div class="grow"><span class="tiny muted nowrap">查询带 scope 或返回 deployments[]，不使用全局 boolean</span></div>
+  </div>
+
+  <div class="scrollpane">
+    <table class="tbl">
+      <thead><tr><th>模型</th><th>任务</th><th>资产生命周期</th><th>部署状态</th><th>比较角色</th><th>SHA-256</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b style="font-size:12px">sfc-rs12-amylose-dmpc</b><div class="tiny muted mono">v1 · mdl_1c4f8a20</div></td>
+          <td><span class="st mute">SFC</span></td>
+          <td><span class="st ok"><i></i>APPROVED</span></td>
+          <td><span class="st run"><i></i>PRODUCTION</span></td>
+          <td><span class="rolechip chal">CHALLENGER</span></td>
+          <td class="id">d4a7…90fe</td>
+          <td><span class="st mute">training</span></td>
+        </tr>
+        <tr>
+          <td><b style="font-size:12px">sfc-baseline-prod</b><div class="tiny muted mono">v4 · mdl_88b20c17</div></td>
+          <td><span class="st mute">SFC</span></td>
+          <td><span class="st ok"><i></i>APPROVED</span></td>
+          <td><span class="st run"><i></i>PRODUCTION</span></td>
+          <td><span class="rolechip champ">CHAMPION</span></td>
+          <td class="id">19bf…3d6a</td>
+          <td><span class="st mute">training</span></td>
+        </tr>
+        <tr>
+          <td><b style="font-size:12px">hplc-chiral-pair</b><div class="tiny muted mono">v2.1 · mdl_4d91e0f3</div></td>
+          <td><span class="st mute">HPLC</span></td>
+          <td><span class="st warn"><i></i>CANDIDATE</span></td>
+          <td><span class="st mute"><i></i>NOT_DEPLOYED</span></td>
+          <td><span class="rolechip none">NONE</span></td>
+          <td class="id">b27e…55af</td>
+          <td><span class="st mute">training</span></td>
+        </tr>
+        <tr>
+          <td><b style="font-size:12px">tlc-rf-amylose</b><div class="tiny muted mono">v1.2 · mdl_a71c4b90</div></td>
+          <td><span class="st mute">TLC</span></td>
+          <td><span class="st ok"><i></i>APPROVED</span></td>
+          <td><span class="st mute"><i></i>NOT_DEPLOYED</span></td>
+          <td><span class="rolechip none">NONE</span></td>
+          <td class="id">3f8a…c1d4</td>
+          <td><span class="st mute">training</span></td>
+        </tr>
+        <tr>
+          <td><b style="font-size:12px">legacy-gc-rri</b><div class="tiny muted mono">v1 · mdl_0c3e88d2</div></td>
+          <td><span class="st mute">GC</span></td>
+          <td><span class="st mute"><i></i>RETIRED</span></td>
+          <td><span class="st mute"><i></i>NOT_DEPLOYED</span></td>
+          <td><span class="rolechip none">NONE</span></td>
+          <td class="id">1c9e…7742</td>
+          <td><span class="st mute">external</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 12：发布与回滚 —— 原子指针切换 + 明确确认
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-deploy">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>发布与回滚</h2>
+        <p>评测审批、发布草稿、配置确认、异步发布、回滚<b>分开</b>。指针切换为原子操作，失败保持旧版本。</p>
+      </div>
+      <div class="acts"><button class="btn">部署历史</button></div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-50">
+      <div class="col">
+        <div class="colhd">发布草稿<span class="r"><span class="st warn"><i></i>READY</span></span></div>
+        <div class="body">
+          <div class="blk">
+            <div class="conf-grid mb12" style="grid-template-columns:1fr">
+              <div><div class="k">operation</div><div class="v">PUBLISH</div></div>
+              <div><div class="k">scope_id</div><div class="v">scope_sfc_default</div></div>
+              <div><div class="k">target_model_id</div><div class="v">mdl_1c4f8a20 · sfc-rs12-amylose-dmpc v1</div></div>
+              <div><div class="k">stage</div><div class="v">PRODUCTION</div></div>
+              <div><div class="k">expected_pointer_revision</div><div class="v">4</div></div>
+              <div><div class="k">rollback_model_id</div><div class="v">mdl_88b20c17 · sfc-baseline-prod v4</div></div>
+            </div>
+            <div class="note info mb12">
+              <span class="ic">ATOM</span>
+              <span>先预加载与健康检查，再以 <span class="mono">(scope_id, stage, expected_pointer_revision)</span> 做 CAS 切换生产指针与 Champion 关系，并写入不可变发布事件。</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">确认摘要</div>
+            <div class="note mute mb10" style="padding:8px 10px"><span class="ic">SUM</span>
+              <span>将把 <b>scope_sfc_default</b> 的 PRODUCTION 指针从 <span class="mono">rev 4</span> 切到 <span class="mono">rev 5</span>，Champion 切换为 <span class="mono">mdl_1c4f8a20</span>。失败保持旧版本。</span></div>
+            <div class="row" style="gap:8px">
+              <button class="btn pri" data-toast="ok">确认并执行发布</button>
+              <button class="btn">保存草稿</button>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">首次发布提示</div>
+            <div class="note bad">
+              <span class="ic">WARN</span>
+              <span>该 scope <b>无历史模型可回滚</b>，失败保持未部署。摘要中明确显示此项，而不是默认存在回滚目标。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd">发布事件</div>
+        <div class="body">
+          <div class="blk">
+            <div class="tl">
+              <div class="tl-i ok"><div class="ax"><i></i><div class="ln"></div></div>
+                <div class="ct"><div class="h"><span class="tt">SUCCESSFULLY PUBLISHED</span><span class="st ok"><i></i>SUCCEEDED</span><span class="m">dep_2f90a1c8 · 10-18 14:22</span></div>
+                  <div class="dsc">pointer rev 3 → 4，Champion = <span class="mono">mdl_88b20c17</span></div></div></div>
+              <div class="tl-i ok"><div class="ax"><i></i><div class="ln"></div></div>
+                <div class="ct"><div class="h"><span class="tt">ROLLED BACK</span><span class="st ok"><i></i>SUCCEEDED</span><span class="m">dep_88b13d0e · 10-11 09:41</span></div>
+                  <div class="dsc">target = <span class="mono">mdl_0c3e88d2</span>，旧制品文件未被覆盖</div></div></div>
+              <div class="tl-i bad"><div class="ax"><i></i><div class="ln"></div></div>
+                <div class="ct"><div class="h"><span class="tt">PUBLISH FAILED</span><span class="st bad"><i></i>FAILED</span><span class="m">dep_1a77c905 · 10-09 17:03</span></div>
+                  <div class="dsc">预加载健康检查未通过；<b>生产指针保持旧版本</b>，未创建重复部署</div></div></div>
+              <div class="tl-i mute"><div class="ax"><i></i></div>
+                <div class="ct"><div class="h"><span class="tt">APPROVAL GRANTED</span><span class="st mute"><i></i>APPROVED</span><span class="m">ap_5c3f18b2 · 10-09 16:40</span></div>
+                  <div class="dsc">scope: <span class="mono">scope_sfc_default</span> · decided_by: <span class="mono">deployment_default</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">边界说明</div>
+            <div class="col" style="gap:6px">
+              <div class="note mute" style="padding:8px 10px"><span class="ic">NOTE</span>
+                <span>首版助手<b>最多</b>查询评测、准备审批申请并跳转页面；工具清单中不含批准、发布和回滚动作。</span></div>
+              <div class="note mute" style="padding:8px 10px"><span class="ic">NOTE</span>
+                <span>已成功发布只能创建新的回滚或发布操作，不能原地覆盖；请求重试不会再次发起另一笔部署。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 13：结构处理（实用工具入口，全部构建必含）
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-structure">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>结构处理</h2>
+        <p>SMILES 规范化、立体信息保留、2D 渲染、Ketcher 绘制与 ChemDraw/SDF 导入导出。所有构建必含。</p>
+      </div>
+      <div class="acts"><button class="btn">打开 Ketcher 绘制</button></div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-50">
+      <div class="col">
+        <div class="colhd">结构对象</div>
+        <div class="body">
+          <div class="blk">
+            <div class="smiles-in mb10">
+              <input class="inp mono" value="C[C@H](N)c1ccccc1C(=O)O" spellcheck="false" />
+              <button class="btn">规范化</button>
+            </div>
+            <div class="struct">
+              <div class="struct-hd"><span class="n">RENDER</span><span>2D 渲染</span>
+                <div class="r"><button class="btn sm">SVG</button><button class="btn sm">PNG</button></div></div>
+              <div class="struct-canvas" style="min-height:210px">
+                <svg width="230" height="180" viewBox="0 0 230 180" fill="none" stroke="#141920" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M70 60l24-14 24 14v28L94 102 70 88z"/>
+                  <path d="M118 46v-16"/><path d="M118 102v20"/>
+                  <path d="M94 122l-10 14"/><path d="M94 122l14 12"/>
+                  <circle cx="118" cy="30" r="2.8" fill="#fff" stroke="var(--accent)" stroke-width="1.5"/>
+                  <path d="M115 27l3 3 3-3" stroke="var(--accent)" stroke-width="1.3" fill="none"/>
+                  <text x="106" y="24" font-family="monospace" font-size="9.5" fill="var(--accent)">N</text>
+                  <text x="126" y="33" font-family="monospace" font-size="8" fill="var(--accent)">H</text>
+                  <text x="64" y="56" font-family="monospace" font-size="8.5" fill="#77828e">CH₃</text>
+                  <text x="122" y="128" font-family="monospace" font-size="8.5" fill="#77828e">CO₂H</text>
+                </svg>
+              </div>
+              <div class="struct-ft">
+                <div class="row" style="gap:8px">
+                  <button class="btn sm">复制 SMILES</button>
+                  <button class="btn sm">复制 MOL</button>
+                  <button class="btn sm">导出 SDF</button>
+                  <button class="btn sm">导入 CDX</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd">规范化结果</div>
+        <div class="body">
+          <div class="blk">
+            <div class="kv mb12">
+              <dt>输入原文</dt><dd>C[C@H](N)c1ccccc1C(=O)O</dd>
+              <dt>规范化 canonical</dt><dd>C[C@@H](N)c1ccccc1C(=O)O</dd>
+              <dt>立体中心</dt><dd>1 DEFINED · CIP (S)</dd>
+              <dt>电荷 / 盐</dt><dd>0 · 无盐形式</dd>
+              <dt>structure_id</dt><dd>str_7d1a90bf</dd>
+              <dt>schema 版本</dt><dd>structure/v1.4</dd>
+              <dt>结果哈希</dt><dd>sha256:4b1e…9ca7</dd>
+            </div>
+            <div class="note info">
+              <span class="ic">SAFE</span>
+              <span>规范化<b>不静默移除</b> <span class="mono">@/@@</span>、双键立体信息、盐或电荷，也不改变输入化学意义。</span>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">文件解析边界</div>
+            <div class="col" style="gap:6px">
+              <div class="note mute" style="padding:8px 10px"><span class="ic">INFO</span>
+                <span>Ketcher 导出的结构仍需<b>后端校验</b>；浏览器"看起来正常"不构成化学有效性证明。</span></div>
+              <div class="note mute" style="padding:8px 10px"><span class="ic">INFO</span>
+                <span>CDX/CDXML/MOL/SDF 由受控解析器处理，<b>不调用用户提供的脚本</b>。解析器缺失时清晰返回不可用，不虚假声称转换成功。</span></div>
+              <div class="note mute" style="padding:8px 10px"><span class="ic">INFO</span>
+                <span>该工具在全部精简构建中保留；即使裁掉其他模块，"实用工具"至少保留此最小入口。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     视图 14：色谱智能助手
+     PRD §4.2：可折叠会话侧栏 + 对话主区 + 可展开的任务/调用详情区
+     不出现代码编辑 / Workspace / Sandbox 等占位能力
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-assistant">
+  <div class="assist" id="assistGrid">
+
+    <!-- 会话侧栏 -->
+    <aside class="convlist">
+      <div class="convlist-hd">
+        <span class="ttl">会话</span>
+        <div class="r"><button class="btn sm" data-toast="ok">新会话</button></div>
+      </div>
+      <div class="convlist-bd">
+        <button class="conv-i on">
+          <div class="t">手性柱筛选建议</div>
+          <div class="m"><span>10:41</span><span class="st mute" style="padding:0 4px">WAITING</span></div>
+        </button>
+        <button class="conv-i">
+          <div class="t">TLC 体系反推</div>
+          <div class="m"><span>09:12</span><span class="md">business</span></div>
+        </button>
+        <button class="conv-i">
+          <div class="t">SOP 里有 GC 升温程序的约定吗</div>
+          <div class="m"><span>昨天</span><span class="md">knowledge</span></div>
+        </button>
+        <button class="conv-i">
+          <div class="t">批量失败的 3 行原因</div>
+          <div class="m"><span>10-17</span><span class="md">business</span></div>
+        </button>
+        <button class="conv-i">
+          <div class="t">评估 v5 数据版本可不可以删</div>
+          <div class="m"><span>10-15</span><span class="md">knowledge</span></div>
+        </button>
+      </div>
+      <div style="flex:none;border-top:1px solid var(--rule);padding:7px 8px">
+        <button class="btn sm" style="width:100%" data-toast="info">归档会话</button>
+        <button class="btn sm danger mt6" style="width:100%" data-toast="bad">删除会话（需确认）</button>
+      </div>
+    </aside>
+
+    <!-- 对话主区 -->
+    <section class="chatwrap">
+      <div class="chat-hd">
+        <div>
+          <div class="ttl">手性柱筛选建议</div>
+          <div class="sub">run_7f2a91c8 · attempt 2 · seq 418</div>
+        </div>
+        <div class="r">
+          <div class="seg" id="modeSeg">
+            <button class="on">business</button><button>knowledge</button>
+          </div>
+          <button class="btn sm" id="stopRun" data-toast="info">停止回答</button>
+          <button class="btn sm" data-toast="info">详情区</button>
+        </div>
+      </div>
+
+      <div class="chat-bd">
+        <div class="chat-in">
+
+          <!-- 用户消息 -->
+          <div class="msg">
+            <div class="msg-hd">
+              <span class="who">你</span><span class="mt">10:41:02</span>
+              <div class="r"><button class="btn sm">复制</button></div>
+            </div>
+            <div class="user-bubble">
+              用当前这对对映体（COc1ccc2[nH]c([C@@H](C)CC)cc2c1 和它的镜像），帮我看看哪些手性柱值得先试。
+            </div>
+          </div>
+
+          <!-- 助手消息：工具步骤可见，隐藏思维链不可见 -->
+          <div class="msg">
+            <div class="msg-hd">
+              <span class="who">助手</span><span class="mt">10:41:05 · run_7f2a91c8</span>
+              <div class="r"><span class="st mute">FINAL</span></div>
+            </div>
+
+            <!-- PRD：工具提议/校验/执行事件可见，但不塞隐藏思维链 -->
+            <div class="steps">
+              <button class="steps-hd">
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6l2.2 2.2L9 4"/></svg>
+                <span>4 个工具调用</span>
+                <span class="tg">展开</span>
+              </button>
+              <div class="step-i ok"><span class="ti">✓</span><span class="tn">normalize_structure</span><span class="tm">2 structures · 0.21 s</span></div>
+              <div class="step-i ok"><span class="ti">✓</span><span class="tn">validate_enantiomer_pair</span><span class="tm">passed · 0.09 s</span></div>
+              <div class="step-i ok"><span class="ti">✓</span><span class="tn">get_prediction_capabilities</span><span class="tm">scope_sfc_default · 0.14 s</span></div>
+              <div class="step-i hold"><span class="ti">◷</span><span class="tn">create_prediction · sfc/full_column</span><span class="tm">WAITING_CONFIRMATION</span></div>
+            </div>
+
+            <div class="ai-body">
+              <p>两条结构已规范化为同一骨架的对映体对，立体信息完整保留。基于能力契约中的候选手性柱范围，我准备发起一次全柱筛选。</p>
+              <p>在提交前需要你确认这次操作的<b>具体版本与范围</b>——助手不能自行代替你批准。</p>
+            </div>
+
+            <!-- 确认卡：确认是服务端 Confirmation 资源，不是聊天文本 -->
+            <div class="confcard">
+              <div class="confcard-hd">
+                <span class="t">需要你的确认</span>
+                <span class="st hold">CONFIRMATION</span>
+                <span class="ttl">confirm_3a91f7c8</span>
+              </div>
+              <div class="confcard-bd">
+                <div class="why">
+                  将以 <b>25</b> 根候选手性柱 × <b>4</b> 组条件（改性剂比例 × 温度）对这两个对映体发起全柱筛选，
+                  展开总量 <b>100</b> 次计算，创建异步任务并写入预测记录。
+                </div>
+                <div class="conf-grid">
+                  <div><div class="k">资源</div><div class="v">batch draft / sfc</div></div>
+                  <div><div class="k">action</div><div class="v">prediction.submit</div></div>
+                  <div><div class="k">revision</div><div class="v">rev 2</div></div>
+                  <div><div class="k">config_hash</div><div class="v">b81f…3c07</div></div>
+                  <div><div class="k">模型</div><div class="v">sfc-rs12-…-dmpc-v1 @ 1</div></div>
+                  <div><div class="k">选中范围</div><div class="v">2 structures · 25 columns</div></div>
+                </div>
+                <div class="conf-ft">
+                  <button class="btn pri" data-toast="ok">确认并提交</button>
+                  <button class="btn">拒绝</button>
+                  <button class="btn" data-toast="info">查看详情</button>
+                  <span class="exp">有效期剩余 <b>29:12</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 助手引用卡：定位来自真实来源 -->
+          <div class="msg">
+            <div class="msg-hd">
+              <span class="who">助手</span><span class="mt">10:41:31 · run_7f2a91c8</span>
+              <div class="r"><span class="st mute">FINAL</span></div>
+            </div>
+            <div class="ai-body">
+              <p>关于这对对映体的分离，资料中有两条相关记录可以核对：</p>
+            </div>
+            <div class="cites">
+              <div class="cite">
+                <div class="h"><b>SFC 手性分离方法说明</b><span class="st ok"><i></i>READY</span>
+                  <span class="loc">p.12</span></div>
+                <div class="sn">对映体在直链淀粉类固定相上的分离主要受改性剂比例影响，比例在 15–25% 区间时分离度趋于最优；温度升高会缩短保留并可能降低 α。</div>
+                <div class="ft"><span>doc_41da9c02</span><span>doc_version 3</span><span>chunk 88</span><span>score 1.25 · keyword_relevance</span></div>
+              </div>
+              <div class="cite">
+                <div class="h"><b>手性固定相选择综述</b><span class="st ok"><i></i>READY</span>
+                  <span class="loc">¶ 14–18</span></div>
+                <div class="sn">对于带取代吲哚骨架的化合物，氨基甲酸酯类固定相（Chiralcel OD 系列）通常优于直链淀粉类，但需要在 30–40 ℃ 区间验证热稳定性。</div>
+                <div class="ft"><span>doc_8b07e1a3</span><span>doc_version 1</span><span>chunk 142</span><span>score 0.92 · keyword_relevance</span></div>
+              </div>
+            </div>
+            <div class="ai-body mt8">
+              <p>建议优先安排 OD 系列与淀粉类的对比。以上数值来自<b>真实模型输出</b>，仍需实验确认。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 输入区 -->
+      <div class="chat-ft">
+        <div class="composer">
+          <div class="comp">
+            <textarea rows="1" placeholder="描述你的问题，或让我查资料、准备一个预测…"></textarea>
+            <div class="comp-ft">
+              <span class="att">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 11V2M4.5 5.5L8 2l3.5 3.5"/><path d="M2.5 11v2.5h11V11"/></svg>
+                附件走 artifact
+              </span>
+              <button class="btn sm" data-toast="info">选结构</button>
+              <span class="sp"></span>
+              <span class="tiny muted">同一会话同时只允许一个非终态 Run</span>
+              <button class="btn pri sm" style="height:26px" data-toast="info">发送</button>
+            </div>
+          </div>
+          <div class="comp-hint">
+            <span>最多 20,000 字符</span>
+            <span>每 Run 默认 12 次 LLM 请求 / 24 次工具调用</span>
+            <span class="warnb">"停止回答"只停止 Run，不取消已提交的训练或批量任务</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 详情区：Agent Run 时间线 / 工具 / LLM -->
+    <aside class="ardetail" id="arDetail">
+      <div class="ardetail-hd">
+        <span class="t">运行详情</span>
+        <div class="r">
+          <button class="btn sm" data-toast="info">工具</button>
+          <button class="btn sm" data-toast="info">LLM</button>
+          <button class="btn sm" id="collapseDetail">收起</button>
+        </div>
+      </div>
+      <div class="ardetail-bd">
+        <div class="blk">
+          <div class="kv">
+            <dt>agent_run_id</dt><dd>run_7f2a91c8</dd>
+            <dt>status</dt><dd><span class="st hold">WAITING_CONFIRMATION</span></dd>
+            <dt>attempt</dt><dd>2</dd>
+            <dt>mode</dt><dd>business</dd>
+            <dt>provider cfg</dt><dd>cfg_llm_int01 / rev 3</dd>
+            <dt>model_id</dt><dd>internal-chat-32b</dd>
+            <dt>prompt_version</dt><dd>pv_2026_10_02</dd>
+            <dt>toolset_version</dt><dd>tv_universal_14</dd>
+            <dt>last_event_seq</dt><dd>418</dd>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">用量</div>
+          <div class="mets c2">
+            <div class="met"><div class="k">LLM 请求</div><div class="v">6<span class="u">/12</span></div></div>
+            <div class="met"><div class="k">工具调用</div><div class="v">4<span class="u">/24</span></div></div>
+          </div>
+          <div class="tiny muted mt8">供应商未返回 usage 时写 <span class="mono">null</span>，不伪造 token 数和费用。</div>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">Run 时间线</div>
+          <div class="tl">
+            <div class="tl-i ok"><div class="ax"><i></i><div class="ln"></div></div>
+              <div class="ct"><div class="h"><span class="tt">run.started</span><span class="m">seq 401</span></div>
+                <div class="dsc">attempt 2，provider cfg rev 3 快照</div></div></div>
+            <div class="tl-i ok"><div class="ax"><i></i><div class="ln"></div></div>
+              <div class="ct"><div class="h"><span class="tt">tool.proposed</span><span class="m">seq 405</span></div>
+                <div class="dsc"><span class="mono">normalize_structure</span> · 脱敏参数摘要</div></div></div>
+            <div class="tl-i ok"><div class="ax"><i></i><div class="ln"></div></div>
+              <div class="ct"><div class="h"><span class="tt">tool.completed</span><span class="m">seq 406</span></div>
+                <div class="dsc">2 个结构规范化成功</div></div></div>
+            <div class="tl-i hold"><div class="ax"><i></i></div>
+              <div class="ct"><div class="h"><span class="tt">confirmation.required</span><span class="m">seq 418</span></div>
+                <div class="dsc">Run 置为 WAITING_CONFIRMATION，等待最多 30 分钟</div></div></div>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">Context 采集</div>
+          <div class="note mute" style="padding:8px 10px" id="ctxNote">
+            <span class="ic">TRACE</span>
+            <span><b>metadata only</b> · 内容快照未采集。Context Inspector 是受限调试能力，需要专用权限。</span>
+          </div>
+          <div class="row mt8" style="gap:6px">
+            <button class="btn sm" data-toast="info">查看逻辑输入</button>
+            <button class="btn sm" data-toast="info">查看实际请求</button>
+            <button class="btn sm" data-toast="info">对比差异</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     视图 15：系统设置（固定左下角入口）
+     不回显密钥，不提供在线改端口并重启
+     ══════════════════════════════════════════════════════════════ -->
+<div class="view" id="v-settings">
+  <div class="ws-hd">
+    <div class="r1">
+      <div>
+        <h2>系统设置</h2>
+        <p>管理非敏感运行信息与 LLM URL、model_id、密钥引用。<b>页面不回显密钥</b>，只显示是否存在。</p>
+      </div>
+      <div class="acts"><span class="st mute">READ-ONLY MOSTLY</span></div>
+    </div>
+  </div>
+
+  <div class="ws-body">
+    <div class="split s-50">
+      <div class="col">
+        <div class="colhd">LLM 配置</div>
+        <div class="body">
+          <div class="blk">
+            <div class="kv mb12">
+              <dt>配置名</dt><dd>internal-llm</dd>
+              <dt>API 格式</dt><dd>openai_chat</dd>
+              <dt>base_url</dt><dd>endpoint label: 内网 LLM 网关</dd>
+              <dt>model_id</dt><dd>internal-chat-32b</dd>
+              <dt>API Key</dt><dd class="plain"><span class="st ok"><i></i>已配置</span> <span class="muted tiny">不回显</span></dd>
+              <dt>状态</dt><dd><span class="st ok"><i></i>ACTIVE</span></dd>
+              <dt>外发策略</dt><dd>deny_external</dd>
+            </div>
+            <div class="note warn mb10">
+              <span class="ic">POLICY</span>
+              <span><b>deny_external</b> 时禁止外部 Provider 测试与执行。配置<b>不可就地覆盖</b>历史 revision，修改创建新候选。</span>
+            </div>
+            <div class="row wrap" style="gap:7px">
+              <button class="btn sm">创建候选配置</button>
+              <button class="btn sm" data-toast="ok">连接测试</button>
+              <button class="btn sm" disabled>设为活动</button>
+            </div>
+            <div class="tiny muted mt8">测试失败只更新该次 test，<b>不替换活动配置</b>。激活需要成功测试绑定同一配置/hash 并匹配 expected revision。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhd">运行与依赖</div>
+        <div class="body">
+          <div class="blk">
+            <div class="blk-t">运行值（非任意环境变量）</div>
+            <div class="kv mb12">
+              <dt>API 端口</dt><dd>9012（来自项目配置）</dd>
+              <dt>Web 端口</dt><dd>8080</dd>
+              <dt>构建标识</dt><dd>universal-v1</dd>
+              <dt>采集模式</dt><dd>metadata only</dd>
+              <dt>外发 Collector</dt><dd>未配置（不向云端发送）</dd>
+            </div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">依赖健康</div>
+            <table class="tbl">
+              <thead><tr><th>依赖</th><th>状态</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td>MySQL</td><td><span class="st ok"><i></i>UP</span></td><td class="tiny muted">全文索引可用</td></tr>
+                <tr><td>Redis</td><td><span class="st ok"><i></i>UP</span></td><td class="tiny muted">9 个队列</td></tr>
+                <tr><td>Agent Worker</td><td><span class="st ok"><i></i>UP</span></td><td class="tiny muted">心跳 8 s 前</td></tr>
+                <tr><td>Training Worker</td><td><span class="st warn"><i></i>DEGRADED</span></td><td class="tiny muted">1 个 Worker 缺 checkpoint 支持</td></tr>
+                <tr><td>制品存储</td><td><span class="st ok"><i></i>UP</span></td><td class="tiny muted">磁盘 68% 已用</td></tr>
+              </tbody>
+            </table>
+            <div class="note mute mt10" style="padding:8px 10px"><span class="ic">INFO</span>
+              <span>数据缺失用 <span class="mono">null</span>/<span class="mono">UNKNOWN</span>，不用 0 假装正常；缺少 Worker 时不伪造队列正常。</span></div>
+          </div>
+
+          <div class="blk">
+            <div class="blk-t">审计</div>
+            <div class="note mute" style="padding:8px 10px"><span class="ic">AUDIT</span>
+              <span>发布、回滚、删除、导出、配置变更与助手业务操作均记录审计。审计不含密码/Token/客户完整原始数据。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 其余三级导航目标：TLC 条件比较 / 溶剂反推 / CC / SFC 单柱 / 批量（复用视图） -->
+<div class="view" id="v-pred-tlc-cmp">
+  <div class="ws-hd">
+    <div class="r1"><div><h2>TLC · 条件比较</h2>
+      <p>在同一批结构上比较多个展开体系。超出能力公布的候选上限时，转入有确认的批量流程，不无限自动扫描。</p>
+    </div>
+    <div class="acts"><button class="btn" data-toast="info">转入批量</button></div></div>
+  </div>
+  <div class="ws-body"><div class="split s-50">
+    <div class="col"><div class="colhd">候选体系</div><div class="body"><div class="blk">
+      <div class="blk-hd"><h3>体系与结构</h3></div>
+      <div class="chipbar mb10"><button class="chip on">hexane/EtOAc 7:3</button><button class="chip">hexane/acetone 8:2</button><button class="chip">PE/EtOAc 6:4</button></div>
+      <div class="struct"><div class="struct-hd"><span class="n">STRUCT</span><span>4 个结构已载入</span></div>
+        <div class="struct-bd"><div class="struct-canvas"><svg width="150" height="80" viewBox="0 0 150 80" fill="none" stroke="#141920" stroke-width="1.5"><path d="M20 40h22l8-13 10 26 9-19 8 11h53"/></svg></div>
+        <div class="struct-side"><div class="k">STRUCTURES</div><div class="v">4 refs</div><div class="k" style="margin-top:8px">COMBINATIONS</div><div class="v">4 × 3 = 12</div></div></div></div>
+      <div class="row mt12"><button class="btn pri" data-toast="info">比较 12 个组合</button></div>
+    </div></div></div>
+    <div class="col"><div class="colhd">比较结果</div><div class="body"><div class="blk">
+      <div class="blk-t">Rf 矩阵</div>
+      <table class="tbl"><thead><tr><th>结构</th><th class="n">7:3</th><th class="n">8:2</th><th class="n">6:4</th><th>最优</th></tr></thead>
+      <tbody>
+        <tr><td class="id">CC(=O)c1ccc(O)cc1</td><td class="n">0.46</td><td class="n">0.58</td><td class="n">0.31</td><td><span class="st mute">8:2</span></td></tr>
+        <tr><td class="id">CCOC(=O)c1ccc(N)cc1</td><td class="n">0.34</td><td class="n">0.49</td><td class="n">0.22</td><td><span class="st mute">8:2</span></td></tr>
+        <tr><td class="id">c1ccccc1</td><td class="n">0.62</td><td class="n">0.71</td><td class="n">0.48</td><td><span class="st mute">8:2</span></td></tr>
+      </tbody></table>
+      <div class="tiny muted mt8">每个体系下使用的展开方向相同；宽度差异未纳入本对比。</div>
+    </div></div></div>
+  </div></div>
+</div>
+
+<div class="view" id="v-pred-tlc-rev">
+  <div class="ws-hd">
+    <div class="r1"><div><h2>TLC · 溶剂反推</h2>
+      <p>在<b>支持体系内</b>反推能展开到目标 Rf 范围的溶剂组合。两个页面入口调用<b>同一业务服务</b>。</p>
+    </div>
+    <div class="acts"><button class="btn" data-toast="info">查看能力上限</button></div></div>
+  </div>
+  <div class="ws-body"><div class="split s-50">
+    <div class="col"><div class="colhd">目标设定</div><div class="body"><div class="blk">
+      <div class="fld mb10"><label>目标结构</label><input class="inp mono" value="CC(=O)c1ccc(O)cc1" /></div>
+      <div class="grid2 mb10">
+        <div class="fld"><label>Rf 下限</label><input class="inp mono num" value="0.30" /></div>
+        <div class="fld"><label>Rf 上限</label><input class="inp mono num" value="0.60" /></div>
+      </div>
+      <div class="fld mb10"><label>候选上限</label><input class="inp mono num" value="60" /><div class="tiny muted mt6">单次扫描最大 200 候选；超出转批量</div></div>
+      <button class="btn pri" data-toast="info">在支持体系内反推</button>
+    </div></div></div>
+    <div class="col"><div class="colhd">反推结果</div><div class="body"><div class="blk">
+      <div class="note warn mb10"><span class="ic">WARN</span><span>反推只在模型<b>白名单体系内</b>成立；不虚构模型不支持的体系，也不把石油醚当作正己烷。</span></div>
+      <table class="tbl"><thead><tr><th>体系</th><th class="n">预测 Rf</th><th>是否命中</th></tr></thead>
+      <tbody>
+        <tr class="sel"><td class="id">hexane/EtOAc 85:15</td><td class="n">0.44</td><td><span class="st ok"><i></i>HIT</span></td></tr>
+        <tr><td class="id">hexane/acetone 92:8</td><td class="n">0.38</td><td><span class="st ok"><i></i>HIT</span></td></tr>
+        <tr><td class="id">hexane/EtOAc 70:30</td><td class="n">0.71</td><td><span class="st mute"><i></i>MISS</span></td></tr>
+      </tbody></table>
+    </div></div></div>
+  </div></div>
+</div>
+
+<div class="view" id="v-lookup">
+  <div class="ws-hd">
+    <div class="r1"><div><h2>分子查找</h2>
+      <p>通过名称、结构或标识查找分子。外发查询受批准的 endpoint allowlist 与数据发送策略约束，不允许任意 URL。</p></div></div>
+  </div>
+  <div class="scrollpane"><div class="blk" style="background:var(--panel)">
+    <div class="smiles-in mb12"><input class="inp" value="对羟基苯乙酮" /><button class="btn">查找</button></div>
+    <div class="note warn mb12"><span class="ic">SEND</span>
+      <span>外部分子查询默认<b>关闭</b>。只有部署管理员显式批准的目标才可访问，不自动访问所有内网或云元数据地址。</span></div>
+    <table class="tbl"><thead><tr><th>名称</th><th>SMILES</th><th>标识</th></tr></thead>
+      <tbody><tr class="sel"><td>4-羟基苯乙酮</td><td class="id">CC(=O)c1ccc(O)cc1</td><td class="id">InChIKey: GJAWHXHKYYXBSV-UHFFFAOYSA-N</td></tr></tbody></table>
+  </div></div>
+</div>
+
+<div class="view" id="v-templates">
+  <div class="ws-hd">
+    <div class="r1"><div><h2>模板与数据版本</h2>
+      <p>训练模板由部署时可信开发者审核并纳入构建。<b>原型中的示例名不是已存在模型资产</b>；未提供真实模板时能力显示不可用。</p></div></div>
+  </div>
+  <div class="scrollpane"><table class="tbl">
+    <thead><tr><th>模板</th><th>任务</th><th>版本</th><th>代码版本</th><th>依赖锁哈希</th><th>Checkpoint</th><th>健康</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">sfc_baseline</td><td><span class="st mute">SFC</span></td><td class="n">3</td><td class="id">a3f9c21</td><td class="id">7c11…0e42</td><td><span class="st ok"><i></i>SUPPORTED</span></td><td><span class="st ok"><i></i>READY</span></td></tr>
+      <tr><td class="mono">tlc_rf_baseline</td><td><span class="st mute">TLC</span></td><td class="n">2</td><td class="id">5d2c88f</td><td class="id">91aa…33c7</td><td><span class="st mute"><i></i>NONE</span></td><td><span class="st ok"><i></i>READY</span></td></tr>
+      <tr><td class="mono">gc_rri_template</td><td><span class="st mute">GC</span></td><td class="n">1</td><td class="id">c40b17e</td><td class="id">ff21…a8d0</td><td><span class="st mute"><i></i>NONE</span></td><td><span class="st warn"><i></i>DEGRADED</span></td></tr>
+      <tr><td class="mono">hplc_chiral_template</td><td><span class="st mute">HPLC</span></td><td class="n">—</td><td class="id">—</td><td class="id">—</td><td><span class="st mute"><i></i>—</span></td><td><span class="st bad"><i></i>UNAVAILABLE</span></td></tr>
+    </tbody></table>
+    <div class="blk" style="background:var(--panel)">
+      <div class="note bad"><span class="ic">BLOCK</span>
+        <span><b>hplc_chiral_template</b> 尚未提供受审模板实现与依赖锁，该任务的训练能力<b>不可用</b>，不使用通用示例算法假装满足科学验收。</span></div>
+    </div>
+  </div>
+</div><!-- ══════════════════════════════════════════════════════════════
+     浮层与脚本
+     ══════════════════════════════════════════════════════════════ -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="详情">
+  <div class="drawer-hd">
+    <div>
+      <h3 id="drawerTitle">详情</h3>
+      <p id="drawerId"></p>
+    </div>
+    <button class="x" id="drawerX" aria-label="关闭">×</button>
+  </div>
+  <div class="drawer-bd" id="drawerBody"></div>
+</aside>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   1. 路由与视图切换
+   导航来自构建期注册清单；切换视图不请求未构建模块
+   ══════════════════════════════════════════════════════════ */
+const VIEWS = ['v-pred-tlc','v-pred-tlc-cmp','v-pred-tlc-rev','v-pred-tlc-batch','v-pred-cc',
+  'v-pred-cc-batch','v-pred-hplc','v-pred-hplc-batch','v-pred-sfc','v-pred-sfc-full','v-pred-sfc-batch',
+  'v-pred-gc','v-pred-gc-batch','v-pred-chiral','v-records','v-datasets','v-knowledge',
+  'v-training','v-templates','v-models','v-deploy','v-structure','v-lookup','v-assistant','v-settings'];
+
+// 三级导航中未单独建模的目标 → 复用承载视图（保持原型可点，不留死链）
+const ALIAS = {
+  'pred':'v-pred-tlc','pred-tlc':'v-pred-tlc','pred-tlc-cmp':'v-pred-tlc-cmp',
+  'pred-tlc-rev':'v-pred-tlc-rev','pred-tlc-batch':'v-pred-tlc-batch',
+  'pred-cc':'v-pred-tlc','pred-cc-batch':'v-pred-tlc-batch',
+  'pred-hplc':'v-pred-hplc','pred-hplc-batch':'v-pred-tlc-batch',
+  'pred-sfc':'v-pred-sfc-full','pred-sfc-full':'v-pred-sfc-full','pred-sfc-batch':'v-pred-tlc-batch',
+  'pred-gc':'v-pred-gc','pred-gc-batch':'v-pred-tlc-batch',
+  'pred-chiral':'v-pred-chiral',
+  records:'v-records',datasets:'v-datasets',knowledge:'v-knowledge',
+  training:'v-training',templates:'v-templates',models:'v-models',deploy:'v-deploy',
+  structure:'v-structure',lookup:'v-lookup',assistant:'v-assistant',settings:'v-settings'
+};
+
+const CRUMB = {
+  'v-pred-tlc':        ['色谱预测','TLC 薄层色谱','单次预测'],
+  'v-pred-tlc-cmp':    ['色谱预测','TLC 薄层色谱','条件比较'],
+  'v-pred-tlc-rev':    ['色谱预测','TLC 薄层色谱','溶剂反推'],
+  'v-pred-tlc-batch':  ['色谱预测','批量预测','行级校验'],
+  'v-pred-hplc':       ['色谱预测','HPLC 手性拆分','单次预测'],
+  'v-pred-sfc-full':   ['色谱预测','SFC 超临界流体','全柱筛选'],
+  'v-pred-gc':         ['色谱预测','GC 气相色谱','单次预测'],
+  'v-pred-chiral':     ['色谱预测','手性 LC','独立适配器'],
+  'v-records':         ['数据与知识中心','预测记录',''],
+  'v-datasets':        ['数据与知识中心','色谱数据',''],
+  'v-knowledge':       ['数据与知识中心','知识中心',''],
+  'v-training':        ['模型训练','实验',''],
+  'v-templates':       ['模型训练','模板与数据版本',''],
+  'v-models':          ['模型中心','模型库',''],
+  'v-deploy':          ['模型中心','发布与回滚',''],
+  'v-structure':       ['实用工具','结构处理',''],
+  'v-lookup':          ['实用工具','分子查找',''],
+  'v-assistant':       ['色谱智能助手','对话',''],
+  'v-settings':        ['系统设置','','']
+};
+
+let currentView = 'v-pred-tlc';
+
+function go(key, opts){
+  const id = ALIAS[key] || key;
+  if(!document.getElementById(id)) return;
+  currentView = id;
+
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+
+  // 导航高亮：同组兄弟保持一致，二三级各自高亮
+  document.querySelectorAll('.nav-i').forEach(n => n.classList.remove('on'));
+  const exact = document.querySelector(`.nav-i[data-v="${key}"]`);
+  if(exact) exact.classList.add('on');
+  document.querySelectorAll(`.nav-i[data-g="${key}"]`).forEach(n => n.classList.add('on'));
+  // 一级导航：三级目标时点亮其一级容器
+  const sec = exact ? exact.closest('.rail-sec') : document.querySelector('.nav-i[data-g="'+(key.split('-')[0])+'"]')?.closest('.rail-sec');
+  if(sec){
+    const primary = sec.querySelector(':scope > .nav-i');
+    if(primary && !primary.classList.contains('on')) primary.classList.add('on');
+  }
+  if(key === 'pred' || key.startsWith('pred-')) document.querySelector('.nav-i[data-v="pred"]')?.classList.add('on');
+  if(key === 'settings') document.querySelector('.nav-i[data-v="settings"]')?.classList.add('on');
+
+  // 面包屑
+  const c = CRUMB[id] || [];
+  document.getElementById('crumb').innerHTML =
+    c.filter(Boolean).map((s,i,a)=> i===a.length-1
+      ? `<span class="cur">${s}</span>`
+      : `<span class="${i===0?'':'opt'}">${s}</span><span class="sep">/</span>`
+    ).join('');
+
+  location.hash = key;
+  if(!opts?.keepScroll) document.querySelector('.scrollpane, .col .body')?.scrollTo(0,0);
+}
+
+document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-v]');
+  if(nav){ go(nav.dataset.v); return; }
+  const goto = e.target.closest('[data-goto]');
+  if(goto){ go(goto.dataset.goto); return; }
+});
+
+window.addEventListener('hashchange', () => {
+  const k = location.hash.replace('#','');
+  if(ALIAS[k] && ALIAS[k] !== currentView) go(k);
+});
+
+/* ══════════════════════════════════════════════════════════
+   2. Toast
+   ══════════════════════════════════════════════════════════ */
+const TOAST_ICON = { ok:'DONE', bad:'ERROR', info:'NOTE' };
+const TOAST_TEXT = {
+  ok:  ['操作已提交','异步任务已受理，结果通过任务状态返回'],
+  bad: ['需要处理','该操作在当前上下文下被拒绝，请检查权限或输入'],
+  info:['原型演示','此原型只展示交互与契约边界，不调用真实服务']
+};
+function toast(kind, title, sub){
+  const el = document.createElement('div');
+  el.className = 'toast ' + (kind || 'info');
+  el.innerHTML = `<span class="st2">${TOAST_ICON[kind]||'NOTE'}</span>
+    <div class="m"><b>${title || TOAST_TEXT[kind][0]}</b>
+    <span>${sub || TOAST_TEXT[kind][1]}</span></div>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .2s, transform .2s';
+    el.style.opacity = '0'; el.style.transform = 'translateY(4px)';
+    setTimeout(() => el.remove(), 220);
+  }, 3200);
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-toast]');
+  if(t) toast(t.dataset.toast);
+});
+
+/* ══════════════════════════════════════════════════════════
+   3. 预测任务：真实状态机推进，不使用假进度条
+   QUEUED → RUNNING → SUCCEEDED
+   ══════════════════════════════════════════════════════════ */
+function runPrediction(kind){
+  const cfg = {
+    tlc:    { idle:'tlcIdle', run:'tlcRun', badge:'tlcBadge', val:'tlcRf' },
+    hplc:   { idle:'hplcIdle', run:'hplcRun', badge:'hplcBadge' },
+    sfc:    { idle:'sfcIdle', run:'sfcRun', badge:'sfcBadge' },
+    gc:     { idle:'gcIdle', run:'gcRun', badge:'gcBadge' },
+    chiral: { idle:'chiralIdle', run:'chiralRun', badge:'chiralBadge' }
+  }[kind];
+  if(!cfg) return;
+  if(!document.getElementById(cfg.run)) { toast('info'); return; }
+
+  document.getElementById(cfg.idle).classList.add('hide');
+  document.getElementById(cfg.run).classList.remove('hide');
+  const badge = document.getElementById(cfg.badge);
+  if(badge){ badge.className = 'st run'; badge.innerHTML = '<i></i>RUNNING'; }
+
+  // TLC 结果值：轻微抖动体现真实模型不确定性，页面明确标注为模型输出
+  const rf = document.getElementById('tlcRf');
+  let t = 0;
+  const tick = setInterval(() => {
+    t += 1;
+    if(rf) rf.textContent = (0.460 + Math.sin(t) * 0.004).toFixed(3);
+    if(t >= 5){
+      clearInterval(tick);
+      if(rf) rf.textContent = '0.460';
+      // 推进状态机
+      const nodes = document.querySelectorAll(`#${cfg.run} .jsm-node`);
+      if(nodes.length >= 3){
+        nodes[1].classList.remove('now');
+        nodes[1].classList.add('done');
+        nodes[2].classList.add('done');
+        nodes[2].querySelector('.lb').nextElementSibling.textContent = '刚刚';
+      }
+      if(badge){ badge.className = 'st ok'; badge.innerHTML = '<i></i>SUCCEEDED'; }
+      toast('ok', '预测完成', '结果已写入预测记录，可导出或归档');
+    }
+  }, 620);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-run]');
+  if(b) runPrediction(b.dataset.run);
+});
+
+/* TLC 斑点在真实运行时向预测位置收敛 */
+setInterval(() => {
+  const spot = document.getElementById('tlcSpot');
+  if(spot && !document.getElementById('tlcRun').classList.contains('hide')){
+    const n = Math.random() * 2 - 1;
+    spot.setAttribute('transform', `translate(${(n*1.6).toFixed(2)} ${(n*-1.1).toFixed(2)})`);
+  }
+}, 1400);
+
+/* ══════════════════════════════════════════════════════════
+   4. 知识检索：locator 来自真实来源类型
+   ══════════════════════════════════════════════════════════ */
+const K_RESULTS = [
+  { title:'SFC 手性分离方法说明', doc:'doc_41da9c02', ver:'3', chunk:'88',
+    loc:'p.12', locKind:'page', score:'1.25',
+    sn:'对映体在直链淀粉类固定相上的分离主要受改性剂比例影响，比例在 15–25% 区间时分离度趋于最优；温度升高会缩短保留并可能降低 α。' },
+  { title:'手性固定相选择综述', doc:'doc_8b07e1a3', ver:'1', chunk:'142',
+    loc:'¶ 14–18', locKind:'paragraph', score:'0.92',
+    sn:'对于带取代吲哚骨架的化合物，氨基甲酸酯类固定相通常优于直链淀粉类，但需要在 30–40 ℃ 区间验证热稳定性。' },
+  { title:'TLC 展开体系 SOP', doc:'doc_cc1804f2', ver:'5', chunk:'31',
+    loc:'L88–L94', locKind:'line', score:'0.68',
+    sn:'正己烷–乙酸乙酯体系用于中性或弱极性样品；含游离羟基的化合物需提高乙酸乙酯比例至 30% 以上。' }
+];
+document.addEventListener('click', e => {
+  if(!e.target.closest('[data-retrieve]')) return;
+  const badge = document.getElementById('kBadge');
+  badge.className = 'st run'; badge.innerHTML = '<i></i>SEARCHING';
+  const box = document.getElementById('kResults');
+  box.innerHTML = `<div class="sk" style="height:64px"></div><div class="sk mt8" style="height:64px"></div>`;
+  document.getElementById('kEmpty').classList.add('hide');
+
+  setTimeout(() => {
+    badge.className = 'st ok'; badge.innerHTML = '<i></i>3 HITS';
+    box.innerHTML = K_RESULTS.map(r => `
+      <div class="cite mb6">
+        <div class="h"><b>${r.title}</b><span class="st ok"><i></i>READY</span>
+          <span class="loc">${r.loc}</span></div>
+        <div class="sn">${r.sn}</div>
+        <div class="ft"><span>${r.doc}</span><span>doc_version ${r.ver}</span>
+          <span>chunk ${r.chunk}</span><span>locator: ${r.locKind}</span>
+          <span class="push">score ${r.score} · keyword_relevance</span></div>
+      </div>`).join('') +
+      `<div class="note mute mt8" style="padding:8px 10px"><span class="ic">NOTE</span>
+        <span>locator 类型来自真实分页来源：PDF 用页码，DOCX/Markdown 用段落或行，<b>不杜撰 PDF 页码</b>。</span></div>`;
+  }, 700);
+});
+
+/* ══════════════════════════════════════════════════════════
+   5. 预测记录行（自动持久化，不是"保存后才出现"）
+   ══════════════════════════════════════════════════════════ */
+const RECORDS = [
+  ['pr_9f21c04a','TLC','single','tlc-rf-amylose-v3','0.460','1','web','10-20 10:24'],
+  ['pr_7b3e1d88','HPLC','single','hplc-chiral-pair-v2','α 1.28','2','web','10-20 09:58'],
+  ['pr_5a90f7c2','SFC','full_column','sfc-rs12-dmpc-v1','P 0.93','1','assistant','10-20 09:41'],
+  ['pr_2e77b4d0','GC','single','gc-rri-column-a-v1','tR50 6.8','1','web','10-19 16:22'],
+  ['pr_1c04f8a2','TLC','batch','tlc-rf-amylose-v3','42 / 42','0','service','10-19 14:07'],
+  ['pr_8f21a3b6','CC','single','cc-elution-v1','42.8 mL','1','web','10-19 11:30'],
+  ['pr_44b7e2f9','TLC','single','tlc-rf-amylose-v3','0.510','1','assistant','10-18 17:52'],
+  ['pr_0d39c8e1','SFC','single_column','sfc-rs12-dmpc-v1','P 0.88','1','web','10-18 15:11']
+];
+function renderRecords(){
+  const body = document.getElementById('recBody');
+  if(!body) return;
+  body.innerHTML = RECORDS.map(r => `
+    <tr>
+      <td><label class="chk"><input type="checkbox" /></label></td>
+      <td class="id">${r[0]}</td>
+      <td><span class="st mute">${r[1]}</span> <span class="tiny muted">${r[2]}</span></td>
+      <td class="id">${r[3]}</td>
+      <td class="n">${r[4]}</td>
+      <td>${r[5]==='0' ? '<span class="st ok"><i></i>NONE</span>' : `<span class="st warn"><i></i>${r[5]}</span>`}</td>
+      <td><span class="st mute">${r[6]}</span></td>
+      <td class="mono tiny muted">${r[7]}</td>
+    </tr>`).join('');
+}
+renderRecords();
+
+/* ══════════════════════════════════════════════════════════
+   6. 助手详情区折叠（三区布局的"可展开"）
+   ══════════════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  if(e.target.id === 'collapseDetail'){
+    const g = document.getElementById('assistGrid');
+    g.classList.remove('with-detail');
+    const a = document.getElementById('arDetail');
+    a.style.display = 'none';
+    toast('info');
+  }
+  if(e.target.closest('[data-goto="assistant"]')){
+    setTimeout(() => {
+      const g = document.getElementById('assistGrid');
+      if(!g.classList.contains('with-detail')){
+        g.classList.add('with-detail');
+        document.getElementById('arDetail').style.display = '';
+      }
+    }, 0);
+  }
+});
+
+// 模式切换：只改变工具可见集合，不代替服务端权限
+document.addEventListener('click', e => {
+  const b = e.target.closest('#modeSeg button');
+  if(!b) return;
+  document.querySelectorAll('#modeSeg button').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  toast('info', '模式：' + b.textContent,
+    b.textContent === 'knowledge'
+      ? '仅装配只读资料与允许的结构说明工具；服务端仍逐次授权'
+      : '装配当前构建所有已授权业务工具');
+});
+
+/* ══════════════════════════════════════════════════════════
+   7. 详情抽屉
+   ══════════════════════════════════════════════════════════ */
+const DRAWERS = {
+  'pred-hplc': {
+    title:'HPLC schema 1.1 快照',
+    id:'pred_hplc_2c88 · str_ent pair',
+    html:`
+      <div class="blk">
+        <div class="blk-t">本次提交的原始 SMILES（逐槽绑定）</div>
+        <pre class="code"><span class="c">// input.model_input_smiles —— 原样保存，不被 canonical 替代</span>
+{
+  <span class="k">"model_input_smiles"</span>: [
+    <span class="s">"N[C@@H](C)C(O)=O"</span>,   <span class="c">// slot 0</span>
+    <span class="s">"N[C@H](C)C(O)=O"</span>    <span class="c">// slot 1</span>
+  ],
+  <span class="k">"structure_refs"</span>: [<span class="s">"str_ent_alanine_r"</span>, <span class="s">"str_ent_alanine_s"</span>],
+  <span class="k">"isopropanol_fraction"</span>: <span class="n">0.1</span>,
+  <span class="k">"flow_rate_ml_min"</span>: <span class="n">1.0</span>,
+  <span class="k">"column_ids"</span>: [<span class="s">"ADH"</span>, <span class="s">"IA"</span>]
+}</pre>
+      </div>
+      <div class="blk">
+        <div class="blk-t">模型快照（服务端解析并绑定）</div>
+        <pre class="code">{
+  <span class="k">"mode"</span>: <span class="s">"exact"</span>,
+  <span class="k">"model_id"</span>: <span class="s">"hplc-chiral-pair-v2"</span>,
+  <span class="k">"model_version"</span>: <span class="s">"2.1.0"</span>,
+  <span class="k">"artifact_sha256"</span>: <span class="s">"b27e…55af"</span>,
+  <span class="k">"preprocessing_profile_id"</span>: <span class="s">"hplc_pre_norm_4"</span>,
+  <span class="k">"preprocessing_profile_sha256"</span>: <span class="s">"e0a7…33b8"</span>
+}</pre>
+        <div class="note mute mt10" style="padding:8px 10px"><span class="ic">NOTE</span>
+          <span>制品哈希由服务端解析校验并绑定，<b>不作为客户端字段提交</b>。</span></div>
+      </div>
+      <div class="blk">
+        <div class="blk-t">常驻 warnings</div>
+        <div class="col" style="gap:6px">
+          <div class="note warn" style="padding:8px 10px"><span class="ic">W01</span><span>输入表示敏感性：模型输入对 SMILES 表示可能敏感。</span></div>
+          <div class="note warn" style="padding:8px 10px"><span class="ic">W02</span><span>训练端原始表示与缓存 provenance 尚未确认。</span></div>
+          <div class="note warn" style="padding:8px 10px"><span class="ic">W03</span><span>需实验确认；当前无独立泛化证据。</span></div>
+        </div>
+      </div>`
+  },
+  'assistant': {
+    title:'Agent Run 详情',
+    id:'run_7f2a91c8 · attempt 2',
+    html:`
+      <div class="blk">
+        <div class="blk-t">待确认动作</div>
+        <pre class="code">{
+  <span class="k">"tool_call_id"</span>: <span class="s">"tc_a91f7c8"</span>,
+  <span class="k">"resource_ref"</span>: { <span class="k">"type"</span>: <span class="s">"batch_draft"</span>, <span class="k">"id"</span>: <span class="s">"bd_88f1c04a"</span> },
+  <span class="k">"action"</span>: <span class="s">"prediction.submit"</span>,
+  <span class="k">"revision"</span>: <span class="s">"2"</span>,
+  <span class="k">"config_hash"</span>: <span class="s">"b81f…3c07"</span>,
+  <span class="k">"expires_at"</span>: <span class="s">"2026-10-20T11:11:00Z"</span>
+}</pre>
+        <div class="note warn mt10" style="padding:8px 10px"><span class="ic">TTL</span>
+          <span>确认最长等待 30 分钟，超时进入 TIMED_OUT 并<b>保留草稿</b>；不自行批准。</span></div>
+      </div>
+      <div class="blk">
+        <div class="blk-t">Resume 契约</div>
+        <pre class="code">POST /agent-runs/{id}/resume
+{ <span class="k">"reason"</span>: <span class="s">"confirmation"</span>, <span class="k">"confirmation_id"</span>: <span class="s">"confirm_3a91f7c8"</span> }</pre>
+        <div class="note bad mt10" style="padding:8px 10px"><span class="ic">REJ</span>
+          <span>resume <b>只接受服务端确认 ID</b>；不接受客户端传回的"已批准工具结果"、raw message_history 或 approve_all。</span></div>
+      </div>
+      <div class="blk">
+        <div class="blk-t">Context 采集状态</div>
+        <pre class="code">{
+  <span class="k">"content_mode"</span>: <span class="s">"off"</span>,
+  <span class="k">"logical_context"</span>: <span class="s">"NOT_CAPTURED"</span>,
+  <span class="k">"provider_request"</span>: <span class="s">"NOT_CAPTURED"</span>
+}</pre>
+        <div class="note mute mt10" style="padding:8px 10px"><span class="ic">NOTE</span>
+          <span>未采集时显示 <span class="mono">NOT_CAPTURED</span>，<b>不用逻辑输入假称完整线上请求</b>。</span></div>
+      </div>`
+  },
+  'training': {
+    title:'ExperimentSpec',
+    id:'exp_3f88c04a · rev 7',
+    html:`
+      <div class="blk">
+        <div class="blk-t">被拒绝的字段</div>
+        <pre class="code">PATCH /training/experiments/{id}
+{
+  <span class="k">"script"</span>: <span class="s">"train.py"</span>,        <span class="c">// → 422 extra_forbidden</span>
+  <span class="k">"command"</span>: <span class="s">"python train.py"</span>, <span class="c">// → 422 extra_forbidden</span>
+  <span class="k">"entrypoint"</span>: <span class="s">"main:run"</span>,       <span class="c">// → 422 extra_forbidden</span>
+  <span class="k">"requirements"</span>: [<span class="s">"torch"</span>],       <span class="c">// → 422 extra_forbidden</span>
+  <span class="k">"server_path"</span>: <span class="s">"/srv/models"</span>    <span class="c">// → 422 extra_forbidden</span>
+}</pre>
+        <div class="note info mt10" style="padding:8px 10px"><span class="ic">SAFE</span>
+          <span><span class="mono">execution.kind</span> 首版仅 <span class="mono">"template"</span>。模板是部署时审核并纳入构建的 Python 实现，<b>不运行任意脚本</b>。</span></div>
+      </div>
+      <div class="blk">
+        <div class="blk-t">修订与幂等</div>
+        <pre class="code">POST /training/experiments/{id}/submit
+Headers: Idempotency-Key: &lt;uuid&gt;
+         If-Match: &lt;etag&gt;
+Body:    { <span class="k">"confirmation_id"</span>: <span class="s">"confirm_3a91f7c8"</span> }
+
+<span class="c">// 确认后修改 revision / 预算 / 数据 / 模型 / scope</span>
+<span class="c">// → 409 CONFIRMATION_INVALID，无新 Job</span>
+<span class="c">// PATCH 无 If-Match → 428 / 旧 ETag → 412</span></pre>
+      </div>`
+  }
+};
+function openDrawer(key){
+  const d = DRAWERS[key];
+  if(!d){ toast('info'); return; }
+  document.getElementById('drawerTitle').textContent = d.title;
+  document.getElementById('drawerId').textContent = d.id;
+  document.getElementById('drawerBody').innerHTML = d.html;
+  document.getElementById('scrim').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+}
+function closeDrawer(){
+  document.getElementById('scrim').classList.remove('on');
+  document.getElementById('drawer').classList.remove('on');
+}
+document.getElementById('drawerX').addEventListener('click', closeDrawer);
+document.getElementById('scrim').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+
+// 把特定按钮接上抽屉
+document.querySelectorAll('.blk-hd').forEach(() => {});
+document.getElementById('v-assistant')
+  .querySelectorAll('button').forEach(b => {
+    if(b.textContent.includes('查看详情') || b.textContent.trim() === '详情区'){
+      b.onclick = () => openDrawer('assistant');
+    }
+  });
+
+/* ══════════════════════════════════════════════════════════
+   8. 初始化
+   业务视图在源码中位于 .shell 之外（便于按模块分段维护），
+   此处统一搬入 #viewHost，使其成为 .shell 网格的第二个格子。
+   ══════════════════════════════════════════════════════════ */
+(function mountViews(){
+  const host = document.getElementById('viewHost');
+  if(!host) return;
+  const views = Array.from(document.querySelectorAll('body > .view'));
+  views.forEach(v => host.appendChild(v));
+  // 移除搬空后的占位注释节点，避免网格里出现空白格子
+  host.style.display = 'flex';
+})();
+
+const initial = location.hash.replace('#','');
+go(ALIAS[initial] ? initial : 'pred-tlc', { keepScroll:true });
+
+// 打开页面即处于助手时展开详情区
+if(initial === 'assistant' || initial === 'pred'){
+  document.getElementById('assistGrid')?.classList.add('with-detail');
+}
+
+// 快捷键：/ 聚焦搜索（原型仅演示，未绑定真实检索）
+document.addEventListener('keydown', e => {
+  if(e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)){
+    e.preventDefault();
+    toast('info', '全局搜索', '搜索记录、结构、模型与资料（原型演示）');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "active": {
+    "candidate_normalized_sha256": "bf35af8fd7661b9ed2c5709b1deb8629d79ab0a3153f644af8d649e4a73d63ad",
+    "candidate_raw_sha256": "3c22a0a3a3a64af45d85a88908fd4672c6f03f9a85c00ccfa20fe608d5e193c4",
+    "path": "minimal-structure-v1/openapi.json",
+    "revision": "revision-20261004-04",
+    "sha256": "bf35af8fd7661b9ed2c5709b1deb8629d79ab0a3153f644af8d649e4a73d63ad"
+  },
+  "schema_version": "1.0",
+  "snapshots": [
+    {
+      "bytes": 87248,
+      "path": "minimal-structure-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "revision": "pre-revision-20261004-04-active",
+      "role": "previous_active_immutable_rollback",
+      "sha256": "f5c57950f6c0cfd0a619e375efb191549d78b1ef07da0e645a26b28456f6f45a"
+    }
+  ]
+}

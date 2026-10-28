@@ -1,0 +1,21 @@
+{
+  "artifact": "batch-complete OpenAPI candidate",
+  "status": "candidate_only_not_frozen",
+  "active_openapi_modified": false,
+  "production_readiness_claimed": false,
+  "source_profile": "universal-v1 with batch capability enabled",
+  "semantic_diff": "semantic-diff.json",
+  "checksum_manifest": "SHA256SUMS.txt",
+  "profile_candidate_diff": "profile-candidate-diff.json",
+  "profile_candidate_matrix": "profile-candidate-matrix.md",
+  "migration_and_artifact_store_review": "migration-and-artifact-store-review.md",
+  "candidate_openapi_sha256": "7d636941bd62ae45fd320feecb411395dcce1547920c0df58c4272f3da6cc03e",
+  "candidate_normalized_sha256": "0586d1ef8213e654ce9caa81cbb89fe13becb9b8fc576fa981270920c09f0386",
+  "strict_active_to_candidate": "PASS_EXPECTED_ADDITIVE_BATCH_DELTA",
+  "formal_build_manifests_modified": false,
+  "legacy_batch_policy": "Preserve 0013 rows; reject execution until revalidated into a complete resolved snapshot.",
+  "artifact_store_startup_gate": "Require configured protocol-compatible store and successful server-key put/read/remove probe for batch-enabled profiles.",
+  "source_manifest_sha256": "C0EB5791F7CA495F853F44B002B69084CE4C55E77CFD6DE26C30963165219003",
+  "sfc_candidate_scope_source_rule": "SFC batch draft requires candidate_scope_id from common_input or field_mapping.",
+  "provenance_status": "CURRENT_SOURCE_REBUILT_REVIEWABLE_CANDIDATE"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "workspace": "D:\\Jupyter\\Chromatography_agent",
+  "coordinator": "01a0be42-382e-73a1-9abe-55f069bd35ad",
+  "supervisors": [
+    {
+      "role": "frontend",
+      "thread_id": "01a0be50-6eef-71a3-a4d0-41d8678c6596",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "write_scope": "frontend/"
+    },
+    {
+      "role": "backend",
+      "thread_id": "01a0be51-01d9-7b80-9759-e194b8c6017c",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "write_scope": "backend/"
+    },
+    {
+      "role": "testing",
+      "thread_id": "01a0bf2f-10c1-7d51-b9c9-6876ed36a26c",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "write_scope": "testing/"
+    }
+  ],
+  "executor_model": "gpt-5.6-luna",
+  "executor_reasoning": "high",
+  "resume_policy": "Reuse these existing threads after interruption; inspect actual files and agent status before redispatching. Do not create duplicate supervisors.",
+  "handoff_note": "Backend responsibility transferred from 01a0be52-518f-78e3-9fa0-e9cb8455dccb after its contract_audit/runtime_audit/reuse_audit were confirmed interrupted; 01a0be51-01d9-7b80-9759-e194b8c6017c is the sole backend supervisor.",
+  "communication_policy": {
+    "coordinator_contacts": [
+      "01a0be50-6eef-71a3-a4d0-41d8678c6596",
+      "01a0be51-01d9-7b80-9759-e194b8c6017c",
+      "01a0bf2f-10c1-7d51-b9c9-6876ed36a26c"
+    ],
+    "executor_reporting": "Each Luna executor reports only to its own supervisor. The coordinator does not contact their executors directly.",
+    "routine_progress": [
+      "frontend/STATUS.md",
+      "backend/STATUS.md",
+      "testing/STATUS.md"
+    ],
+    "escalation_only": [
+      "Major architecture or contract decisions",
+      "Cross-team conflicts requiring coordination",
+      "Matters requiring user confirmation"
+    ],
+    "continue_without_routine_acknowledgment": true,
+    "routine_test_owner": "01a0bf2f-10c1-7d51-b9c9-6876ed36a26c",
+    "defect_handoff": "Testing supervisor sends ordinary defects to the owning frontend/backend supervisor; only major decisions, unresolved cross-team conflicts or required user confirmations escalate to the coordinator. Executors report only to their own supervisor."
+  }
+}

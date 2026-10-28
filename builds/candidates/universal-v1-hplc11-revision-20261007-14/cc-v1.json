@@ -1,0 +1,10 @@
+{
+  "manifest_version": "1.0",
+  "build_id": "cc-v1",
+  "modules": ["prediction", "records", "utilities"],
+  "chromatography_types": ["cc"],
+  "prediction_tools": {"cc": ["single"]},
+  "utilities": ["structure_converter"],
+  "export_formats": ["json", "csv", "xlsx"],
+  "auth_provider": "deployment_default"
+}

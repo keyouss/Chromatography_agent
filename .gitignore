@@ -21,3 +21,16 @@ Services/.service_pids
 Services/**/dataset_save/
 Services/**/saves/
 knowledge_base/chroma/
+runtime/
+.runtime/
+node_modules/
+.venv/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+builds/output/
+backend/.env
+frontend/.env.local
+可能问题.md
+.local-backups/
+testing/

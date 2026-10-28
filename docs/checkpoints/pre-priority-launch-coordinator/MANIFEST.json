@@ -1,0 +1,164 @@
+{
+  "created_at": "2026-09-21T11:39:17.432010+00:00",
+  "scope": "coordinator-owned architecture/contracts/build/deploy sources",
+  "files": [
+    {
+      "path": "builds/cc-v1.json",
+      "sha256": "a2a2d2d928a1c309e61964490c1619f3df10977b052a022f54c22e685d888d94",
+      "size": 319
+    },
+    {
+      "path": "builds/manifest.py",
+      "sha256": "1cf4d53dc2e1ed41ecc5843d4273ed7ff0e47021adec084f0ee1555aaef101c6",
+      "size": 5169
+    },
+    {
+      "path": "builds/minimal-structure-v1.json",
+      "sha256": "aa34132508dee8cad2a17b0af30ee0019aa06d4d553389851e86d0b90b88ba15",
+      "size": 259
+    },
+    {
+      "path": "builds/README.md",
+      "sha256": "adb9aec18a34dbc3864f72ff4d204ea3e7c38e03ba016d9b2528521a71b77375",
+      "size": 1027
+    },
+    {
+      "path": "builds/sfc-v1.json",
+      "sha256": "4351d261ccc2b01d1835c902150efb3686e775863f9c137682e64e79875af004",
+      "size": 344
+    },
+    {
+      "path": "builds/test_manifest.py",
+      "sha256": "26f59a66d19c52d82987a7a8a422b7a49922217378ee7f26ff4530e7d5b501ce",
+      "size": 3270
+    },
+    {
+      "path": "builds/universal-v1.json",
+      "sha256": "2b73a1ca9ed07d2431968cf91fb90e377f463913975c956104b2953d713a94bb",
+      "size": 732
+    },
+    {
+      "path": "contracts/cc-v1/openapi.json",
+      "sha256": "635d75970f64e6d1e25f1bd0a82af4b3b37181f30f174a88c8cd2df5f901330d",
+      "size": 129944
+    },
+    {
+      "path": "contracts/check_openapi.py",
+      "sha256": "d489341e51c91580d13eab731f93a8b2aa06737b4c3032e19e33b366b29a147d",
+      "size": 5083
+    },
+    {
+      "path": "contracts/freeze_openapi.py",
+      "sha256": "e3d2ec4f249ad7789725b606229618c9affe44d5664dbe7fb30e0d01a64b2b75",
+      "size": 2820
+    },
+    {
+      "path": "contracts/index.json",
+      "sha256": "c86929d53ad51278ae03d0709c53414fbdbbfeb0ae93618559014387cfbf1ced",
+      "size": 682
+    },
+    {
+      "path": "contracts/minimal-structure-v1/openapi.json",
+      "sha256": "f5c57950f6c0cfd0a619e375efb191549d78b1ef07da0e645a26b28456f6f45a",
+      "size": 87248
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "f442168da29ee213aa4967b7279ef7997704f58e9f913d1ed6582736ee10bb71",
+      "size": 1580
+    },
+    {
+      "path": "contracts/sfc-v1/openapi.json",
+      "sha256": "778ae39484eb6dfd48bebceb1d105e76dc3ded832470ca46c2a71546a21a1f23",
+      "size": 132905
+    },
+    {
+      "path": "contracts/test_check_openapi.py",
+      "sha256": "a5ecab2b8a222fefdffb6be11f25769c53fb5f097885e26dc1e6b80bca1031d4",
+      "size": 2220
+    },
+    {
+      "path": "contracts/test_freeze_openapi.py",
+      "sha256": "9f9ab18ee88a19ceaa513f46dcdc153ef981844e65cc1ba3c5400d36fe2d060f",
+      "size": 3061
+    },
+    {
+      "path": "contracts/universal-v1/openapi.json",
+      "sha256": "cb4f9b92dde639fc5188a4d898de23efb1e20b22733722bd50d7eff580f84d1a",
+      "size": 439923
+    },
+    {
+      "path": "deploy/v1/compose.yaml",
+      "sha256": "f034d020a4560c58737c81c28183e5ae3fba2c863ca44a27315288a668fb7ae6",
+      "size": 5225
+    },
+    {
+      "path": "deploy/v1/nginx/nginx.conf",
+      "sha256": "952e9b94c003c320ae6cb858b85cc820b73fe18fdae0e6fc01d9c3bb3d3a7694",
+      "size": 761
+    },
+    {
+      "path": "deploy/v1/preflight.py",
+      "sha256": "9ac8e4d3396eb0c8f1ca086fe91c7126e3140d6c48f1bd5f01c34c03d13cb6d7",
+      "size": 5581
+    },
+    {
+      "path": "deploy/v1/README.md",
+      "sha256": "36d81e8fe70f05746ccb5bbc63bd8d52ae84b04e26245c3d20547107ae89a5d3",
+      "size": 5961
+    },
+    {
+      "path": "deploy/v1/test_offline_bundle.py",
+      "sha256": "e807a5e0d929738bc8cfb3cddb0029c071bdccf79169b90e78311d180b23d2b4",
+      "size": 3922
+    },
+    {
+      "path": "deploy/v1/test_preflight.py",
+      "sha256": "12928ed277dbf4581da493a81e9f08c1c2466fcd6263e4d31ef707f9da79e868",
+      "size": 1321
+    },
+    {
+      "path": "deploy/v1/WORKER.md",
+      "sha256": "1fda59dda4993ee41ecc62787448777ec1cc4edf4bdffab75695e9cab7f45675",
+      "size": 3702
+    },
+    {
+      "path": "docs/PRIORITY_CHECKPOINT_INDEX.json",
+      "sha256": "52693b5385f31506050d2c3759e8e67e5c12e86b4417c826eac38233299ddfa3",
+      "size": 1457
+    },
+    {
+      "path": "docs/PRIORITY_LAUNCH_PLAN.md",
+      "sha256": "73c5f798351e02b01c3f4e23635828fc8ad4b4aa0a5af36ca050e07455863ce2",
+      "size": 7206
+    },
+    {
+      "path": "docs/V1_IMPLEMENTATION_STATUS.md",
+      "sha256": "f5ff84a3c7dc26213ca9320a96077ce989e1b6803e29c5efc5b1766660374a40",
+      "size": 32226
+    },
+    {
+      "path": "docs/V1_M3_M4_CONTRACT_FREEZE.json",
+      "sha256": "a947062146176b98ef117e9731d3da74fef479235bbb355967dfff34fc222bf0",
+      "size": 5970
+    },
+    {
+      "path": "docs/V1_SESSION_INDEX.json",
+      "sha256": "f05afd510225c316c92e9ab756a87776723708df72a4f358ff86952a6578d956",
+      "size": 2295
+    },
+    {
+      "path": "scripts/assemble_offline_bundle.py",
+      "sha256": "2bc6cbc737234aaedf2460cc9d2c855c601d2d1384d3af26bc4d486e044c1bde",
+      "size": 30087
+    },
+    {
+      "path": "scripts/verify_offline_bundle.py",
+      "sha256": "39ccd5f859bf56bf5d4f14068d6d9eec39b5662d5616d52453b35358da8e1eef",
+      "size": 13491
+    }
+  ],
+  "archive": "source.zip",
+  "archive_sha256": "a65bd9a898b652fd101209db0990c34e43e9d71ebc20a41b936c053e09e2b0c8",
+  "not_a_release": true
+}

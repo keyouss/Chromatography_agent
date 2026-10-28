@@ -1,0 +1,360 @@
+{
+  "fixture_status": "AUTHOR_REFERENCE",
+  "fixture_version": "sfc-rs12-full-column-reference-v2",
+  "status": "PREPARED_NOT_GATE_VERIFIED",
+  "ready_claim": false,
+  "reference_kind": "author_v1.1_implementation_software_reference",
+  "candidate_binding_policy": "reference_local_id_matched_by_complete_observed_tuple",
+  "candidate_binding_note": "candidate_id/reference_candidate_id are offline reference-local labels. native_catalog_id is intentionally null because this build did not query catalog rows; runtime gate must resolve each exact tuple and verify the resulting native id.",
+  "model": {
+    "id": "rs12-extra-trees-s80-seed42",
+    "version": "1",
+    "scope": "all_column",
+    "target": "label_success_rs12",
+    "threshold": "1.2",
+    "score_semantics": "positive_class_probability",
+    "algorithm": "extra_trees",
+    "split": "80/10/10",
+    "seed": 42,
+    "artifact_sha256": "f25d39ec61d0b8d4198d4d2bc2993b76f2fc33ba60f13176d475ceb6d654e860",
+    "registry_sha256": "42f04a4ceb63024e685d0d8a4a8bd1ca57b12216f4f7f1050216f7ec04228429",
+    "metadata_sha256": "cf54c1dfe850f0d1a0c2e1a75e6665e729d86ce1172e6742e0220f5f7a4c1c84",
+    "feature_count": 66,
+    "feature_names": [
+      "column",
+      "stationary_phase",
+      "mode",
+      "length_mm",
+      "inner_diameter_mm",
+      "particle_size_um",
+      "column_temperature",
+      "flow_rate",
+      "mw_modi",
+      "tpsa_modi",
+      "nrotbs_modi",
+      "hba_modi",
+      "hbd_modi",
+      "logp_modi",
+      "rpsa_modi",
+      "rasa_modi",
+      "mdec_modi",
+      "mats_modi",
+      "modifier_ratio",
+      "mw_smiles_pair_value",
+      "mw_smiles_mean",
+      "mw_smiles_median",
+      "tpsa_smiles_mean",
+      "tpsa_smiles_median",
+      "nrotbs_smiles_pair_value",
+      "nrotbs_smiles_mean",
+      "nrotbs_smiles_median",
+      "hba_smiles_pair_value",
+      "hba_smiles_mean",
+      "hba_smiles_median",
+      "hbd_smiles_pair_value",
+      "hbd_smiles_mean",
+      "hbd_smiles_median",
+      "logp_smiles_pair_value",
+      "logp_smiles_mean",
+      "logp_smiles_median",
+      "rpsa_smiles_mean",
+      "rpsa_smiles_median",
+      "rasa_smiles_mean",
+      "rasa_smiles_median",
+      "mdec_smiles_pair_value",
+      "mdec_smiles_mean",
+      "mdec_smiles_median",
+      "mats_smiles_pair_value",
+      "mats_smiles_mean",
+      "mats_smiles_median",
+      "mw_smiles_abs_diff",
+      "mw_smiles_range",
+      "tpsa_smiles_abs_diff",
+      "tpsa_smiles_range",
+      "nrotbs_smiles_abs_diff",
+      "nrotbs_smiles_range",
+      "hba_smiles_abs_diff",
+      "hba_smiles_range",
+      "hbd_smiles_abs_diff",
+      "hbd_smiles_range",
+      "logp_smiles_abs_diff",
+      "logp_smiles_range",
+      "rpsa_smiles_abs_diff",
+      "rpsa_smiles_range",
+      "rasa_smiles_abs_diff",
+      "rasa_smiles_range",
+      "mdec_smiles_abs_diff",
+      "mdec_smiles_range",
+      "mats_smiles_abs_diff",
+      "mats_smiles_range"
+    ],
+    "feature_names_sha256": "32edab1459ea05c2d6637dfc09f63ebe5bdaa9e6a0c9b92a3490a7852c920481",
+    "input_schema_sha256": "fd85643a730f410ea14f9deb4319e392115483e4a356d1b75a817bacfa5093a7",
+    "output_schema_sha256": "425fb826affe18823f75bd33a1e21a75687b0f47ee798d5d228293c3be62c3db",
+    "preprocessing": {
+      "pipeline_class": "sklearn.pipeline.Pipeline",
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "classifier": "sklearn.ensemble._forest.ExtraTreesClassifier",
+      "n_estimators": 350,
+      "random_state": 42
+    }
+  },
+  "environment": {
+    "python_version": "3.11.15",
+    "package_versions": {
+      "joblib": "1.5.3",
+      "scikit-learn": "1.6.1",
+      "numpy": "1.26.4",
+      "pandas": "2.3.3",
+      "rdkit": "2026.3.3",
+      "mordred": "1.2.0",
+      "pydantic": "2.13.4"
+    },
+    "source": "Accepted one-shot fitted-object inspection output; package metadata only, no new package import or installation in this fixture build."
+  },
+  "candidate_source": {
+    "author_catalog_path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\data\\result_with_advanced_descriptors.sqlite",
+    "author_catalog_sha256": "266a6d00df80166c3faf64be9dc21748d9a39a9f7106a24b8741fdd628eb9c1d",
+    "platform_catalog_path": "D:\\Jupyter\\Chromatography_agent\\Services\\sfc_assets\\conditions.sqlite",
+    "platform_catalog_sha256": "4a76421324aca6865d5dbd7df1e57d5df5362d231d7e3ee3dd34cf4db48c9ab1",
+    "exact_rows_per_source": 2,
+    "both_sources_match_exact_eight_axis_tuples": true,
+    "candidate_binding_policy": "reference_local_id_matched_by_complete_observed_tuple",
+    "native_catalog_ids": "NOT_QUERIED; runtime gate must resolve from the configured native catalog by the complete tuple"
+  },
+  "source_pins": [
+    {
+      "role": "registry",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\models\\registry.json",
+      "sha256": "42f04a4ceb63024e685d0d8a4a8bd1ca57b12216f4f7f1050216f7ec04228429",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "metadata",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\models\\rs12-extra-trees-s80-seed42\\metadata.json",
+      "sha256": "cf54c1dfe850f0d1a0c2e1a75e6665e729d86ce1172e6742e0220f5f7a4c1c84",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "artifact",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\models\\rs12-extra-trees-s80-seed42\\model.joblib",
+      "sha256": "f25d39ec61d0b8d4198d4d2bc2993b76f2fc33ba60f13176d475ceb6d654e860",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "author_inference_source",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\backend\\app\\inference.py",
+      "sha256": "581f0a8683df18bb07dcbf6c76357b5fc0b2bd0f644fde2b7940604405b9f286",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "author_input_schema_source",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\backend\\app\\schemas.py",
+      "sha256": "25bd47c7d324fc3bfeb1c00e8eac5a6f05c93f07e4f505f3b7ff640537245c67",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "author_catalog",
+      "path": "D:\\Jupyter\\SFC\\deployments\\sfc-predictor-v1.1\\assets\\data\\result_with_advanced_descriptors.sqlite",
+      "sha256": "266a6d00df80166c3faf64be9dc21748d9a39a9f7106a24b8741fdd628eb9c1d",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "platform_catalog",
+      "path": "D:\\Jupyter\\Chromatography_agent\\Services\\sfc_assets\\conditions.sqlite",
+      "sha256": "4a76421324aca6865d5dbd7df1e57d5df5362d231d7e3ee3dd34cf4db48c9ab1",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "platform_runtime_source",
+      "path": "D:\\Jupyter\\Chromatography_agent\\backend\\src\\chrom_platform\\adapters\\sfc\\runtime.py",
+      "sha256": "22812df5d97eb2c5bb60ce42f766bc63314a9fb59f13d95958b4c618376ad0d5",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate-not-executed-offline-snapshot"
+    },
+    {
+      "role": "platform_adapter_source",
+      "path": "D:\\Jupyter\\Chromatography_agent\\backend\\src\\chrom_platform\\adapters\\sfc\\adapter.py",
+      "sha256": "2de954028deade7b293d8039ff550e9b471c89f35e7ccdbcb7967c1eb8bcd823",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate-not-executed-offline-snapshot"
+    },
+    {
+      "role": "platform_prediction_schema_source",
+      "path": "D:\\Jupyter\\Chromatography_agent\\backend\\src\\chrom_platform\\modules\\prediction\\schemas.py",
+      "sha256": "30b781e1fb3f935e0f1e7ebf16ff2335d0ed05db85a1c17ef4687e9fbfc9f004",
+      "observed_at": "proposal-preparation-read-only-observation",
+      "evidence_role": "current-source-for-next-gate; not proven to be the source snapshot used by the offline run"
+    },
+    {
+      "role": "author_reference_output",
+      "path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-08-sfc-rs12-full-two-column\\offline-result.json",
+      "sha256": "f8ac20a5dfaf34dec684da364113366d1be6d77417de6237cf355fdf8820f339",
+      "observed_at": "fixed-offline-result-record",
+      "evidence_role": "combined offline evidence file; only author-side fields are used for fixture expectations"
+    },
+    {
+      "role": "author_reference_input",
+      "path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-08-sfc-rs12-full-two-column\\input.json",
+      "sha256": "97a17d04bba70dcf1ab3ea606b478a71a562f6af30c67883745788f4b30069bd",
+      "observed_at": "fixed-offline-input-record",
+      "evidence_role": "fixed v1.1 two-candidate author input"
+    },
+    {
+      "role": "platform_assembly_source",
+      "path": "D:\\Jupyter\\Chromatography_agent\\backend\\src\\chrom_platform\\assembly\\prediction.py",
+      "sha256": "14efc161333192732f07ce5ce540d1806dd8b0022ffff88f483584e1133a8c7c",
+      "binding_role": "current_source_for_next_gate"
+    }
+  ],
+  "input": {
+    "schema_version": "1.1",
+    "tool": "full_column",
+    "structure_smiles": {
+      "a": "C[C@H](O)F",
+      "b": "C[C@@H](O)F",
+      "modifier": "CO"
+    },
+    "modifier_total_fraction": 0.2,
+    "modifier_components": [
+      {
+        "structure_ref": "modifier",
+        "fraction": 1.0
+      }
+    ],
+    "candidate_scope_id": "offline-rs12-full-two-column-memory-only",
+    "top_k": 2,
+    "candidates": [
+      {
+        "candidate_id": "candidate-cellulose-2",
+        "reference_candidate_id": "candidate-cellulose-2",
+        "native_catalog_id": null,
+        "native_catalog_id_status": "NOT_OBSERVED; runtime gate must resolve by complete eight-axis tuple",
+        "column": "Cellulose 2",
+        "stationary_phase": "cellulose tris (3-chloro-4-methylphenylcarbamate)",
+        "mode": "coated",
+        "length_mm": 150.0,
+        "inner_diameter_mm": 3.0,
+        "particle_size_um": 3.0,
+        "column_temperature": 25.0,
+        "flow_rate": 1.5
+      },
+      {
+        "candidate_id": "candidate-oz",
+        "reference_candidate_id": "candidate-oz",
+        "native_catalog_id": null,
+        "native_catalog_id_status": "NOT_OBSERVED; runtime gate must resolve by complete eight-axis tuple",
+        "column": "OZ",
+        "stationary_phase": "cellulose tris (3-chloro-4-methylphenylcarbamate)",
+        "mode": "coated",
+        "length_mm": 150.0,
+        "inner_diameter_mm": 3.0,
+        "particle_size_um": 3.0,
+        "column_temperature": 25.0,
+        "flow_rate": 1.5
+      }
+    ]
+  },
+  "author_reference": {
+    "source_role": "fixed_offline_author_output",
+    "source_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-08-sfc-rs12-full-two-column\\offline-result.json",
+    "source_sha256": "f8ac20a5dfaf34dec684da364113366d1be6d77417de6237cf355fdf8820f339",
+    "source_input_path": "D:\\Jupyter\\Chromatography_agent\\testing\\runs\\2026-10-08-sfc-rs12-full-two-column\\input.json",
+    "source_input_sha256": "97a17d04bba70dcf1ab3ea606b478a71a562f6af30c67883745788f4b30069bd",
+    "evidence_scope": "author-side probability/rank and feature-NaN observations copied from the fixed offline output; comparison values are excluded; not an independent scientific oracle, accuracy estimate, or READY proof",
+    "candidate_results": [
+      {
+        "candidate_id": "candidate-cellulose-2",
+        "reference_candidate_id": "candidate-cellulose-2",
+        "conditions": {
+          "column": "Cellulose 2",
+          "stationary_phase": "cellulose tris (3-chloro-4-methylphenylcarbamate)",
+          "mode": "coated",
+          "length_mm": 150.0,
+          "inner_diameter_mm": 3.0,
+          "particle_size_um": 3.0,
+          "column_temperature_c": 25.0,
+          "flow_rate_ml_min": 1.5
+        },
+        "expected_probability": 0.693154489720161,
+        "author_rank": 1
+      },
+      {
+        "candidate_id": "candidate-oz",
+        "reference_candidate_id": "candidate-oz",
+        "conditions": {
+          "column": "OZ",
+          "stationary_phase": "cellulose tris (3-chloro-4-methylphenylcarbamate)",
+          "mode": "coated",
+          "length_mm": 150.0,
+          "inner_diameter_mm": 3.0,
+          "particle_size_um": 3.0,
+          "column_temperature_c": 25.0,
+          "flow_rate_ml_min": 1.5
+        },
+        "expected_probability": 0.6723835009484533,
+        "author_rank": 2
+      }
+    ],
+    "expected_warnings": [
+      "FEATURE_VALUE_MISSING:mdec_modi",
+      "FEATURE_VALUE_MISSING:mdec_smiles_pair_value",
+      "FEATURE_VALUE_MISSING:mdec_smiles_mean",
+      "FEATURE_VALUE_MISSING:mdec_smiles_median",
+      "FEATURE_VALUE_MISSING:mdec_smiles_abs_diff",
+      "FEATURE_VALUE_MISSING:mdec_smiles_range"
+    ],
+    "observed_author_feature_nan_columns": [
+      "mdec_modi",
+      "mdec_smiles_pair_value",
+      "mdec_smiles_mean",
+      "mdec_smiles_median",
+      "mdec_smiles_abs_diff",
+      "mdec_smiles_range"
+    ],
+    "warning_basis": {
+      "source_role": "author_inference_source",
+      "source_sha256": "581f0a8683df18bb07dcbf6c76357b5fc0b2bd0f644fde2b7940604405b9f286",
+      "result_role": "author_reference_output",
+      "result_sha256": "f8ac20a5dfaf34dec684da364113366d1be6d77417de6237cf355fdf8820f339",
+      "observed_nan_features": [
+        "mdec_modi",
+        "mdec_smiles_pair_value",
+        "mdec_smiles_mean",
+        "mdec_smiles_median",
+        "mdec_smiles_abs_diff",
+        "mdec_smiles_range"
+      ],
+      "explanation": "The fixed author-side offline output records these six NaN feature columns. In author inference.py, mordred_value(result, name) returns np.nan when descriptor lookup raises, and molecular_descriptors maps MDEC to MDEC-11. This documents the observed propagation path without asserting a chemical cause. The fitted-object inspection separately observed numeric SimpleImputer(strategy=median) and categorical SimpleImputer(strategy=most_frequent); fitted statistics were not read or copied."
+    },
+    "tolerance": {
+      "absolute": 1e-12,
+      "relative": 1e-12,
+      "rule": "Python math.isclose(actual, reference, abs_tol=1e-12, rel_tol=1e-12)",
+      "provenance": "Fixed two-row offline runner comparison semantics; no tolerance widening."
+    }
+  },
+  "source_binding_revision": {
+    "revision": 3,
+    "parent_source_binding_revision": 2,
+    "parent_fixture_version": "sfc-rs12-full-column-reference-v2",
+    "parent_fixture_sha256": "34989f0c2d45779c8de4316df08ea58db9cd21937889e5301ca05342b527554c",
+    "reason": "Refresh the platform prediction schema source pin after one additive defaulted TLC warnings field.",
+    "changed_source_pin_role": "platform_prediction_schema_source",
+    "prior_source_sha256": "1a0481f7c5ed13f8ddc30158f2d79284e4b8a000236fdf34818d1d3d27eefd37",
+    "current_source_sha256": "30b781e1fb3f935e0f1e7ebf16ff2335d0ed05db85a1c17ef4687e9fbfc9f004",
+    "scientific_reference_inherited": true,
+    "new_scientific_acceptance": false,
+    "author_expected_changed": false,
+    "author_inference_performed": false,
+    "gate_verified_for_this_revision": false
+  }
+}
