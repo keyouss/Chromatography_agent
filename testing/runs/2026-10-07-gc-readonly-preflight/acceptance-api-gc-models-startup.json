@@ -1,0 +1,533 @@
+{
+  "observed_utc": "2026-10-07T13:11:49.1758707Z",
+  "api_pid": 46032,
+  "type": {
+    "data": {
+      "id": "gc",
+      "display_name": "GC temperature-program retention time",
+      "tools": [
+        {
+          "id": "single",
+          "schema_version": "1.1",
+          "input_schema": {
+            "$defs": {
+              "GcExactProfileModelSelection": {
+                "additionalProperties": false,
+                "description": "GC v1.1 requires a complete observed model/profile pin in the request.",
+                "properties": {
+                  "mode": {
+                    "const": "exact",
+                    "title": "Mode",
+                    "type": "string"
+                  },
+                  "model_id": {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "title": "Model Id",
+                    "type": "string"
+                  },
+                  "model_version": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "title": "Model Version",
+                    "type": "string"
+                  },
+                  "preprocessing_profile_id": {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "title": "Preprocessing Profile Id",
+                    "type": "string"
+                  },
+                  "preprocessing_profile_sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Preprocessing Profile Sha256",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "model_id",
+                  "model_version",
+                  "preprocessing_profile_id",
+                  "preprocessing_profile_sha256"
+                ],
+                "title": "GcExactProfileModelSelection",
+                "type": "object"
+              },
+              "GcInput": {
+                "additionalProperties": false,
+                "properties": {
+                  "temperature_program": {
+                    "discriminator": {
+                      "mapping": {
+                        "linear": "#/$defs/GcLinearTemperatureProgram",
+                        "series": "#/$defs/GcSeriesTemperatureProgram"
+                      },
+                      "propertyName": "mode"
+                    },
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/GcLinearTemperatureProgram"
+                      },
+                      {
+                        "$ref": "#/$defs/GcSeriesTemperatureProgram"
+                      }
+                    ],
+                    "title": "Temperature Program"
+                  }
+                },
+                "required": [
+                  "temperature_program"
+                ],
+                "title": "GcInput",
+                "type": "object"
+              },
+              "GcLinearTemperatureProgram": {
+                "additionalProperties": false,
+                "properties": {
+                  "final_temperature_c": {
+                    "title": "Final Temperature C",
+                    "type": "number"
+                  },
+                  "heating_rate_c_per_min": {
+                    "exclusiveMinimum": 0.0,
+                    "title": "Heating Rate C Per Min",
+                    "type": "number"
+                  },
+                  "initial_hold_min": {
+                    "minimum": 0.0,
+                    "multipleOf": 1,
+                    "title": "Initial Hold Min",
+                    "type": "number"
+                  },
+                  "initial_temperature_c": {
+                    "title": "Initial Temperature C",
+                    "type": "number"
+                  },
+                  "mode": {
+                    "const": "linear",
+                    "title": "Mode",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "initial_temperature_c",
+                  "final_temperature_c",
+                  "heating_rate_c_per_min",
+                  "initial_hold_min"
+                ],
+                "title": "GcLinearTemperatureProgram",
+                "type": "object"
+              },
+              "GcSeriesTemperatureProgram": {
+                "additionalProperties": false,
+                "properties": {
+                  "mode": {
+                    "const": "series",
+                    "title": "Mode",
+                    "type": "string"
+                  },
+                  "temperature_series_c": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "maxItems": 30,
+                    "minItems": 30,
+                    "title": "Temperature Series C",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "temperature_series_c"
+                ],
+                "title": "GcSeriesTemperatureProgram",
+                "type": "object"
+              }
+            },
+            "additionalProperties": false,
+            "properties": {
+              "chromatography_type": {
+                "const": "gc",
+                "title": "Chromatography Type",
+                "type": "string"
+              },
+              "input": {
+                "$ref": "#/$defs/GcInput"
+              },
+              "model_selection": {
+                "$ref": "#/$defs/GcExactProfileModelSelection"
+              },
+              "project_id": {
+                "anyOf": [
+                  {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Project Id"
+              },
+              "schema_version": {
+                "const": "1.1",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "structure_refs": {
+                "items": {
+                  "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,95}$",
+                  "type": "string"
+                },
+                "maxItems": 1,
+                "minItems": 1,
+                "title": "Structure Refs",
+                "type": "array"
+              },
+              "tool": {
+                "const": "single",
+                "title": "Tool",
+                "type": "string"
+              }
+            },
+            "required": [
+              "schema_version",
+              "model_selection",
+              "structure_refs",
+              "chromatography_type",
+              "tool",
+              "input"
+            ],
+            "title": "GcPredictionCreate",
+            "type": "object"
+          },
+          "output_schema": {
+            "$defs": {
+              "Applicability": {
+                "additionalProperties": false,
+                "properties": {
+                  "supported_scope": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Supported Scope",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "items": {
+                      "$ref": "#/$defs/Warning"
+                    },
+                    "title": "Warnings",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "supported_scope"
+                ],
+                "title": "Applicability",
+                "type": "object"
+              },
+              "GcResultRow": {
+                "additionalProperties": false,
+                "properties": {
+                  "quantiles": {
+                    "additionalProperties": {
+                      "type": "number"
+                    },
+                    "title": "Quantiles",
+                    "type": "object"
+                  },
+                  "retention_time_min": {
+                    "minimum": 0.0,
+                    "title": "Retention Time Min",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "retention_time_min"
+                ],
+                "title": "GcResultRow",
+                "type": "object"
+              },
+              "Metric": {
+                "additionalProperties": false,
+                "properties": {
+                  "key": {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "title": "Key",
+                    "type": "string"
+                  },
+                  "label": {
+                    "maxLength": 200,
+                    "minLength": 1,
+                    "title": "Label",
+                    "type": "string"
+                  },
+                  "origin": {
+                    "enum": [
+                      "model",
+                      "derived"
+                    ],
+                    "title": "Origin",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Unit"
+                  },
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "key",
+                  "label",
+                  "value",
+                  "origin"
+                ],
+                "title": "Metric",
+                "type": "object"
+              },
+              "Visualization": {
+                "additionalProperties": false,
+                "properties": {
+                  "data": {
+                    "additionalProperties": true,
+                    "title": "Data",
+                    "type": "object"
+                  },
+                  "kind": {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "origin": {
+                    "enum": [
+                      "predicted",
+                      "simulated",
+                      "measured"
+                    ],
+                    "title": "Origin",
+                    "type": "string"
+                  },
+                  "schema_version": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "title": "Schema Version",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "schema_version",
+                  "data",
+                  "origin"
+                ],
+                "title": "Visualization",
+                "type": "object"
+              },
+              "Warning": {
+                "additionalProperties": false,
+                "properties": {
+                  "code": {
+                    "maxLength": 96,
+                    "minLength": 1,
+                    "title": "Code",
+                    "type": "string"
+                  },
+                  "field": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Field"
+                  },
+                  "message": {
+                    "maxLength": 2000,
+                    "minLength": 1,
+                    "title": "Message",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code",
+                  "message"
+                ],
+                "title": "Warning",
+                "type": "object"
+              }
+            },
+            "additionalProperties": false,
+            "properties": {
+              "applicability": {
+                "$ref": "#/$defs/Applicability"
+              },
+              "metrics": {
+                "items": {
+                  "$ref": "#/$defs/Metric"
+                },
+                "title": "Metrics",
+                "type": "array"
+              },
+              "rows": {
+                "items": {
+                  "$ref": "#/$defs/GcResultRow"
+                },
+                "title": "Rows",
+                "type": "array"
+              },
+              "schema_version": {
+                "maxLength": 64,
+                "minLength": 1,
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "task_type": {
+                "const": "gc",
+                "title": "Task Type",
+                "type": "string"
+              },
+              "visualizations": {
+                "items": {
+                  "$ref": "#/$defs/Visualization"
+                },
+                "title": "Visualizations",
+                "type": "array"
+              }
+            },
+            "required": [
+              "task_type",
+              "schema_version",
+              "rows",
+              "applicability"
+            ],
+            "title": "GcPredictionResult",
+            "type": "object"
+          },
+          "structure_count": {
+            "min": 1,
+            "max": 1,
+            "semantics": "single"
+          },
+          "model_constraints": {
+            "business_scope_id": "gc-default",
+            "model_id": "gc-gnn-seq240408-250c",
+            "fixed_stationary_phase": "5% phenyl/95% dimethylpolysiloxane",
+            "temperature_points": 30,
+            "quantiles": [
+              "q10",
+              "q50",
+              "q90"
+            ],
+            "device": "cpu",
+            "carrier_gas_effect": "unsupported"
+          },
+          "units": {
+            "initial_temperature_c": "C",
+            "final_temperature_c": "C",
+            "heating_rate_c_per_min": "C/min",
+            "initial_hold_min": "min",
+            "retention_time_min": "min"
+          },
+          "supported_visualizations": [],
+          "limits": {
+            "max_rows": 1,
+            "max_candidates": 1,
+            "max_evaluations": 1
+          },
+          "template_version": null,
+          "health": {
+            "status": "READY",
+            "reason": null,
+            "checked_at": "2026-10-07T13:09:50.132282Z"
+          }
+        }
+      ],
+      "models": [
+        {
+          "id": "gc-gnn-seq240408-250c",
+          "version": "gc-gnn-seq240408-250c-600-prep-rdkit-seed42-v1",
+          "task_type": "gc",
+          "scope": "gc-default",
+          "artifact_sha256": "0433756eab33689981c6d881e3b76c34a8043eb2f47a6adf6ed4a65dd9d5758c",
+          "preprocessing_profile_id": "gc-gnn-seq240408-250c-rdkit-seed42-v1",
+          "preprocessing_profile_sha256": "a3c1dc6d576973682357818e2424e0640617ec4a959d40d71fbbb40a733b8799",
+          "input_schema_version": "1.1",
+          "output_schema_version": "gc-retention-time-1",
+          "score_semantics": null,
+          "threshold": null,
+          "health": {
+            "status": "READY",
+            "reason": null,
+            "checked_at": "2026-10-07T13:09:50.132282Z"
+          }
+        }
+      ],
+      "limits": {
+        "max_rows": 1,
+        "max_candidates": 1,
+        "max_evaluations": 1
+      },
+      "health": {
+        "status": "READY",
+        "reason": null,
+        "checked_at": "2026-10-07T13:09:50.132282Z"
+      }
+    },
+    "warnings": [],
+    "request_id": "req_7372dadb226e7a09"
+  },
+  "models": {
+    "data": [
+      {
+        "id": "gc-gnn-seq240408-250c",
+        "version": "gc-gnn-seq240408-250c-600-prep-rdkit-seed42-v1",
+        "task_type": "gc",
+        "scope": "gc-default",
+        "artifact_sha256": "0433756eab33689981c6d881e3b76c34a8043eb2f47a6adf6ed4a65dd9d5758c",
+        "preprocessing_profile_id": "gc-gnn-seq240408-250c-rdkit-seed42-v1",
+        "preprocessing_profile_sha256": "a3c1dc6d576973682357818e2424e0640617ec4a959d40d71fbbb40a733b8799",
+        "input_schema_version": "1.1",
+        "output_schema_version": "gc-retention-time-1",
+        "score_semantics": null,
+        "threshold": null,
+        "health": {
+          "status": "READY",
+          "reason": null,
+          "checked_at": "2026-10-07T13:09:50.132282Z"
+        }
+      }
+    ],
+    "warnings": [],
+    "request_id": "req_6cf0e2e2d87255bf"
+  }
+}

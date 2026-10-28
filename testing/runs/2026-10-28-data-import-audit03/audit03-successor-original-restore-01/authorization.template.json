@@ -1,0 +1,15 @@
+{
+  "schema_version":"audit03-successor-original-start-authorization/v1",
+  "status":"TEMPLATE_NOT_ACTIVE",
+  "window_id":"audit03-successor-binding-01",
+  "profile":"assistant-20261006",
+  "allowed_action":"start",
+  "binding_path":"testing/runs/2026-10-28-data-import-audit03/audit03-successor-original-start-binding.json",
+  "binding_sha256":null,
+  "start_invocations_max":1,
+  "assistant_stop_invocations_max":0,
+  "data_start_invocations_max":0,
+  "data_stop_invocations_max":0,
+  "created_by_wrapper":true,
+  "closed_by_wrapper_finally":true
+}

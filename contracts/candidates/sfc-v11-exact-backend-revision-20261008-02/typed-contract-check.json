@@ -1,0 +1,39 @@
+{
+  "candidate": "sfc-v11-exact-backend-revision-20261008-02",
+  "status": "PREVIEW_NOT_FROZEN",
+  "generation": "official source-checkout metadata mode; contract_generation=True",
+  "openapi_typescript": "7.13.0",
+  "checked": {
+    "schema": "SfcConditionsOptions.sfc_domain",
+    "discriminator": "model_scope",
+    "one_of": [
+      "#/components/schemas/SfcAllColumnDomain",
+      "#/components/schemas/SfcSingleColumnDomain"
+    ],
+    "single_column_required": [
+      "model_scope",
+      "group_id",
+      "group_label",
+      "stationary_phase",
+      "mode",
+      "allowed_columns"
+    ],
+    "all_column_required": [
+      "model_scope"
+    ],
+    "all_column_has_group_fields": false,
+    "typescript_contains_both_discriminant_literals": true
+  },
+  "sha256": {
+    "sfc-v1\\openapi.json": "4E2E04AC26079CC3AA5E5EF52686A2AC31E3E95D021C2E5CB1DB1B67F746EFAB",
+    "universal-v1\\openapi.json": "82D0B0FC1EF90BDF46D5706F1C3692DFB0FB4E05FCF0548049B8A12F03A7522D",
+    "typescript\\sfc-v1\\api-schema.ts": "E2D91D1D4FC197F388E79F122D3DA3881284B517632D22D0A7222D0588005817",
+    "typescript\\universal-v1\\api-schema.ts": "F7053906012CCD8EA8A5DB3118891272CE147DA95777AB871ACAC2AE0C3761DF"
+  },
+  "verification": {
+    "dto_nodes": "2 passed",
+    "metadata_generation_safety_nodes": "2 passed",
+    "combined_command": "python -m pytest -vv tests/test_prediction_contracts.py::test_sfc_options_reuse_discriminated_domain_schema tests/test_prediction_contracts.py::test_model_option_uses_typed_sfc_domain_without_repurposing_scope_or_threshold tests/test_contract_generation_safety.py",
+    "spy_counts": "0 for production registry/science imports, DB session/health and Redis client/health"
+  }
+}

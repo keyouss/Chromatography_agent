@@ -1,0 +1,3566 @@
+{
+  "created_utc": "2026-10-28T17:53:08.005026+00:00",
+  "repository": "D:\\Jupyter\\Chromatography_agent",
+  "source_branch": "main",
+  "parent_head": "0cb4bd5bfda6b947e437d3f626d99b5bbae1f1d8",
+  "snapshot_commit": "a1815fd2f99153889d813958adcb550b8d9a859e",
+  "snapshot_ref": "refs/heads/codex/structure-baseline-20261029",
+  "temporary_index": "C:\\Users\\13459\\AppData\\Local\\Temp\\chrom-platform-baseline-20261029-02\\snapshot.index",
+  "core_autocrlf": "true in original config; disabled for staged blobs",
+  "snapshot_gitattributes": "* -text (snapshot tree only)",
+  "tracked_file_count": 878,
+  "tracked_file_bytes": 79739653,
+  "allowlist_roots": [
+    "root AGENTS/README/.gitignore/.env.example/launcher",
+    "backend/src, backend/tests (.py/.ps1 only), backend/alembic, backend toolchain and Markdown docs",
+    "frontend src/tests/scripts/public and package/tool configs",
+    "builds",
+    "stable contracts and rollback snapshots (not contracts/candidates)",
+    "deploy/v1",
+    "docs excluding Qilu PDF/extracted data and PDF/DOCX",
+    "root scripts",
+    "testing/fixtures",
+    "testing/STATUS.md"
+  ],
+  "excluded": [
+    ".env",
+    ".runtime",
+    "deliverables",
+    "backend/.generated",
+    "testing/runs",
+    "contracts/candidates",
+    "frontend/build-output",
+    "frontend/candidates",
+    "node_modules",
+    "Python caches",
+    "backend/tests/*.sqlite3",
+    "model weight/data extensions",
+    "docs/齐鲁制药.pdf",
+    "docs/齐鲁制药_mineru/**",
+    "absent legacy root requirements.txt"
+  ],
+  "observed_external_legacy_change": "requirements.txt was absent at snapshot preparation; no restoration or correction attempted",
+  "secret_scan": {
+    "high_confidence_findings": 0,
+    "scanned_text_file_count": 855,
+    "suppressed_marker_only": [],
+    "no_values_recorded": true
+  },
+  "files": [
+    {
+      "path": ".env.example",
+      "bytes": 3235
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 456
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 7608
+    },
+    {
+      "path": "README.md",
+      "bytes": 20151
+    },
+    {
+      "path": "backend/ASSEMBLY.md",
+      "bytes": 3267
+    },
+    {
+      "path": "backend/CANDIDATE_06_HANDOFF.md",
+      "bytes": 4175
+    },
+    {
+      "path": "backend/CANDIDATE_07_HANDOFF.md",
+      "bytes": 3900
+    },
+    {
+      "path": "backend/DEPENDENCY_PROPOSAL.md",
+      "bytes": 12178
+    },
+    {
+      "path": "backend/DEPENDENCY_RESOLUTION_PROPOSAL.md",
+      "bytes": 9052
+    },
+    {
+      "path": "backend/M2_SCIENTIFIC_REUSE_AUDIT.md",
+      "bytes": 29539
+    },
+    {
+      "path": "backend/M3_M4_CANDIDATE_05_HANDOFF.md",
+      "bytes": 19280
+    },
+    {
+      "path": "backend/README.md",
+      "bytes": 24251
+    },
+    {
+      "path": "backend/STATUS.md",
+      "bytes": 13209
+    },
+    {
+      "path": "backend/alembic/alembic.ini",
+      "bytes": 567
+    },
+    {
+      "path": "backend/alembic/candidates/0022_data_center_import.py",
+      "bytes": 7204
+    },
+    {
+      "path": "backend/alembic/env.py",
+      "bytes": 14784
+    },
+    {
+      "path": "backend/alembic/script.py.mako",
+      "bytes": 560
+    },
+    {
+      "path": "backend/alembic/versions/0001_m1_persistence.py",
+      "bytes": 18179
+    },
+    {
+      "path": "backend/alembic/versions/0002_m2_prediction_data.py",
+      "bytes": 13862
+    },
+    {
+      "path": "backend/alembic/versions/0003_m3_knowledge.py",
+      "bytes": 9039
+    },
+    {
+      "path": "backend/alembic/versions/0004_m3_training.py",
+      "bytes": 12080
+    },
+    {
+      "path": "backend/alembic/versions/0005_m3_model_center.py",
+      "bytes": 19286
+    },
+    {
+      "path": "backend/alembic/versions/0006_m4_assistant.py",
+      "bytes": 19338
+    },
+    {
+      "path": "backend/alembic/versions/0007_worker_outbox_lease.py",
+      "bytes": 1083
+    },
+    {
+      "path": "backend/alembic/versions/0008_merge_worker_outbox.py",
+      "bytes": 308
+    },
+    {
+      "path": "backend/alembic/versions/0009_training_outbox_lease.py",
+      "bytes": 1003
+    },
+    {
+      "path": "backend/alembic/versions/0010_model_center_job_fencing.py",
+      "bytes": 3411
+    },
+    {
+      "path": "backend/alembic/versions/0011_m2_batch_prediction.py",
+      "bytes": 8672
+    },
+    {
+      "path": "backend/alembic/versions/0012_m2_record_export.py",
+      "bytes": 2098
+    },
+    {
+      "path": "backend/alembic/versions/0013_merge_m2_batch_export.py",
+      "bytes": 295
+    },
+    {
+      "path": "backend/alembic/versions/0014_batch_resolved_snapshot_export.py",
+      "bytes": 3122
+    },
+    {
+      "path": "backend/alembic/versions/0015_m2_prediction_replay_draft.py",
+      "bytes": 2764
+    },
+    {
+      "path": "backend/alembic/versions/0016_merge_batch_snapshot_replay_draft.py",
+      "bytes": 329
+    },
+    {
+      "path": "backend/alembic/versions/0017_merge_no_batch_replay_head.py",
+      "bytes": 315
+    },
+    {
+      "path": "backend/alembic/versions/0018_merge_full_replay_heads.py",
+      "bytes": 321
+    },
+    {
+      "path": "backend/alembic/versions/0019_batch_export_status_repair.py",
+      "bytes": 9051
+    },
+    {
+      "path": "backend/alembic/versions/0020_assistant_llm_configuration_lifecycle.py",
+      "bytes": 4476
+    },
+    {
+      "path": "backend/alembic/versions/0021_assistant_framework_state.py",
+      "bytes": 2446
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "bytes": 685
+    },
+    {
+      "path": "backend/requirements-worker-priority.txt",
+      "bytes": 1896
+    },
+    {
+      "path": "backend/src/chrom_platform/__init__.py",
+      "bytes": 73
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/PROVENANCE.md",
+      "bytes": 3674
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/__init__.py",
+      "bytes": 509
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/adapter.py",
+      "bytes": 24617
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/canonical_golden_4g.py",
+      "bytes": 3371
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/condition_catalog.py",
+      "bytes": 5549
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/golden_4g.py",
+      "bytes": 4693
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/preprocessing_profiles.py",
+      "bytes": 8489
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/runtime.py",
+      "bytes": 33629
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/cc/validation.py",
+      "bytes": 1940
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/PROVENANCE.md",
+      "bytes": 1966
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/__init__.py",
+      "bytes": 560
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/adapter.py",
+      "bytes": 24534
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/manifest.py",
+      "bytes": 3636
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/package_loader.py",
+      "bytes": 16869
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/package_model.py",
+      "bytes": 1783
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/package_source_pins.py",
+      "bytes": 1612
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/runtime.py",
+      "bytes": 47379
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/serving_profile.py",
+      "bytes": 4641
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/source_pins.py",
+      "bytes": 342
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/gc/validation.py",
+      "bytes": 3338
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/PROVENANCE.md",
+      "bytes": 2149
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/__init__.py",
+      "bytes": 877
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/adapter.py",
+      "bytes": 21165
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/manifest.py",
+      "bytes": 4413
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/runtime.py",
+      "bytes": 26457
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/serving_profile.py",
+      "bytes": 1934
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/hplc/validation.py",
+      "bytes": 2065
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/sfc/PROVENANCE.md",
+      "bytes": 4679
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/sfc/__init__.py",
+      "bytes": 537
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/sfc/adapter.py",
+      "bytes": 27820
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/sfc/runtime.py",
+      "bytes": 75420
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/sfc/validation.py",
+      "bytes": 5157
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/PROVENANCE.md",
+      "bytes": 1665
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/README.md",
+      "bytes": 1016
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/__init__.py",
+      "bytes": 1424
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/adapter.py",
+      "bytes": 14851
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/manifest.py",
+      "bytes": 1903
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/runtime.py",
+      "bytes": 22115
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/schema.py",
+      "bytes": 1407
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/service.py",
+      "bytes": 6804
+    },
+    {
+      "path": "backend/src/chrom_platform/adapters/tlc/validation.py",
+      "bytes": 1899
+    },
+    {
+      "path": "backend/src/chrom_platform/app.py",
+      "bytes": 44721
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/__init__.py",
+      "bytes": 1124
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/batch_csv_window.py",
+      "bytes": 4078
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/data_csv_window.py",
+      "bytes": 10613
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/dataset_csv_elevated_runner.py",
+      "bytes": 63964
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/defender_profile_candidate.py",
+      "bytes": 1724
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/model_package_manifest.py",
+      "bytes": 16762
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/model_package_scan.py",
+      "bytes": 16078
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/models.py",
+      "bytes": 4688
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/repository.py",
+      "bytes": 7187
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/router.py",
+      "bytes": 22145
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/scanner_defender.py",
+      "bytes": 22736
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/schemas.py",
+      "bytes": 4427
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/service.py",
+      "bytes": 31184
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/single_job.py",
+      "bytes": 14874
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/storage.py",
+      "bytes": 10477
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/uow.py",
+      "bytes": 4495
+    },
+    {
+      "path": "backend/src/chrom_platform/artifact_core/validation_worker.py",
+      "bytes": 55222
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/__init__.py",
+      "bytes": 158
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/assistant_worker.py",
+      "bytes": 1047
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/gc_candidate_policy.py",
+      "bytes": 12109
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/handler_registry.py",
+      "bytes": 3260
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/m1.py",
+      "bytes": 4792
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/m2.py",
+      "bytes": 24773
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/m3.py",
+      "bytes": 14250
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/m4.py",
+      "bytes": 46184
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/manifest.py",
+      "bytes": 5047
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction.py",
+      "bytes": 69227
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction_api.py",
+      "bytes": 552
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction_metadata.py",
+      "bytes": 20170
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction_structure.py",
+      "bytes": 4170
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction_worker.py",
+      "bytes": 687
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/prediction_worker_registry.py",
+      "bytes": 8267
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/profile.py",
+      "bytes": 140229
+    },
+    {
+      "path": "backend/src/chrom_platform/assembly/training_worker.py",
+      "bytes": 906
+    },
+    {
+      "path": "backend/src/chrom_platform/core/__init__.py",
+      "bytes": 541
+    },
+    {
+      "path": "backend/src/chrom_platform/core/cursor.py",
+      "bytes": 7362
+    },
+    {
+      "path": "backend/src/chrom_platform/core/dto.py",
+      "bytes": 4864
+    },
+    {
+      "path": "backend/src/chrom_platform/core/errors.py",
+      "bytes": 1024
+    },
+    {
+      "path": "backend/src/chrom_platform/core/health.py",
+      "bytes": 407
+    },
+    {
+      "path": "backend/src/chrom_platform/core/idempotency.py",
+      "bytes": 1647
+    },
+    {
+      "path": "backend/src/chrom_platform/core/model_load_observation.py",
+      "bytes": 910
+    },
+    {
+      "path": "backend/src/chrom_platform/core/projects.py",
+      "bytes": 5453
+    },
+    {
+      "path": "backend/src/chrom_platform/core/public_settings.py",
+      "bytes": 1918
+    },
+    {
+      "path": "backend/src/chrom_platform/generate_openapi.py",
+      "bytes": 7428
+    },
+    {
+      "path": "backend/src/chrom_platform/generate_profile_package.py",
+      "bytes": 1036
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/__init__.py",
+      "bytes": 927
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/db.py",
+      "bytes": 3327
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/health.py",
+      "bytes": 3421
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/metadata.py",
+      "bytes": 2632
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/migration_compat.py",
+      "bytes": 12046
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/models.py",
+      "bytes": 14905
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/repositories.py",
+      "bytes": 15859
+    },
+    {
+      "path": "backend/src/chrom_platform/infrastructure/structure_uow.py",
+      "bytes": 2263
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/__init__.py",
+      "bytes": 563
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/adapter.py",
+      "bytes": 97696
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/errors.py",
+      "bytes": 3628
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/events.py",
+      "bytes": 21077
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/persistence.py",
+      "bytes": 90425
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/ports.py",
+      "bytes": 5978
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/priority.py",
+      "bytes": 76546
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/priority_router.py",
+      "bytes": 8257
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/production_worker.py",
+      "bytes": 88004
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/reconcile_cli.py",
+      "bytes": 4187
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/recovery.py",
+      "bytes": 16768
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/router.py",
+      "bytes": 27092
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/runtime.py",
+      "bytes": 121327
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/schemas.py",
+      "bytes": 17060
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/secret_store.py",
+      "bytes": 13115
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/security.py",
+      "bytes": 4358
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/service.py",
+      "bytes": 77797
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/settings_router.py",
+      "bytes": 10894
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/settings_schemas.py",
+      "bytes": 3189
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/settings_service.py",
+      "bytes": 20065
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/sse.py",
+      "bytes": 9299
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/tools/__init__.py",
+      "bytes": 22131
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/tools/ledger.py",
+      "bytes": 201
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/tools/registry.py",
+      "bytes": 508
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/trace.py",
+      "bytes": 26449
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/assistant/worker.py",
+      "bytes": 16306
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/__init__.py",
+      "bytes": 705
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/csv_import.py",
+      "bytes": 21178
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/errors.py",
+      "bytes": 1141
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/exports.py",
+      "bytes": 34532
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/import_artifacts.py",
+      "bytes": 13890
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/import_report.py",
+      "bytes": 2876
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/import_worker.py",
+      "bytes": 44279
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/import_workflow.py",
+      "bytes": 29839
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/persistence.py",
+      "bytes": 55877
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/ports.py",
+      "bytes": 6645
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/router.py",
+      "bytes": 36196
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/schemas.py",
+      "bytes": 16868
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/service.py",
+      "bytes": 28109
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/testing.py",
+      "bytes": 7130
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/data_center/tlc_author_domain.py",
+      "bytes": 3962
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/__init__.py",
+      "bytes": 675
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/errors.py",
+      "bytes": 1325
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/persistence.py",
+      "bytes": 38669
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/ports.py",
+      "bytes": 4479
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/router.py",
+      "bytes": 16644
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/schemas.py",
+      "bytes": 6352
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/service.py",
+      "bytes": 16423
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/knowledge/worker.py",
+      "bytes": 14928
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/__init__.py",
+      "bytes": 159
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/asset_verifier.py",
+      "bytes": 22170
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/errors.py",
+      "bytes": 1327
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/model_package_child.py",
+      "bytes": 4667
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/model_package_executor.py",
+      "bytes": 56869
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/package_execution_ledger.py",
+      "bytes": 33685
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/package_verification.py",
+      "bytes": 5814
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/persistence.py",
+      "bytes": 67451
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/ports.py",
+      "bytes": 6592
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/production_verifier.py",
+      "bytes": 10289
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/router.py",
+      "bytes": 23352
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/schemas.py",
+      "bytes": 11932
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/service.py",
+      "bytes": 48785
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/model_center/worker.py",
+      "bytes": 36490
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/__init__.py",
+      "bytes": 2168
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/adapters.py",
+      "bytes": 46074
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/api_registry.py",
+      "bytes": 39872
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/batch.py",
+      "bytes": 37878
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/batch_health.py",
+      "bytes": 27903
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/batch_router.py",
+      "bytes": 25685
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/batch_service.py",
+      "bytes": 125807
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/batch_worker.py",
+      "bytes": 61436
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/persistence.py",
+      "bytes": 44796
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/ports.py",
+      "bytes": 4392
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/production_worker.py",
+      "bytes": 24968
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/router.py",
+      "bytes": 46837
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/schemas.py",
+      "bytes": 49349
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/service.py",
+      "bytes": 21200
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/prediction/worker.py",
+      "bytes": 8969
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/PROVENANCE.md",
+      "bytes": 1262
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/__init__.py",
+      "bytes": 150
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/errors.py",
+      "bytes": 1171
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/persistence.py",
+      "bytes": 71936
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/ports.py",
+      "bytes": 5165
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/production_worker.py",
+      "bytes": 18276
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/router.py",
+      "bytes": 21638
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/schemas.py",
+      "bytes": 14400
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/service.py",
+      "bytes": 25581
+    },
+    {
+      "path": "backend/src/chrom_platform/modules/training/worker.py",
+      "bytes": 12617
+    },
+    {
+      "path": "backend/src/chrom_platform/structure_core/__init__.py",
+      "bytes": 66
+    },
+    {
+      "path": "backend/src/chrom_platform/structure_core/router.py",
+      "bytes": 10114
+    },
+    {
+      "path": "backend/src/chrom_platform/structure_core/schemas.py",
+      "bytes": 1564
+    },
+    {
+      "path": "backend/src/chrom_platform/structure_core/service.py",
+      "bytes": 4210
+    },
+    {
+      "path": "backend/src/chrom_platform/structure_core/uow.py",
+      "bytes": 788
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/__init__.py",
+      "bytes": 1727
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/confirmation_target_resolver.py",
+      "bytes": 2015
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/models.py",
+      "bytes": 314
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/outbox_dispatch.py",
+      "bytes": 35174
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/policy.py",
+      "bytes": 2663
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/repository.py",
+      "bytes": 6883
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/router.py",
+      "bytes": 16407
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/schemas.py",
+      "bytes": 5165
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/service.py",
+      "bytes": 65283
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/sse.py",
+      "bytes": 6056
+    },
+    {
+      "path": "backend/src/chrom_platform/task_core/state.py",
+      "bytes": 7082
+    },
+    {
+      "path": "backend/src/chrom_platform/worker_cli.py",
+      "bytes": 103964
+    },
+    {
+      "path": "backend/tests/mysql_partial_resume.ps1",
+      "bytes": 4909
+    },
+    {
+      "path": "backend/tests/test_api_prediction_metadata_registry.py",
+      "bytes": 11941
+    },
+    {
+      "path": "backend/tests/test_app.py",
+      "bytes": 20326
+    },
+    {
+      "path": "backend/tests/test_artifact_defender_scanner.py",
+      "bytes": 12948
+    },
+    {
+      "path": "backend/tests/test_artifact_router.py",
+      "bytes": 21453
+    },
+    {
+      "path": "backend/tests/test_artifact_service.py",
+      "bytes": 8625
+    },
+    {
+      "path": "backend/tests/test_artifact_single_job.py",
+      "bytes": 18830
+    },
+    {
+      "path": "backend/tests/test_artifact_validation_worker.py",
+      "bytes": 24483
+    },
+    {
+      "path": "backend/tests/test_assistant_config_auth_skip.py",
+      "bytes": 12415
+    },
+    {
+      "path": "backend/tests/test_assistant_config_budget.py",
+      "bytes": 45413
+    },
+    {
+      "path": "backend/tests/test_assistant_contracts.py",
+      "bytes": 1449
+    },
+    {
+      "path": "backend/tests/test_assistant_conversation_delete.py",
+      "bytes": 19974
+    },
+    {
+      "path": "backend/tests/test_assistant_conversation_delete_http.py",
+      "bytes": 11666
+    },
+    {
+      "path": "backend/tests/test_assistant_conversation_management.py",
+      "bytes": 17868
+    },
+    {
+      "path": "backend/tests/test_assistant_conversation_mode_guard.py",
+      "bytes": 1444
+    },
+    {
+      "path": "backend/tests/test_assistant_creation_audit.py",
+      "bytes": 8824
+    },
+    {
+      "path": "backend/tests/test_assistant_framework_state.py",
+      "bytes": 3940
+    },
+    {
+      "path": "backend/tests/test_assistant_legacy_toolset_boundary.py",
+      "bytes": 2348
+    },
+    {
+      "path": "backend/tests/test_assistant_native_config_test.py",
+      "bytes": 5198
+    },
+    {
+      "path": "backend/tests/test_assistant_native_confirmation.py",
+      "bytes": 5583
+    },
+    {
+      "path": "backend/tests/test_assistant_native_worker_state.py",
+      "bytes": 23702
+    },
+    {
+      "path": "backend/tests/test_assistant_normalize_structure.py",
+      "bytes": 18597
+    },
+    {
+      "path": "backend/tests/test_assistant_pydanticai_adapter.py",
+      "bytes": 41658
+    },
+    {
+      "path": "backend/tests/test_assistant_pydanticai_qa.py",
+      "bytes": 14845
+    },
+    {
+      "path": "backend/tests/test_assistant_pydanticai_runtime.py",
+      "bytes": 28839
+    },
+    {
+      "path": "backend/tests/test_assistant_raw_prediction_inputs.py",
+      "bytes": 11316
+    },
+    {
+      "path": "backend/tests/test_assistant_reconcile_cli.py",
+      "bytes": 2527
+    },
+    {
+      "path": "backend/tests/test_assistant_router_contract.py",
+      "bytes": 4288
+    },
+    {
+      "path": "backend/tests/test_assistant_run_budget.py",
+      "bytes": 16677
+    },
+    {
+      "path": "backend/tests/test_assistant_runtime.py",
+      "bytes": 81031
+    },
+    {
+      "path": "backend/tests/test_assistant_runtime_prediction_wait.py",
+      "bytes": 5518
+    },
+    {
+      "path": "backend/tests/test_assistant_runtime_tool_calls.py",
+      "bytes": 26027
+    },
+    {
+      "path": "backend/tests/test_assistant_secret_store_paths.py",
+      "bytes": 3591
+    },
+    {
+      "path": "backend/tests/test_assistant_service.py",
+      "bytes": 26593
+    },
+    {
+      "path": "backend/tests/test_assistant_settings.py",
+      "bytes": 16977
+    },
+    {
+      "path": "backend/tests/test_assistant_sse.py",
+      "bytes": 7460
+    },
+    {
+      "path": "backend/tests/test_assistant_sse_live_tail.py",
+      "bytes": 13190
+    },
+    {
+      "path": "backend/tests/test_assistant_tools.py",
+      "bytes": 2490
+    },
+    {
+      "path": "backend/tests/test_batch_contracts.py",
+      "bytes": 25102
+    },
+    {
+      "path": "backend/tests/test_batch_csv_window_ledger.py",
+      "bytes": 11927
+    },
+    {
+      "path": "backend/tests/test_batch_csv_window_profile.py",
+      "bytes": 11891
+    },
+    {
+      "path": "backend/tests/test_batch_export_download.py",
+      "bytes": 10336
+    },
+    {
+      "path": "backend/tests/test_batch_export_status_repair_migration.py",
+      "bytes": 7885
+    },
+    {
+      "path": "backend/tests/test_batch_pagination.py",
+      "bytes": 12483
+    },
+    {
+      "path": "backend/tests/test_batch_preprocessing_profile.py",
+      "bytes": 12503
+    },
+    {
+      "path": "backend/tests/test_batch_row_records.py",
+      "bytes": 4673
+    },
+    {
+      "path": "backend/tests/test_batch_worker.py",
+      "bytes": 70091
+    },
+    {
+      "path": "backend/tests/test_cc_adapter.py",
+      "bytes": 29215
+    },
+    {
+      "path": "backend/tests/test_confirmation_service.py",
+      "bytes": 5710
+    },
+    {
+      "path": "backend/tests/test_context_inspector.py",
+      "bytes": 3468
+    },
+    {
+      "path": "backend/tests/test_contract_generation_safety.py",
+      "bytes": 7535
+    },
+    {
+      "path": "backend/tests/test_data_center_csv_import.py",
+      "bytes": 10846
+    },
+    {
+      "path": "backend/tests/test_data_center_exports.py",
+      "bytes": 31891
+    },
+    {
+      "path": "backend/tests/test_data_center_persistence.py",
+      "bytes": 7237
+    },
+    {
+      "path": "backend/tests/test_data_center_prediction_profile.py",
+      "bytes": 2408
+    },
+    {
+      "path": "backend/tests/test_data_center_router.py",
+      "bytes": 9441
+    },
+    {
+      "path": "backend/tests/test_data_contracts.py",
+      "bytes": 2855
+    },
+    {
+      "path": "backend/tests/test_data_csv_engine_compatibility.py",
+      "bytes": 12778
+    },
+    {
+      "path": "backend/tests/test_data_csv_window.py",
+      "bytes": 8868
+    },
+    {
+      "path": "backend/tests/test_data_import_artifact_policy.py",
+      "bytes": 6134
+    },
+    {
+      "path": "backend/tests/test_data_import_cancel_projection.py",
+      "bytes": 7553
+    },
+    {
+      "path": "backend/tests/test_data_import_failed_revalidation.py",
+      "bytes": 14629
+    },
+    {
+      "path": "backend/tests/test_data_import_integration.py",
+      "bytes": 13625
+    },
+    {
+      "path": "backend/tests/test_data_import_lease_fence.py",
+      "bytes": 7426
+    },
+    {
+      "path": "backend/tests/test_data_import_patch_cas.py",
+      "bytes": 7637
+    },
+    {
+      "path": "backend/tests/test_data_import_report_history.py",
+      "bytes": 11459
+    },
+    {
+      "path": "backend/tests/test_data_import_worker.py",
+      "bytes": 50446
+    },
+    {
+      "path": "backend/tests/test_data_import_workflow.py",
+      "bytes": 6896
+    },
+    {
+      "path": "backend/tests/test_data_pin_binding_diagnostics.py",
+      "bytes": 19619
+    },
+    {
+      "path": "backend/tests/test_data_pin_binding_successor.py",
+      "bytes": 17145
+    },
+    {
+      "path": "backend/tests/test_data_version_service.py",
+      "bytes": 6185
+    },
+    {
+      "path": "backend/tests/test_dataset_csv_admission.py",
+      "bytes": 5406
+    },
+    {
+      "path": "backend/tests/test_dataset_csv_elevated_runner.py",
+      "bytes": 41915
+    },
+    {
+      "path": "backend/tests/test_defender_profile_candidate.py",
+      "bytes": 7789
+    },
+    {
+      "path": "backend/tests/test_deployment_task_policy.py",
+      "bytes": 3801
+    },
+    {
+      "path": "backend/tests/test_five_types_batch_contracts.py",
+      "bytes": 13854
+    },
+    {
+      "path": "backend/tests/test_five_types_batch_service.py",
+      "bytes": 20745
+    },
+    {
+      "path": "backend/tests/test_frozen_contract_compat.py",
+      "bytes": 8866
+    },
+    {
+      "path": "backend/tests/test_gc_adapter.py",
+      "bytes": 21240
+    },
+    {
+      "path": "backend/tests/test_gc_candidate_policy.py",
+      "bytes": 15485
+    },
+    {
+      "path": "backend/tests/test_gc_candidate_review.py",
+      "bytes": 18026
+    },
+    {
+      "path": "backend/tests/test_gc_fixture_consumption.py",
+      "bytes": 1072
+    },
+    {
+      "path": "backend/tests/test_gc_package_helper.py",
+      "bytes": 2561
+    },
+    {
+      "path": "backend/tests/test_gc_profile_assembly.py",
+      "bytes": 4583
+    },
+    {
+      "path": "backend/tests/test_gc_refactor_regression.py",
+      "bytes": 1495
+    },
+    {
+      "path": "backend/tests/test_gc_scientific_source_preservation.py",
+      "bytes": 4844
+    },
+    {
+      "path": "backend/tests/test_health_ports.py",
+      "bytes": 2006
+    },
+    {
+      "path": "backend/tests/test_hplc_adapter.py",
+      "bytes": 13800
+    },
+    {
+      "path": "backend/tests/test_hplc_profile_assembly.py",
+      "bytes": 3982
+    },
+    {
+      "path": "backend/tests/test_hplc_v11_contract.py",
+      "bytes": 12638
+    },
+    {
+      "path": "backend/tests/test_job_service.py",
+      "bytes": 14713
+    },
+    {
+      "path": "backend/tests/test_job_sse.py",
+      "bytes": 16002
+    },
+    {
+      "path": "backend/tests/test_knowledge_m34_contract.py",
+      "bytes": 963
+    },
+    {
+      "path": "backend/tests/test_knowledge_m34_p1.py",
+      "bytes": 3496
+    },
+    {
+      "path": "backend/tests/test_knowledge_vertical.py",
+      "bytes": 13830
+    },
+    {
+      "path": "backend/tests/test_m1_integration.py",
+      "bytes": 4606
+    },
+    {
+      "path": "backend/tests/test_m2_integration.py",
+      "bytes": 8516
+    },
+    {
+      "path": "backend/tests/test_m3_integration.py",
+      "bytes": 5929
+    },
+    {
+      "path": "backend/tests/test_m3_platform_job_producers.py",
+      "bytes": 3092
+    },
+    {
+      "path": "backend/tests/test_m4_assembly_integration.py",
+      "bytes": 30818
+    },
+    {
+      "path": "backend/tests/test_m4_integration.py",
+      "bytes": 36147
+    },
+    {
+      "path": "backend/tests/test_manifest.py",
+      "bytes": 942
+    },
+    {
+      "path": "backend/tests/test_migrations.py",
+      "bytes": 8690
+    },
+    {
+      "path": "backend/tests/test_model_center_contract.py",
+      "bytes": 19646
+    },
+    {
+      "path": "backend/tests/test_model_center_job_fencing_migration.py",
+      "bytes": 30674
+    },
+    {
+      "path": "backend/tests/test_model_center_persistence.py",
+      "bytes": 6269
+    },
+    {
+      "path": "backend/tests/test_model_center_shared_task_cancel.py",
+      "bytes": 30876
+    },
+    {
+      "path": "backend/tests/test_model_center_vertical.py",
+      "bytes": 13207
+    },
+    {
+      "path": "backend/tests/test_model_center_worker_fencing.py",
+      "bytes": 3533
+    },
+    {
+      "path": "backend/tests/test_model_center_worker_routing.py",
+      "bytes": 4989
+    },
+    {
+      "path": "backend/tests/test_model_package_artifact_worker.py",
+      "bytes": 20258
+    },
+    {
+      "path": "backend/tests/test_model_package_execution_ledger.py",
+      "bytes": 15707
+    },
+    {
+      "path": "backend/tests/test_model_package_executor.py",
+      "bytes": 15571
+    },
+    {
+      "path": "backend/tests/test_model_package_executor_recovery.py",
+      "bytes": 13843
+    },
+    {
+      "path": "backend/tests/test_model_package_executor_reobserve.py",
+      "bytes": 17525
+    },
+    {
+      "path": "backend/tests/test_model_package_production_verifier.py",
+      "bytes": 9524
+    },
+    {
+      "path": "backend/tests/test_model_package_recovery_integration.py",
+      "bytes": 14092
+    },
+    {
+      "path": "backend/tests/test_model_package_scan.py",
+      "bytes": 7909
+    },
+    {
+      "path": "backend/tests/test_model_package_validation.py",
+      "bytes": 4130
+    },
+    {
+      "path": "backend/tests/test_model_package_verifier.py",
+      "bytes": 3472
+    },
+    {
+      "path": "backend/tests/test_model_registration_artifact_gate.py",
+      "bytes": 5088
+    },
+    {
+      "path": "backend/tests/test_models.py",
+      "bytes": 11111
+    },
+    {
+      "path": "backend/tests/test_openapi.py",
+      "bytes": 5453
+    },
+    {
+      "path": "backend/tests/test_outbox_dispatch.py",
+      "bytes": 19982
+    },
+    {
+      "path": "backend/tests/test_prediction_api_import_boundary.py",
+      "bytes": 961
+    },
+    {
+      "path": "backend/tests/test_prediction_api_pure_validation.py",
+      "bytes": 10411
+    },
+    {
+      "path": "backend/tests/test_prediction_assembly_scope_storage.py",
+      "bytes": 1865
+    },
+    {
+      "path": "backend/tests/test_prediction_contracts.py",
+      "bytes": 23277
+    },
+    {
+      "path": "backend/tests/test_prediction_metadata.py",
+      "bytes": 12583
+    },
+    {
+      "path": "backend/tests/test_prediction_metadata_export.py",
+      "bytes": 3261
+    },
+    {
+      "path": "backend/tests/test_prediction_persistence.py",
+      "bytes": 20043
+    },
+    {
+      "path": "backend/tests/test_prediction_production_worker.py",
+      "bytes": 18262
+    },
+    {
+      "path": "backend/tests/test_prediction_profile_compat.py",
+      "bytes": 35850
+    },
+    {
+      "path": "backend/tests/test_prediction_record_archive_app.py",
+      "bytes": 9681
+    },
+    {
+      "path": "backend/tests/test_prediction_records_router_security.py",
+      "bytes": 12247
+    },
+    {
+      "path": "backend/tests/test_prediction_registry.py",
+      "bytes": 20853
+    },
+    {
+      "path": "backend/tests/test_prediction_replay_draft_persistence.py",
+      "bytes": 13198
+    },
+    {
+      "path": "backend/tests/test_prediction_router.py",
+      "bytes": 13160
+    },
+    {
+      "path": "backend/tests/test_prediction_service.py",
+      "bytes": 28245
+    },
+    {
+      "path": "backend/tests/test_prediction_terminal_progress.py",
+      "bytes": 6273
+    },
+    {
+      "path": "backend/tests/test_prediction_worker.py",
+      "bytes": 9308
+    },
+    {
+      "path": "backend/tests/test_prediction_worker_boundary.py",
+      "bytes": 7154
+    },
+    {
+      "path": "backend/tests/test_priority_assistant_provider.py",
+      "bytes": 56440
+    },
+    {
+      "path": "backend/tests/test_priority_provider_readiness.py",
+      "bytes": 4287
+    },
+    {
+      "path": "backend/tests/test_profile_optional_source_trimming.py",
+      "bytes": 4634
+    },
+    {
+      "path": "backend/tests/test_project_context_revision02.py",
+      "bytes": 4388
+    },
+    {
+      "path": "backend/tests/test_recovery.py",
+      "bytes": 3444
+    },
+    {
+      "path": "backend/tests/test_sfc_adapter_runtime.py",
+      "bytes": 29198
+    },
+    {
+      "path": "backend/tests/test_sfc_batch_metadata_projection.py",
+      "bytes": 1552
+    },
+    {
+      "path": "backend/tests/test_sfc_candidate_scope_persistence.py",
+      "bytes": 17474
+    },
+    {
+      "path": "backend/tests/test_sfc_exact_binding_dispatch.py",
+      "bytes": 23376
+    },
+    {
+      "path": "backend/tests/test_sfc_full_exact_reference_gate.py",
+      "bytes": 22965
+    },
+    {
+      "path": "backend/tests/test_sfc_rs12_catalog_source_proof.py",
+      "bytes": 12911
+    },
+    {
+      "path": "backend/tests/test_sfc_single_verification_gate.py",
+      "bytes": 11945
+    },
+    {
+      "path": "backend/tests/test_shared_job_lifecycle.py",
+      "bytes": 3958
+    },
+    {
+      "path": "backend/tests/test_startup_check_profile.py",
+      "bytes": 8485
+    },
+    {
+      "path": "backend/tests/test_startup_check_queue.py",
+      "bytes": 1185
+    },
+    {
+      "path": "backend/tests/test_state.py",
+      "bytes": 5253
+    },
+    {
+      "path": "backend/tests/test_structure.py",
+      "bytes": 1633
+    },
+    {
+      "path": "backend/tests/test_structure_uow.py",
+      "bytes": 4846
+    },
+    {
+      "path": "backend/tests/test_successor_config_restore.py",
+      "bytes": 50206
+    },
+    {
+      "path": "backend/tests/test_successor_original_start_preparation.py",
+      "bytes": 5987
+    },
+    {
+      "path": "backend/tests/test_task_package_event_redaction.py",
+      "bytes": 1688
+    },
+    {
+      "path": "backend/tests/test_task_router.py",
+      "bytes": 3824
+    },
+    {
+      "path": "backend/tests/test_tlc_adapter.py",
+      "bytes": 10307
+    },
+    {
+      "path": "backend/tests/test_tlc_author_domain.py",
+      "bytes": 2949
+    },
+    {
+      "path": "backend/tests/test_tlc_batch_capability_metadata.py",
+      "bytes": 18328
+    },
+    {
+      "path": "backend/tests/test_tlc_batch_flow.py",
+      "bytes": 32655
+    },
+    {
+      "path": "backend/tests/test_tlc_service.py",
+      "bytes": 3927
+    },
+    {
+      "path": "backend/tests/test_tlc_tool_applicability_warnings.py",
+      "bytes": 8011
+    },
+    {
+      "path": "backend/tests/test_tlc_tool_openapi.py",
+      "bytes": 1968
+    },
+    {
+      "path": "backend/tests/test_training_dispatcher.py",
+      "bytes": 6918
+    },
+    {
+      "path": "backend/tests/test_training_m34_contract.py",
+      "bytes": 1209
+    },
+    {
+      "path": "backend/tests/test_training_m34_p1.py",
+      "bytes": 558
+    },
+    {
+      "path": "backend/tests/test_training_vertical.py",
+      "bytes": 11715
+    },
+    {
+      "path": "backend/tests/test_worker_cli.py",
+      "bytes": 49709
+    },
+    {
+      "path": "backend/tests/test_worker_cli_model_package_verifier.py",
+      "bytes": 5992
+    },
+    {
+      "path": "backend/tests/test_worker_migration_topology.py",
+      "bytes": 14129
+    },
+    {
+      "path": "backend/tests/test_worker_native_cleanup.py",
+      "bytes": 1999
+    },
+    {
+      "path": "backend/tests/test_worker_shared_prediction_registry.py",
+      "bytes": 5928
+    },
+    {
+      "path": "backend/tests/test_worker_slot_routing.py",
+      "bytes": 6897
+    },
+    {
+      "path": "builds/README.md",
+      "bytes": 1027
+    },
+    {
+      "path": "builds/candidates/data-center-invalid-window-20261026/profile.json",
+      "bytes": 252
+    },
+    {
+      "path": "builds/candidates/universal-v1-batch-revision-20261004-05/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-batch-revision-20261004-06/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-batch-revision-20261004-07/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-config-assistant-revision-20261007-10/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-config-assistant-revision-20261007-11/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-config-assistant-revision-20261007-12/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-config-assistant-revision-20261007-13/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-five-types-batch-20261022-01/universal-v1.json",
+      "bytes": 732
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-14/cc-v1.json",
+      "bytes": 310
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-14/minimal-structure-v1.json",
+      "bytes": 259
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-14/sfc-v1.json",
+      "bytes": 335
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-14/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-15/cc-v1.json",
+      "bytes": 310
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-15/minimal-structure-v1.json",
+      "bytes": 259
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-15/sfc-v1.json",
+      "bytes": 335
+    },
+    {
+      "path": "builds/candidates/universal-v1-hplc11-revision-20261007-15/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "builds/candidates/universal-v1-tlc-batch-revision-20261008-01/universal-v1.json",
+      "bytes": 949
+    },
+    {
+      "path": "builds/candidates/universal-v1-tlc-batch-revision-20261008-02/universal-v1.json",
+      "bytes": 949
+    },
+    {
+      "path": "builds/candidates/universal-v1-tlc-batch-revision-20261008-03/universal-v1.json",
+      "bytes": 949
+    },
+    {
+      "path": "builds/cc-v1.json",
+      "bytes": 310
+    },
+    {
+      "path": "builds/export_gc_safetensors_candidate.py",
+      "bytes": 15217
+    },
+    {
+      "path": "builds/manifest.py",
+      "bytes": 5169
+    },
+    {
+      "path": "builds/minimal-structure-v1.json",
+      "bytes": 259
+    },
+    {
+      "path": "builds/model_package_derived_receipt.py",
+      "bytes": 30538
+    },
+    {
+      "path": "builds/model_package_source_integrity.py",
+      "bytes": 6224
+    },
+    {
+      "path": "builds/model_package_source_inventory.json",
+      "bytes": 2020
+    },
+    {
+      "path": "builds/sfc-v1.json",
+      "bytes": 335
+    },
+    {
+      "path": "builds/test_export_gc_safetensors_candidate.py",
+      "bytes": 8774
+    },
+    {
+      "path": "builds/test_manifest.py",
+      "bytes": 4254
+    },
+    {
+      "path": "builds/test_model_package_derived_source_receipt.py",
+      "bytes": 16876
+    },
+    {
+      "path": "builds/test_model_package_source_integrity.py",
+      "bytes": 7373
+    },
+    {
+      "path": "builds/universal-v1.json",
+      "bytes": 732
+    },
+    {
+      "path": "contracts/README.md",
+      "bytes": 1580
+    },
+    {
+      "path": "contracts/cc-v1/openapi.json",
+      "bytes": 152633
+    },
+    {
+      "path": "contracts/cc-v1/rollback-index.json",
+      "bytes": 752
+    },
+    {
+      "path": "contracts/cc-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "bytes": 129944
+    },
+    {
+      "path": "contracts/check_openapi.py",
+      "bytes": 5083
+    },
+    {
+      "path": "contracts/freeze_openapi.py",
+      "bytes": 2820
+    },
+    {
+      "path": "contracts/index.json",
+      "bytes": 682
+    },
+    {
+      "path": "contracts/minimal-structure-v1/openapi.json",
+      "bytes": 91753
+    },
+    {
+      "path": "contracts/minimal-structure-v1/rollback-index.json",
+      "bytes": 781
+    },
+    {
+      "path": "contracts/minimal-structure-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "bytes": 87248
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/SOURCE.json",
+      "bytes": 972
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/contracts/cc-v1/openapi.json",
+      "bytes": 144395
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/contracts/index.json",
+      "bytes": 682
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/contracts/minimal-structure-v1/openapi.json",
+      "bytes": 88425
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/contracts/sfc-v1/openapi.json",
+      "bytes": 156958
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/contracts/universal-v1/openapi.json",
+      "bytes": 1106497
+    },
+    {
+      "path": "contracts/rollback-snapshots/revision-20261022-five-types-batch-before/docs/V1_M3_M4_CONTRACT_FREEZE.json",
+      "bytes": 27819
+    },
+    {
+      "path": "contracts/sfc-v1/openapi.json",
+      "bytes": 172743
+    },
+    {
+      "path": "contracts/sfc-v1/rollback-index.json",
+      "bytes": 754
+    },
+    {
+      "path": "contracts/sfc-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "bytes": 132905
+    },
+    {
+      "path": "contracts/test_check_openapi.py",
+      "bytes": 2220
+    },
+    {
+      "path": "contracts/test_freeze_openapi.py",
+      "bytes": 3061
+    },
+    {
+      "path": "contracts/universal-v1/CHANGELOG.md",
+      "bytes": 6858
+    },
+    {
+      "path": "contracts/universal-v1/openapi.json",
+      "bytes": 627792
+    },
+    {
+      "path": "contracts/universal-v1/rollback-index.json",
+      "bytes": 1735
+    },
+    {
+      "path": "contracts/universal-v1/rollback-snapshots/revision-20261002-04-baseline/openapi.json",
+      "bytes": 439923
+    },
+    {
+      "path": "contracts/universal-v1/rollback-snapshots/revision-20261003-01-baseline/openapi.json",
+      "bytes": 490175
+    },
+    {
+      "path": "contracts/universal-v1/rollback-snapshots/revision-20261003-02-baseline/openapi.json",
+      "bytes": 490444
+    },
+    {
+      "path": "contracts/universal-v1/rollback-snapshots/revision-20261004-04-baseline/openapi.json",
+      "bytes": 497507
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/SHA256SUMS.txt",
+      "bytes": 1457
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/active-no-batch-openapi.json",
+      "bytes": 497507
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/builds/active/universal-v1.json",
+      "bytes": 687
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/builds/target/universal-v1.json",
+      "bytes": 1015
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/candidate-metadata.json",
+      "bytes": 1417
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/generation-summary.json",
+      "bytes": 31774
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/migration-and-artifact-store-review.md",
+      "bytes": 5869
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/profile-candidate-diff.json",
+      "bytes": 5277
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/profile-candidate-matrix.md",
+      "bytes": 4246
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/qa-addendum.md",
+      "bytes": 9953
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/evidence/semantic-diff.json",
+      "bytes": 9011
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/openapi.json",
+      "bytes": 1212176
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/openapi.normalized.json",
+      "bytes": 563572
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/provenance/SOURCE_MANIFEST.json",
+      "bytes": 28275
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/revision-metadata.json",
+      "bytes": 5649
+    },
+    {
+      "path": "contracts/universal-v1/target-revisions/revision-20261004-03/rollback-index-before.json",
+      "bytes": 1379
+    },
+    {
+      "path": "deploy/v1/.env.example",
+      "bytes": 1110
+    },
+    {
+      "path": "deploy/v1/PRIORITY_LOCAL_RUNTIME_INSTALL.md",
+      "bytes": 3692
+    },
+    {
+      "path": "deploy/v1/README.md",
+      "bytes": 5961
+    },
+    {
+      "path": "deploy/v1/WINDOWS_LOCAL.md",
+      "bytes": 6856
+    },
+    {
+      "path": "deploy/v1/WORKER.md",
+      "bytes": 3702
+    },
+    {
+      "path": "deploy/v1/compose.yaml",
+      "bytes": 5225
+    },
+    {
+      "path": "deploy/v1/dpapi-secret-source.ps1",
+      "bytes": 9506
+    },
+    {
+      "path": "deploy/v1/initialize-assistant-acceptance-project.ps1",
+      "bytes": 3044
+    },
+    {
+      "path": "deploy/v1/initialize-assistant-acceptance.ps1",
+      "bytes": 4641
+    },
+    {
+      "path": "deploy/v1/initialize_local_project.py",
+      "bytes": 5762
+    },
+    {
+      "path": "deploy/v1/migrate-assistant-acceptance.ps1",
+      "bytes": 27484
+    },
+    {
+      "path": "deploy/v1/nginx/nginx.conf",
+      "bytes": 761
+    },
+    {
+      "path": "deploy/v1/preflight.py",
+      "bytes": 5581
+    },
+    {
+      "path": "deploy/v1/prepare-batch-cursor-key.ps1",
+      "bytes": 2090
+    },
+    {
+      "path": "deploy/v1/provision-priority-secret.ps1",
+      "bytes": 6876
+    },
+    {
+      "path": "deploy/v1/run-local.ps1",
+      "bytes": 72389
+    },
+    {
+      "path": "deploy/v1/start-platform.ps1",
+      "bytes": 14310
+    },
+    {
+      "path": "deploy/v1/startup-check.py",
+      "bytes": 8243
+    },
+    {
+      "path": "deploy/v1/test_data_accept_profile.ps1",
+      "bytes": 12006
+    },
+    {
+      "path": "deploy/v1/test_dpapi_secret_source.ps1",
+      "bytes": 4387
+    },
+    {
+      "path": "deploy/v1/test_migrate_framework_state.py",
+      "bytes": 32863
+    },
+    {
+      "path": "deploy/v1/test_offline_bundle.py",
+      "bytes": 3922
+    },
+    {
+      "path": "deploy/v1/test_preflight.py",
+      "bytes": 1321
+    },
+    {
+      "path": "deploy/v1/test_run_local.ps1",
+      "bytes": 5929
+    },
+    {
+      "path": "deploy/v1/test_run_local_sfc_acceptance.ps1",
+      "bytes": 5894
+    },
+    {
+      "path": "deploy/v1/verify-assistant-acceptance-db.ps1",
+      "bytes": 5446
+    },
+    {
+      "path": "deploy/v1/verify-assistant-acceptance-project.ps1",
+      "bytes": 4909
+    },
+    {
+      "path": "deploy/v1/verify-formal-platform-db.ps1",
+      "bytes": 4448
+    },
+    {
+      "path": "docs/CODING_AGENT_UPGRADE_PLAN.md",
+      "bytes": 41561
+    },
+    {
+      "path": "docs/FRONTEND_FIVE_TYPES_BATCH_20261022.md",
+      "bytes": 6330
+    },
+    {
+      "path": "docs/M5_OFFLINE_DELIVERY.md",
+      "bytes": 1554
+    },
+    {
+      "path": "docs/PRIORITY_CHECKPOINT_INDEX.json",
+      "bytes": 3658
+    },
+    {
+      "path": "docs/PRIORITY_LAUNCH_CONTRACT_REVIEW.md",
+      "bytes": 3836
+    },
+    {
+      "path": "docs/PRIORITY_LAUNCH_PLAN.md",
+      "bytes": 8336
+    },
+    {
+      "path": "docs/PROJECT_FRONTEND_BACKEND_API_SPEC.md",
+      "bytes": 126849
+    },
+    {
+      "path": "docs/PROJECT_PRD.md",
+      "bytes": 58398
+    },
+    {
+      "path": "docs/PURIFYX_FRONTEND_MIGRATION_20261021.md",
+      "bytes": 11335
+    },
+    {
+      "path": "docs/PURIFYX_FRONTEND_MIGRATION_20261021.source-provenance.json",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/V1_ACCEPTANCE_MATRIX.json",
+      "bytes": 16511
+    },
+    {
+      "path": "docs/V1_IMPLEMENTATION_STATUS.md",
+      "bytes": 32538
+    },
+    {
+      "path": "docs/V1_M2_CONTRACT_FREEZE.json",
+      "bytes": 6444
+    },
+    {
+      "path": "docs/V1_M3_M4_CONTRACT_FREEZE.json",
+      "bytes": 4157
+    },
+    {
+      "path": "docs/V1_REUSE_SOURCES.json",
+      "bytes": 6728
+    },
+    {
+      "path": "docs/V1_SESSION_INDEX.json",
+      "bytes": 2295
+    },
+    {
+      "path": "docs/checkpoints/pre-priority-launch-coordinator/CHECKPOINT.md",
+      "bytes": 1394
+    },
+    {
+      "path": "docs/checkpoints/pre-priority-launch-coordinator/MANIFEST.json",
+      "bytes": 5436
+    },
+    {
+      "path": "docs/checkpoints/pre-priority-launch-coordinator/source.zip",
+      "bytes": 112370
+    },
+    {
+      "path": "docs/contract-baselines/m2/cc-v1/openapi.json",
+      "bytes": 129944
+    },
+    {
+      "path": "docs/contract-baselines/m2/index.json",
+      "bytes": 682
+    },
+    {
+      "path": "docs/contract-baselines/m2/minimal-structure-v1/openapi.json",
+      "bytes": 87248
+    },
+    {
+      "path": "docs/contract-baselines/m2/sfc-v1/openapi.json",
+      "bytes": 132905
+    },
+    {
+      "path": "docs/contract-baselines/m2/universal-v1/openapi.json",
+      "bytes": 182405
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261003-02-pre-sync/V1_M3_M4_CONTRACT_FREEZE.json",
+      "bytes": 7849
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-metadata-pre-correction/SNAPSHOT-MANIFEST.json",
+      "bytes": 303
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-metadata-pre-correction/V1_M3_M4_CONTRACT_FREEZE.json",
+      "bytes": 24313
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/SNAPSHOT-MANIFEST.json",
+      "bytes": 1247
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/cc-v1/openapi.json",
+      "bytes": 129944
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/index.json",
+      "bytes": 682
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/minimal-structure-v1/openapi.json",
+      "bytes": 87248
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/sfc-v1/openapi.json",
+      "bytes": 132905
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/universal-v1/openapi.json",
+      "bytes": 497507
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/contracts/universal-v1/rollback-index.json",
+      "bytes": 1379
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-pre-freeze/docs/V1_M3_M4_CONTRACT_FREEZE.json",
+      "bytes": 9810
+    },
+    {
+      "path": "docs/contract-freeze-snapshots/revision-20261004-04-semantic-diff.json",
+      "bytes": 151690
+    },
+    {
+      "path": "docs/delivery_readiness.md",
+      "bytes": 5663
+    },
+    {
+      "path": "docs/examples/clearml-learning-preview.png",
+      "bytes": 99283
+    },
+    {
+      "path": "docs/examples/clearml-learning.check.js",
+      "bytes": 3055
+    },
+    {
+      "path": "docs/examples/clearml-learning.html",
+      "bytes": 27662
+    },
+    {
+      "path": "docs/handoffs/2026-10-06/backend/handoff.md",
+      "bytes": 26732
+    },
+    {
+      "path": "docs/handoffs/2026-10-06/frontend/handoff.md",
+      "bytes": 22721
+    },
+    {
+      "path": "docs/handoffs/2026-10-06/testing/handoff.md",
+      "bytes": 17404
+    },
+    {
+      "path": "docs/handoffs/2026-10-13/frontend/settings-gate-readonly-review.md",
+      "bytes": 4357
+    },
+    {
+      "path": "docs/handoffs/2026-10-14/frontend/startup-boundary.md",
+      "bytes": 2319
+    },
+    {
+      "path": "docs/implementation/2026-10-06-config-assistant-backend.md",
+      "bytes": 8425
+    },
+    {
+      "path": "docs/plan.md",
+      "bytes": 224234
+    },
+    {
+      "path": "docs/preview-review/preview-home-1600x1000.png",
+      "bytes": 213911
+    },
+    {
+      "path": "docs/preview-v2-review/assistant-1600x1000.png",
+      "bytes": 246004
+    },
+    {
+      "path": "docs/preview-v2-review/data-1600x1000.png",
+      "bytes": 259051
+    },
+    {
+      "path": "docs/preview-v2-review/home-1280x800.png",
+      "bytes": 188423
+    },
+    {
+      "path": "docs/preview-v2-review/home-1600x1000.png",
+      "bytes": 227819
+    },
+    {
+      "path": "docs/preview-v2-review/models-1600x1000.png",
+      "bytes": 255497
+    },
+    {
+      "path": "docs/preview-v2-review/settings-1600x1000.png",
+      "bytes": 251621
+    },
+    {
+      "path": "docs/preview-v2-review/training-1600x1000.png",
+      "bytes": 267231
+    },
+    {
+      "path": "docs/preview-v2-review/utilities-1600x1000.png",
+      "bytes": 230778
+    },
+    {
+      "path": "docs/preview_coding_runtime.html",
+      "bytes": 115207
+    },
+    {
+      "path": "docs/preview_qilu_v12.html",
+      "bytes": 143051
+    },
+    {
+      "path": "docs/preview_v14.html",
+      "bytes": 213441
+    },
+    {
+      "path": "docs/preview_v2.html",
+      "bytes": 91753
+    },
+    {
+      "path": "docs/reviews/2026-10-29-structure-and-workspace-audit.md",
+      "bytes": 17883
+    },
+    {
+      "path": "docs/代码导读.md",
+      "bytes": 15422
+    },
+    {
+      "path": "docs/升级文档.md",
+      "bytes": 22215
+    },
+    {
+      "path": "docs/色谱保留时间AI预测系统_前端产品需求文档PRD_V1.2.md",
+      "bytes": 43116
+    },
+    {
+      "path": "frontend/ASSEMBLY.md",
+      "bytes": 1821
+    },
+    {
+      "path": "frontend/GC_READONLY_PREFLIGHT_2026-10-07.md",
+      "bytes": 8533
+    },
+    {
+      "path": "frontend/KETCHER_INTEGRITY_AUDIT_2026-10-03.md",
+      "bytes": 4514
+    },
+    {
+      "path": "frontend/STATIC_BROWSER_READINESS_2026-10-03.md",
+      "bytes": 3016
+    },
+    {
+      "path": "frontend/STATUS.md",
+      "bytes": 33478
+    },
+    {
+      "path": "frontend/VISUAL_AUDIT.md",
+      "bytes": 1684
+    },
+    {
+      "path": "frontend/index.html",
+      "bytes": 425
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "bytes": 124359
+    },
+    {
+      "path": "frontend/package.json",
+      "bytes": 1191
+    },
+    {
+      "path": "frontend/public/ketcher/ASSET_MANIFEST.json",
+      "bytes": 4517
+    },
+    {
+      "path": "frontend/public/ketcher/apple-touch-icon.png",
+      "bytes": 11817
+    },
+    {
+      "path": "frontend/public/ketcher/asset-manifest.json",
+      "bytes": 1070
+    },
+    {
+      "path": "frontend/public/ketcher/closable.html",
+      "bytes": 891
+    },
+    {
+      "path": "frontend/public/ketcher/duo.html",
+      "bytes": 876
+    },
+    {
+      "path": "frontend/public/ketcher/favicon-16x16.png",
+      "bytes": 600
+    },
+    {
+      "path": "frontend/public/ketcher/favicon-32x32.png",
+      "bytes": 1229
+    },
+    {
+      "path": "frontend/public/ketcher/favicon.ico",
+      "bytes": 15086
+    },
+    {
+      "path": "frontend/public/ketcher/iframe.html",
+      "bytes": 3562
+    },
+    {
+      "path": "frontend/public/ketcher/index.html",
+      "bytes": 874
+    },
+    {
+      "path": "frontend/public/ketcher/licenses/LICENSE",
+      "bytes": 11342
+    },
+    {
+      "path": "frontend/public/ketcher/licenses/NOTICE",
+      "bytes": 1047
+    },
+    {
+      "path": "frontend/public/ketcher/logo.svg",
+      "bytes": 5219
+    },
+    {
+      "path": "frontend/public/ketcher/manifest.json",
+      "bytes": 288
+    },
+    {
+      "path": "frontend/public/ketcher/popup.html",
+      "bytes": 882
+    },
+    {
+      "path": "frontend/public/ketcher/robots.txt",
+      "bytes": 67
+    },
+    {
+      "path": "frontend/public/ketcher/serve.json",
+      "bytes": 322
+    },
+    {
+      "path": "frontend/public/ketcher/static/css/622.f19f2e00.chunk.css",
+      "bytes": 7007
+    },
+    {
+      "path": "frontend/public/ketcher/static/css/closable.861db57e.css",
+      "bytes": 184475
+    },
+    {
+      "path": "frontend/public/ketcher/static/css/duo.20618d6d.css",
+      "bytes": 184475
+    },
+    {
+      "path": "frontend/public/ketcher/static/css/main.861db57e.css",
+      "bytes": 184475
+    },
+    {
+      "path": "frontend/public/ketcher/static/css/popup.861db57e.css",
+      "bytes": 184475
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/127.aa15387f.chunk.js",
+      "bytes": 1262833
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/127.aa15387f.chunk.js.LICENSE.txt",
+      "bytes": 178
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/622.33dce7be.chunk.js",
+      "bytes": 263086
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/63.be25db2c.chunk.js",
+      "bytes": 86314
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/874.9a8411a5.chunk.js",
+      "bytes": 21238949
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/closable.fb4db9da.js",
+      "bytes": 7783261
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/closable.fb4db9da.js.LICENSE.txt",
+      "bytes": 2628
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/duo.29099d40.js",
+      "bytes": 7782522
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/duo.29099d40.js.LICENSE.txt",
+      "bytes": 2628
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/main.5ccbee00.js",
+      "bytes": 7834142
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/main.5ccbee00.js.LICENSE.txt",
+      "bytes": 2628
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/popup.7c80fb72.js",
+      "bytes": 7786919
+    },
+    {
+      "path": "frontend/public/ketcher/static/js/popup.7c80fb72.js.LICENSE.txt",
+      "bytes": 2628
+    },
+    {
+      "path": "frontend/scripts/assemble-profile.mjs",
+      "bytes": 11399
+    },
+    {
+      "path": "frontend/scripts/create-staged-lock.mjs",
+      "bytes": 3146
+    },
+    {
+      "path": "frontend/scripts/generate-contract-types.mjs",
+      "bytes": 4372
+    },
+    {
+      "path": "frontend/scripts/generate-gc11-candidate-types.mjs",
+      "bytes": 6380
+    },
+    {
+      "path": "frontend/scripts/generate-hplc11-candidate-types.mjs",
+      "bytes": 5992
+    },
+    {
+      "path": "frontend/scripts/generate-prediction-candidate-types.mjs",
+      "bytes": 5756
+    },
+    {
+      "path": "frontend/scripts/generate-registry.mjs",
+      "bytes": 6702
+    },
+    {
+      "path": "frontend/scripts/generate-settings-candidate-types.mjs",
+      "bytes": 3480
+    },
+    {
+      "path": "frontend/scripts/generate-sfc11-exact-candidate-types.mjs",
+      "bytes": 4808
+    },
+    {
+      "path": "frontend/scripts/generate-sfc11-exact-revision02-candidate-types.mjs",
+      "bytes": 5580
+    },
+    {
+      "path": "frontend/scripts/generate-tlc-batch-candidate-types.mjs",
+      "bytes": 4036
+    },
+    {
+      "path": "frontend/scripts/verify-assembly-boundaries.mjs",
+      "bytes": 4049
+    },
+    {
+      "path": "frontend/scripts/verify-profiles.mjs",
+      "bytes": 15211
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "bytes": 7637
+    },
+    {
+      "path": "frontend/src/app/generated/README.md",
+      "bytes": 608
+    },
+    {
+      "path": "frontend/src/app/generated/build-manifest.json",
+      "bytes": 952
+    },
+    {
+      "path": "frontend/src/app/generated/profile.ts",
+      "bytes": 705
+    },
+    {
+      "path": "frontend/src/app/generated/registry.ts",
+      "bytes": 2007
+    },
+    {
+      "path": "frontend/src/app/module.ts",
+      "bytes": 608
+    },
+    {
+      "path": "frontend/src/app/profile.ts",
+      "bytes": 595
+    },
+    {
+      "path": "frontend/src/components/ConfirmationCard.vue",
+      "bytes": 2014
+    },
+    {
+      "path": "frontend/src/components/JobStatus.vue",
+      "bytes": 1604
+    },
+    {
+      "path": "frontend/src/components/SharedKetcherCanvas.vue",
+      "bytes": 11686
+    },
+    {
+      "path": "frontend/src/components/StructureInput.vue",
+      "bytes": 7078
+    },
+    {
+      "path": "frontend/src/components/StructureWorkspace.vue",
+      "bytes": 381
+    },
+    {
+      "path": "frontend/src/core/api/client.ts",
+      "bytes": 7925
+    },
+    {
+      "path": "frontend/src/core/api/sse.ts",
+      "bytes": 4094
+    },
+    {
+      "path": "frontend/src/core/build/profiles.ts",
+      "bytes": 1559
+    },
+    {
+      "path": "frontend/src/core/contract-types.ts",
+      "bytes": 23150
+    },
+    {
+      "path": "frontend/src/core/navigation.ts",
+      "bytes": 403
+    },
+    {
+      "path": "frontend/src/core/project-context.ts",
+      "bytes": 2186
+    },
+    {
+      "path": "frontend/src/core/status-labels.ts",
+      "bytes": 545
+    },
+    {
+      "path": "frontend/src/core/structure/frameadapter.ts",
+      "bytes": 917
+    },
+    {
+      "path": "frontend/src/core/structure/ketcher.ts",
+      "bytes": 563
+    },
+    {
+      "path": "frontend/src/core/structure/workspace.ts",
+      "bytes": 1295
+    },
+    {
+      "path": "frontend/src/core/types.ts",
+      "bytes": 3329
+    },
+    {
+      "path": "frontend/src/env.d.ts",
+      "bytes": 240
+    },
+    {
+      "path": "frontend/src/generated/README.md",
+      "bytes": 1243
+    },
+    {
+      "path": "frontend/src/generated/contracts/api-schema.ts",
+      "bytes": 177
+    },
+    {
+      "path": "frontend/src/generated/contracts/cc-v1/api-schema.ts",
+      "bytes": 258066
+    },
+    {
+      "path": "frontend/src/generated/contracts/minimal-structure-v1/api-schema.ts",
+      "bytes": 162861
+    },
+    {
+      "path": "frontend/src/generated/contracts/sfc-v1/api-schema.ts",
+      "bytes": 283649
+    },
+    {
+      "path": "frontend/src/generated/contracts/universal-v1/api-schema.ts",
+      "bytes": 997775
+    },
+    {
+      "path": "frontend/src/main.ts",
+      "bytes": 213
+    },
+    {
+      "path": "frontend/src/modules/assistant/AssistantText.vue",
+      "bytes": 5177
+    },
+    {
+      "path": "frontend/src/modules/assistant/AssistantView.vue",
+      "bytes": 115344
+    },
+    {
+      "path": "frontend/src/modules/assistant/assistant.test.ts",
+      "bytes": 83712
+    },
+    {
+      "path": "frontend/src/modules/assistant/module.ts",
+      "bytes": 439
+    },
+    {
+      "path": "frontend/src/modules/assistant/store.ts",
+      "bytes": 56116
+    },
+    {
+      "path": "frontend/src/modules/assistant/stream-projection.ts",
+      "bytes": 2519
+    },
+    {
+      "path": "frontend/src/modules/assistant/vitest.config.ts",
+      "bytes": 310
+    },
+    {
+      "path": "frontend/src/modules/datasets/DataCenterView.vue",
+      "bytes": 50307
+    },
+    {
+      "path": "frontend/src/modules/datasets/module.ts",
+      "bytes": 303
+    },
+    {
+      "path": "frontend/src/modules/datasets/store.ts",
+      "bytes": 15516
+    },
+    {
+      "path": "frontend/src/modules/knowledge/KnowledgeView.vue",
+      "bytes": 6372
+    },
+    {
+      "path": "frontend/src/modules/knowledge/module.ts",
+      "bytes": 298
+    },
+    {
+      "path": "frontend/src/modules/knowledge/store.ts",
+      "bytes": 3808
+    },
+    {
+      "path": "frontend/src/modules/model_center/ModelCenterView.vue",
+      "bytes": 20561
+    },
+    {
+      "path": "frontend/src/modules/model_center/module.ts",
+      "bytes": 464
+    },
+    {
+      "path": "frontend/src/modules/model_center/store.ts",
+      "bytes": 7615
+    },
+    {
+      "path": "frontend/src/modules/prediction/BatchPredictionPage.vue",
+      "bytes": 6789
+    },
+    {
+      "path": "frontend/src/modules/prediction/PredictionHighlights.vue",
+      "bytes": 7326
+    },
+    {
+      "path": "frontend/src/modules/prediction/PredictionView.vue",
+      "bytes": 142702
+    },
+    {
+      "path": "frontend/src/modules/prediction/batch-entry.ts",
+      "bytes": 841
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/BatchUnavailable.vue",
+      "bytes": 458
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/CcSingleForm.vue",
+      "bytes": 4420
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/GcSingleForm.vue",
+      "bytes": 7118
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/HplcSingleForm.vue",
+      "bytes": 3463
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/OfflinePredictionForm.vue",
+      "bytes": 2457
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/form-types.ts",
+      "bytes": 7641
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/basic/gc-temperature-program.ts",
+      "bytes": 10227
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/README.md",
+      "bytes": 1649
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/SfcPredictionForm.vue",
+      "bytes": 3684
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/SfcSearchForm.types.ts",
+      "bytes": 268
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/SfcSearchForm.vue",
+      "bytes": 40859
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/candidates.test.ts",
+      "bytes": 912
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/candidates.ts",
+      "bytes": 1261
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/index.ts",
+      "bytes": 125
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/provenance.md",
+      "bytes": 1411
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/types.ts",
+      "bytes": 4615
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/sfc/vitest.config.ts",
+      "bytes": 401
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/TlcResult.test.ts",
+      "bytes": 3744
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/TlcToolPanel.test.ts",
+      "bytes": 7991
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/TlcToolPanel.vue",
+      "bytes": 85
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/index.ts",
+      "bytes": 274
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/tsconfig.scoped.json",
+      "bytes": 179
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/types.ts",
+      "bytes": 35
+    },
+    {
+      "path": "frontend/src/modules/prediction/forms/tlc/vitest.config.ts",
+      "bytes": 397
+    },
+    {
+      "path": "frontend/src/modules/prediction/input-validation.ts",
+      "bytes": 316
+    },
+    {
+      "path": "frontend/src/modules/prediction/module.ts",
+      "bytes": 703
+    },
+    {
+      "path": "frontend/src/modules/prediction/prediction-highlights.ts",
+      "bytes": 5525
+    },
+    {
+      "path": "frontend/src/modules/prediction/result.ts",
+      "bytes": 393
+    },
+    {
+      "path": "frontend/src/modules/prediction/store.ts",
+      "bytes": 197
+    },
+    {
+      "path": "frontend/src/modules/prediction/tlc-entry.ts",
+      "bytes": 509
+    },
+    {
+      "path": "frontend/src/modules/prediction/tlc-reverse-entry.ts",
+      "bytes": 544
+    },
+    {
+      "path": "frontend/src/modules/records/PredictionRecordsView.vue",
+      "bytes": 48805
+    },
+    {
+      "path": "frontend/src/modules/records/export-store.ts",
+      "bytes": 15944
+    },
+    {
+      "path": "frontend/src/modules/records/module.ts",
+      "bytes": 498
+    },
+    {
+      "path": "frontend/src/modules/records/store.ts",
+      "bytes": 2064
+    },
+    {
+      "path": "frontend/src/modules/settings/contracts/revision09.generated.ts",
+      "bytes": 39328
+    },
+    {
+      "path": "frontend/src/modules/settings/contracts/revision14.generated.ts",
+      "bytes": 871784
+    },
+    {
+      "path": "frontend/src/modules/settings/llm-api.test.ts",
+      "bytes": 9137
+    },
+    {
+      "path": "frontend/src/modules/settings/llm-api.ts",
+      "bytes": 5016
+    },
+    {
+      "path": "frontend/src/modules/settings/module.ts",
+      "bytes": 428
+    },
+    {
+      "path": "frontend/src/modules/settings/vitest.config.ts",
+      "bytes": 307
+    },
+    {
+      "path": "frontend/src/modules/training/TrainingView.vue",
+      "bytes": 7909
+    },
+    {
+      "path": "frontend/src/modules/training/module.ts",
+      "bytes": 421
+    },
+    {
+      "path": "frontend/src/modules/training/store.ts",
+      "bytes": 3737
+    },
+    {
+      "path": "frontend/src/modules/utilities/module.ts",
+      "bytes": 439
+    },
+    {
+      "path": "frontend/src/modules/utilities/tlc-reverse-entry.ts",
+      "bytes": 537
+    },
+    {
+      "path": "frontend/src/router/index.ts",
+      "bytes": 469
+    },
+    {
+      "path": "frontend/src/shared/batch/BatchStructurePreparation.vue",
+      "bytes": 6685
+    },
+    {
+      "path": "frontend/src/shared/batch/BatchWorkspace.vue",
+      "bytes": 88739
+    },
+    {
+      "path": "frontend/src/shared/batch/batch-client.ts",
+      "bytes": 9827
+    },
+    {
+      "path": "frontend/src/shared/batch/batch-types.ts",
+      "bytes": 4001
+    },
+    {
+      "path": "frontend/src/shared/batch/batch-workspace.ts",
+      "bytes": 2733
+    },
+    {
+      "path": "frontend/src/shared/prediction/contracts/gc11-revision18.generated.ts",
+      "bytes": 27823
+    },
+    {
+      "path": "frontend/src/shared/prediction/contracts/hplc11-revision15.generated.ts",
+      "bytes": 25810
+    },
+    {
+      "path": "frontend/src/shared/prediction/contracts/revision12.generated.ts",
+      "bytes": 8954
+    },
+    {
+      "path": "frontend/src/shared/prediction/contracts/sfc-v11-exact-revision20261008-01.generated.ts",
+      "bytes": 27528
+    },
+    {
+      "path": "frontend/src/shared/prediction/contracts/sfc-v11-exact-revision20261008-02.generated.ts",
+      "bytes": 27609
+    },
+    {
+      "path": "frontend/src/shared/prediction/gc-quantiles.ts",
+      "bytes": 838
+    },
+    {
+      "path": "frontend/src/shared/prediction/gc11.ts",
+      "bytes": 4909
+    },
+    {
+      "path": "frontend/src/shared/prediction/hplc11.ts",
+      "bytes": 3941
+    },
+    {
+      "path": "frontend/src/shared/prediction/model-selection.ts",
+      "bytes": 4617
+    },
+    {
+      "path": "frontend/src/shared/prediction/replay.ts",
+      "bytes": 7860
+    },
+    {
+      "path": "frontend/src/shared/prediction/result.ts",
+      "bytes": 21713
+    },
+    {
+      "path": "frontend/src/shared/prediction/sfc-provenance.ts",
+      "bytes": 2075
+    },
+    {
+      "path": "frontend/src/shared/prediction/sfc-search.types.ts",
+      "bytes": 2635
+    },
+    {
+      "path": "frontend/src/shared/prediction/sfc11.ts",
+      "bytes": 14129
+    },
+    {
+      "path": "frontend/src/shared/prediction/store.ts",
+      "bytes": 13182
+    },
+    {
+      "path": "frontend/src/shared/prediction/workspace.ts",
+      "bytes": 2997
+    },
+    {
+      "path": "frontend/src/shared/tlc-reverse/TlcReverseWorkspace.vue",
+      "bytes": 27906
+    },
+    {
+      "path": "frontend/src/shared/tlc/TlcCurveExplorer.vue",
+      "bytes": 11112
+    },
+    {
+      "path": "frontend/src/shared/tlc/TlcToolPanel.vue",
+      "bytes": 27432
+    },
+    {
+      "path": "frontend/src/shared/tlc/interaction.ts",
+      "bytes": 7498
+    },
+    {
+      "path": "frontend/src/shared/tlc/types.ts",
+      "bytes": 4474
+    },
+    {
+      "path": "frontend/src/stores/app.ts",
+      "bytes": 2957
+    },
+    {
+      "path": "frontend/src/stores/artifacts.ts",
+      "bytes": 2621
+    },
+    {
+      "path": "frontend/src/stores/confirmations.ts",
+      "bytes": 3175
+    },
+    {
+      "path": "frontend/src/stores/jobs.ts",
+      "bytes": 4241
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "bytes": 15900
+    },
+    {
+      "path": "frontend/src/views/AppHomeView.vue",
+      "bytes": 1621
+    },
+    {
+      "path": "frontend/src/views/DashboardView.vue",
+      "bytes": 1059
+    },
+    {
+      "path": "frontend/src/views/ModuleUnavailableView.vue",
+      "bytes": 296
+    },
+    {
+      "path": "frontend/src/views/SettingsView.vue",
+      "bytes": 36672
+    },
+    {
+      "path": "frontend/src/views/StructureView.vue",
+      "bytes": 3178
+    },
+    {
+      "path": "frontend/src/views/TlcWorkspaceView.vue",
+      "bytes": 485
+    },
+    {
+      "path": "frontend/tests/access-context-loading.test.ts",
+      "bytes": 6317
+    },
+    {
+      "path": "frontend/tests/api-client-bounded-json.test.ts",
+      "bytes": 2736
+    },
+    {
+      "path": "frontend/tests/api-client.test.ts",
+      "bytes": 11684
+    },
+    {
+      "path": "frontend/tests/assistant-ime.test.ts",
+      "bytes": 3476
+    },
+    {
+      "path": "frontend/tests/assistant-store.test.ts",
+      "bytes": 16625
+    },
+    {
+      "path": "frontend/tests/assistant-stream-projection.test.ts",
+      "bytes": 2067
+    },
+    {
+      "path": "frontend/tests/assistant-text.test.ts",
+      "bytes": 4563
+    },
+    {
+      "path": "frontend/tests/assistant-view.test.ts",
+      "bytes": 63831
+    },
+    {
+      "path": "frontend/tests/batch-client.test.ts",
+      "bytes": 5918
+    },
+    {
+      "path": "frontend/tests/batch-workspace-component.test.ts",
+      "bytes": 35757
+    },
+    {
+      "path": "frontend/tests/batch-workspace.test.ts",
+      "bytes": 2889
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/FixtureApp.vue",
+      "bytes": 8071
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/ImeDiagnostics.vue",
+      "bytes": 7163
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/README.md",
+      "bytes": 3369
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/diagnostics-bootstrap.ts",
+      "bytes": 299
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/index.html",
+      "bytes": 624
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/main.ts",
+      "bytes": 2524
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/navigation-diagnostics.ts",
+      "bytes": 5637
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/observer-diagnostics.ts",
+      "bytes": 2996
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/synthetic-fetch.ts",
+      "bytes": 6326
+    },
+    {
+      "path": "frontend/tests/browser-fixtures/vite.config.ts",
+      "bytes": 3014
+    },
+    {
+      "path": "frontend/tests/cc-single-form.test.ts",
+      "bytes": 7038
+    },
+    {
+      "path": "frontend/tests/confirmations.test.ts",
+      "bytes": 5557
+    },
+    {
+      "path": "frontend/tests/datasets-store.test.ts",
+      "bytes": 6521
+    },
+    {
+      "path": "frontend/tests/datasets-view.test.ts",
+      "bytes": 33701
+    },
+    {
+      "path": "frontend/tests/gc-single-form.test.ts",
+      "bytes": 6540
+    },
+    {
+      "path": "frontend/tests/gc11-page.test.ts",
+      "bytes": 18941
+    },
+    {
+      "path": "frontend/tests/gc11.test.ts",
+      "bytes": 5854
+    },
+    {
+      "path": "frontend/tests/hplc-options.test.ts",
+      "bytes": 1078
+    },
+    {
+      "path": "frontend/tests/hplc-single-form.test.ts",
+      "bytes": 3751
+    },
+    {
+      "path": "frontend/tests/jobs.test.ts",
+      "bytes": 3461
+    },
+    {
+      "path": "frontend/tests/m3-m4-workflows.test.ts",
+      "bytes": 8803
+    },
+    {
+      "path": "frontend/tests/navigation.test.ts",
+      "bytes": 11279
+    },
+    {
+      "path": "frontend/tests/offline-bootstrap.test.ts",
+      "bytes": 1669
+    },
+    {
+      "path": "frontend/tests/prediction-highlights.test.ts",
+      "bytes": 4780
+    },
+    {
+      "path": "frontend/tests/prediction-model-selection.test.ts",
+      "bytes": 4972
+    },
+    {
+      "path": "frontend/tests/prediction-offline-profile.test.ts",
+      "bytes": 2385
+    },
+    {
+      "path": "frontend/tests/prediction-offline.test.ts",
+      "bytes": 1882
+    },
+    {
+      "path": "frontend/tests/prediction-profile-replay.test.ts",
+      "bytes": 5332
+    },
+    {
+      "path": "frontend/tests/prediction-project-isolation.test.ts",
+      "bytes": 31911
+    },
+    {
+      "path": "frontend/tests/prediction-type-availability.test.ts",
+      "bytes": 51971
+    },
+    {
+      "path": "frontend/tests/prediction-workspace.test.ts",
+      "bytes": 3432
+    },
+    {
+      "path": "frontend/tests/qa-signed-cursor-20261019.test.ts",
+      "bytes": 13812
+    },
+    {
+      "path": "frontend/tests/record-export.test.ts",
+      "bytes": 32038
+    },
+    {
+      "path": "frontend/tests/records-detail.test.ts",
+      "bytes": 47398
+    },
+    {
+      "path": "frontend/tests/result-number-format.test.ts",
+      "bytes": 1308
+    },
+    {
+      "path": "frontend/tests/rev04-contract-migration.test.ts",
+      "bytes": 12494
+    },
+    {
+      "path": "frontend/tests/settings-view.test.ts",
+      "bytes": 34553
+    },
+    {
+      "path": "frontend/tests/sfc-pinned-prediction.test.ts",
+      "bytes": 6009
+    },
+    {
+      "path": "frontend/tests/sfc-provenance.test.ts",
+      "bytes": 4246
+    },
+    {
+      "path": "frontend/tests/sfc-search-form.test.ts",
+      "bytes": 24668
+    },
+    {
+      "path": "frontend/tests/sfc-search-integration.test.ts",
+      "bytes": 73239
+    },
+    {
+      "path": "frontend/tests/sse.test.ts",
+      "bytes": 1942
+    },
+    {
+      "path": "frontend/tests/structure-input.test.ts",
+      "bytes": 9418
+    },
+    {
+      "path": "frontend/tests/structure-ketcher-frameadapter.test.ts",
+      "bytes": 1893
+    },
+    {
+      "path": "frontend/tests/structure-shared-canvas.test.ts",
+      "bytes": 13075
+    },
+    {
+      "path": "frontend/tests/tlc-batch-candidate-client.test.ts",
+      "bytes": 10350
+    },
+    {
+      "path": "frontend/tests/tlc-batch-candidate-entry.test.ts",
+      "bytes": 8429
+    },
+    {
+      "path": "frontend/tests/tlc-batch-candidate-workspace.test.ts",
+      "bytes": 41104
+    },
+    {
+      "path": "frontend/tests/tlc-interaction.test.ts",
+      "bytes": 3060
+    },
+    {
+      "path": "frontend/tests/tlc-reverse-capability.test.ts",
+      "bytes": 3339
+    },
+    {
+      "path": "frontend/tests/tlc-reverse-page.test.ts",
+      "bytes": 27533
+    },
+    {
+      "path": "frontend/tests/tlc-tool-panel.test.ts",
+      "bytes": 8793
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "bytes": 578
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "bytes": 648
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "bytes": 345
+    },
+    {
+      "path": "scripts/assemble_offline_bundle.py",
+      "bytes": 30087
+    },
+    {
+      "path": "scripts/build_acceptance_examples_v2.py",
+      "bytes": 37349
+    },
+    {
+      "path": "scripts/build_candidate_06.py",
+      "bytes": 21438
+    },
+    {
+      "path": "scripts/build_candidate_07.py",
+      "bytes": 21896
+    },
+    {
+      "path": "scripts/build_cc_hplc_ubuntu_lr_v1.py",
+      "bytes": 15910
+    },
+    {
+      "path": "scripts/build_m3_m4_snapshot.py",
+      "bytes": 9271
+    },
+    {
+      "path": "scripts/regenerate_ubuntu_lr_acceptance.py",
+      "bytes": 4294
+    },
+    {
+      "path": "scripts/verify_offline_bundle.py",
+      "bytes": 13491
+    },
+    {
+      "path": "testing/STATUS.md",
+      "bytes": 296488
+    },
+    {
+      "path": "testing/fixtures/priority-launch/cc-reference.json",
+      "bytes": 3280
+    },
+    {
+      "path": "testing/fixtures/priority-launch/gc-reference-preprocessing-v2.json",
+      "bytes": 4460
+    },
+    {
+      "path": "testing/fixtures/priority-launch/gc-reference.json",
+      "bytes": 2869
+    },
+    {
+      "path": "testing/fixtures/priority-launch/hplc-reference.json",
+      "bytes": 2664
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-full-reference.json",
+      "bytes": 6867
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-coupled-20261020-v1.json",
+      "bytes": 16120
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-coupled-20261020-v2.json",
+      "bytes": 16094
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-runtime-preview-20261020-v1.json",
+      "bytes": 16067
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-runtime-preview-20261020-v2.json",
+      "bytes": 16067
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-v1.json",
+      "bytes": 15264
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-v2.json",
+      "bytes": 15536
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-rs12-full-column-reference-v3.json",
+      "bytes": 16067
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-single-reference-2p5-warning-v3.json",
+      "bytes": 5839
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-single-reference-2p5.json",
+      "bytes": 5133
+    },
+    {
+      "path": "testing/fixtures/priority-launch/sfc-single-reference.json",
+      "bytes": 652
+    },
+    {
+      "path": "testing/fixtures/priority-launch/tlc-reference.json",
+      "bytes": 3080
+    },
+    {
+      "path": "启动色谱平台.cmd",
+      "bytes": 641
+    },
+    {
+      "path": ".gitattributes",
+      "bytes": 8
+    }
+  ],
+  "original_index_unchanged": true,
+  "main_ref_unchanged": true,
+  "original_worktree_status_unchanged": true
+}

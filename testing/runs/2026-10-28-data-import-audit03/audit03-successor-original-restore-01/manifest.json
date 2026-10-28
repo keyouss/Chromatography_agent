@@ -1,0 +1,80 @@
+{
+  "status": "PREPARED_INACTIVE_SINGLE_ASSISTANT_ORIGINAL_START",
+  "window_id": "audit03-successor-binding-01",
+  "profile": "assistant-20261006",
+  "files": [
+    {
+      "path": "start-platform.ps1",
+      "sha256": "894d07c8445984019300c40e6892c49c0de98d3892585329d728e866feae195f"
+    },
+    {
+      "path": "run-local.ps1",
+      "sha256": "43083cfc72dcaf293d21382532d6ecef1b191efa0dd43cdc0e591474f85a8ecd"
+    },
+    {
+      "path": "dpapi-secret-source.ps1",
+      "sha256": "29523b5b0bb78d75455364be6baa9ba6321b3cf7076ae325017294f62e23c89d"
+    },
+    {
+      "path": "startup-check.py",
+      "sha256": "45b64d48940e9868bbe996f59afdd5827b52f3148bdc9727ae88799cf8c0aaba"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "testing/runs/2026-10-28-data-import-audit03/audit03-original-restore-01/start-platform.ps1",
+      "sha256": "f0f05b413d7369a218a79ac95cbb70c2b9114e1f727950e72340eed11677c352"
+    },
+    {
+      "path": "testing/runs/2026-10-28-data-import-audit03/audit03-original-restore-01/run-local.ps1",
+      "sha256": "20ce87d459ecbaf415ed5c485ac33dbd70f549dae70b03aa0d02d13e018099d6"
+    },
+    {
+      "path": "testing/runs/2026-10-28-data-import-audit03/audit03-original-restore-01/startup-check.py",
+      "sha256": "22c74794b6513a9242638f0f0641f1312a3e0d653c37167b5ba7d25175a9628a"
+    },
+    {
+      "path": "testing/runs/2026-10-28-data-import-audit03/audit03-original-restore-01/dpapi-secret-source.ps1",
+      "sha256": "29523b5b0bb78d75455364be6baa9ba6321b3cf7076ae325017294f62e23c89d"
+    }
+  ],
+  "shared_source_pins": [
+    {
+      "path": "deploy/v1/start-platform.ps1",
+      "sha256": "d6e221cbccd18e1c5e7bb7b500fa144b41e297ee1c2b060197f0b158b4810da7"
+    },
+    {
+      "path": "deploy/v1/run-local.ps1",
+      "sha256": "6473d3d99c2960866457d99cd3a3b13a8d05b92dd7a5e80eb6c3208dbcaa8016"
+    },
+    {
+      "path": "deploy/v1/dpapi-secret-source.ps1",
+      "sha256": "29523b5b0bb78d75455364be6baa9ba6321b3cf7076ae325017294f62e23c89d"
+    },
+    {
+      "path": "deploy/v1/startup-check.py",
+      "sha256": "5198cd9f7815d91b47da3c0fb597510dde07e229750b85fd09008ff21dc60fd4"
+    }
+  ],
+  "restore_boundary": {
+    "assistant_config_sha256": "b1e15b036a22e080dfc38dc2a3faf8eee475dd8b2ff8308336d174b14d09a106",
+    "data_config_baseline_sha256": "e475ad2f9299bc659f295271ac7607f9bcc7295520edf004a67354cb2bac4c81",
+    "data_source_pin_sha256": "31675275a79398770cbcb8238b3ee09d4580cb953dc1f6c2e0ebf82edddf7886",
+    "old_unknown_request_sha256": "ec3e44ff8b52266c80c48c44d4bbf625473a364b5cd60f8706a319c2f20f4f06",
+    "old_unknown_ledger_sha256": "41bb2e5a6432096c2cb786d4ac440814d81fdc3fdc6f7c6a2509a8679d48d4e0"
+  },
+  "start_limits": {
+    "assistant_start_max": 1,
+    "assistant_stop_max": 0,
+    "data_start_max": 0,
+    "data_stop_max": 0
+  },
+  "minimum_commit_headroom_bytes_decimal_str": "3758096384",
+  "binding_path": "testing/runs/2026-10-28-data-import-audit03/audit03-successor-original-start-binding.json",
+  "authorization_path": "testing/runs/2026-10-28-data-import-audit03/audit03-successor-original-restore-01/authorization.json",
+  "receipt_path": "testing/runs/2026-10-28-data-import-audit03/audit03-successor-original-restore-01/audit03-successor-original-start-01.json",
+  "helper_source": {
+    "path": "audit03-successor-config-restore.py",
+    "sha256": "2268c3369eec3ba0d3a1c9a5e9f7e8630bf07b2256a7b7994e3a6844c56856d8"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "id": "pred_c73f7558d9b24a17acaca47f46fde3e0",
+  "prediction_record_id": "record_98db985b6afa44d9a57da1ae2eb3a5d9",
+  "job_id": "job_3022bf31de554dd5878ac9d9e9b9c27e",
+  "project_id": "priority-local",
+  "status": "SUCCEEDED",
+  "schema_version": "1.1",
+  "model": {
+    "id": "gc-gnn-seq240408-250c",
+    "version": "gc-gnn-seq240408-250c-600-prep-rdkit-seed42-v1",
+    "input_schema_version": "1.1",
+    "output_schema_version": "gc-retention-time-1",
+    "business_scope_id": "gc-default",
+    "preprocessing_profile_id": "gc-gnn-seq240408-250c-rdkit-seed42-v1"
+  },
+  "input_snapshot": {
+    "structure_refs": [
+      "str_88d294b4245e0d345dda8b6a2ed3f197"
+    ],
+    "normalized_structures": [
+      "CCCCCCC"
+    ],
+    "input": {
+      "temperature_program": {
+        "mode": "series",
+        "temperature_series_c": [
+          40.0,
+          40.0,
+          40.0,
+          60.0,
+          80.0,
+          100.0,
+          120.0,
+          140.0,
+          160.0,
+          180.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0,
+          200.0
+        ]
+      }
+    }
+  },
+  "result": {
+    "task_type": "gc",
+    "schema_version": "gc-retention-time-1",
+    "metrics": [
+      {
+        "key": "retention_time_q10_min",
+        "label": "Retention time q10",
+        "value": 10.272826194763184,
+        "unit": "min",
+        "origin": "model"
+      },
+      {
+        "key": "retention_time_q50_min",
+        "label": "Retention time q50",
+        "value": 10.781655311584473,
+        "unit": "min",
+        "origin": "model"
+      },
+      {
+        "key": "retention_time_q90_min",
+        "label": "Retention time q90",
+        "value": 11.268166542053224,
+        "unit": "min",
+        "origin": "model"
+      }
+    ],
+    "rows": [
+      {
+        "retention_time_min": 10.781655311584473,
+        "quantiles": {
+          "q10": 10.272826194763184,
+          "q50": 10.781655311584473,
+          "q90": 11.268166542053224
+        }
+      }
+    ],
+    "visualizations": [],
+    "applicability": {
+      "supported_scope": "作者 GC GNN 程序升温模型；固定 30 点温度程序、单结构输入和固定相范围受契约约束。",
+      "warnings": [
+        {
+          "code": "EXPERIMENTAL_CONFIRMATION_REQUIRED",
+          "message": "结果仅用于实验规划，须通过实验确认。",
+          "field": null
+        },
+        {
+          "code": "FIXED_STATIONARY_PHASE_SCOPE",
+          "message": "模型仅在 5% phenyl/95% dimethylpolysiloxane 固定相范围内验证。",
+          "field": null
+        },
+        {
+          "code": "CARRIER_GAS_EFFECT_UNSUPPORTED",
+          "message": "当前模型未建模载气种类、流速或压力效应。",
+          "field": null
+        },
+        {
+          "code": "SEEDED_3D_REPRESENTATION_SCOPE",
+          "message": "预处理采用固定 RDKit 参数与随机种子 42，并保留作者的默认构象序列化路径；这是一项工程表示约定，不证明实验构象或跨环境等价性。",
+          "field": null
+        },
+        {
+          "code": "NO_INDEPENDENT_GENERALIZATION_EVIDENCE",
+          "message": "当前没有独立标签集泛化验收证据。",
+          "field": null
+        }
+      ]
+    }
+  },
+  "warnings": [],
+  "error": null,
+  "created_at": "2026-10-07T14:04:01",
+  "completed_at": "2026-10-07T14:04:03"
+}
