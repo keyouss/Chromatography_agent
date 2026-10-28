@@ -3,11 +3,24 @@
 基于 Vue 3、FastAPI、PydanticAI、MySQL 和 Redis + Worker 的本地色谱平台。当前优先建设五类色谱预测和色谱智能助手，浏览器入口为 **http://127.0.0.1:5174/**。
 
 需求以 [产品 PRD](docs/PROJECT_PRD.md) 为准，接口以 [前后端契约](docs/PROJECT_FRONTEND_BACKEND_API_SPEC.md) 为准。后续开发从 [计划总入口](docs/plan.md) 开始，当前验收证据见 [测试状态](testing/STATUS.md)。
+## 开发工作树与运行边界
 
+本轮源码整理位于 `D:\Jupyter\Chromatography_agent_worktrees\structure-cleanup-20261029`，分支 `codex/structure-cleanup-20261029`，基线 `a1815fd2f99153889d813958adcb550b8d9a859e`。原目录 `D:\Jupyter\Chromatography_agent` 保留其历史证据和原有启动入口引用；在负责人完成单独运行切换前，新工作树的源码变更不会自动进入现有前端、API 或 Worker 进程。本 README 后面的原启动命令保持原样，仍指向原目录。不要同时从两个工作区启动同一服务。
+
+若只需撤回本轮这三个已跟踪文档，可从工作树基线恢复明确文件；此命令不删除新建的历史快照，也不撤回其他文件：
+
+```powershell
+$repo = 'D:\Jupyter\Chromatography_agent_worktrees\structure-cleanup-20261029'
+$git = 'D:\Program Files (x86)\Git\cmd\git.exe'
+$baseline = '345506e70a03580460622b7ee39a967728e98cc5'
+& $git -c "safe.directory=$repo" -C $repo restore --source $baseline --worktree -- README.md docs/plan.md testing/STATUS.md
+```
+
+完整回退时，建议从已补齐构建输入的源码基线 `codex/structure-baseline-complete-20261029`（提交 `345506e70a03580460622b7ee39a967728e98cc5`）新建回退工作树；这不会带走当前未提交工作。不要在本工作树使用 `reset --hard`、`git clean` 或删除整个工作区。
 ## 主要功能
 
 - **色谱预测**：TLC、CC、HPLC、GC、SFC 专用表单、结构校验、Ketcher 绘图、预测结果与历史记录；包含 TLC 条件比较和溶剂反推、SFC 单柱与全柱候选搜索。
-- **批量预测**：五类独立模板，制品校验、逐行预览、确认提交、任务进度及结果导出。五类集成契约已冻结，真实批量验收仍在进行。
+- **批量预测**：五类独立模板，制品校验、逐行预览、确认提交、任务进度及结果导出。五类集成契约已冻结；2026-10-22 五类批量链路有限通过，完整 V1 分支仍未签收，见[测试状态](testing/STATUS.md)。
 - **色谱智能助手**：聊天、真实预测工具、已有数据摘要、模型登记草稿创建与查询，以及会话检索、归档和删除。Markdown 渲染、流式输出及刷新恢复沿用统一业务接口。
 - **系统设置**：Provider 配置创建、连接测试和激活；密钥使用当前 Windows 用户的 DPAPI 保护，页面不回显旧密钥。
 

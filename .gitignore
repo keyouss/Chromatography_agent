@@ -34,3 +34,10 @@ frontend/.env.local
 可能问题.md
 .local-backups/
 testing/
+# Local generated caches and build outputs
+backend/.generated/
+backend/.tmp*/
+frontend/build-output/
+frontend/.tmp*/
+.preview_build/
+.code-review-graph/
