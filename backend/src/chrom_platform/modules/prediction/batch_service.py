@@ -1,6 +1,6 @@
-"""Batch prediction application service and caller-owned SQL persistence.
+"""Batch prediction orchestration over caller-owned SQL persistence.
 
-The service keeps the batch-specific projection in this module and delegates
+The batch ORM projections live in batch_models; this service delegates
 job/outbox creation to task_core.  It never reads a server path from a batch
 request; the input is always an Artifact id.
 """
@@ -10,16 +10,14 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import hashlib
 import json
-import csv
 import io
 import zipfile
-import xml.etree.ElementTree as ET
 from collections.abc import Collection, Mapping, Sequence
 from typing import Any, Callable, Protocol
 from uuid import uuid4
 
-from sqlalchemy import ForeignKeyConstraint, Index, Integer, JSON, MetaData, String, Text, select
-from sqlalchemy.orm import Mapped, Session, mapped_column
+from sqlalchemy import JSON, MetaData, String, Text, select
+from sqlalchemy.orm import Session
 from pydantic import TypeAdapter
 
 from chrom_platform.artifact_core.models import Artifact
@@ -27,7 +25,6 @@ from chrom_platform.artifact_core.service import ArtifactServiceError
 from chrom_platform.core.dto import ActorContext, ResourceRef
 from chrom_platform.core.cursor import CursorError, SignedCursorCodec
 from chrom_platform.core.errors import APIError
-from chrom_platform.infrastructure.db import Base, MYSQL_TABLE_KWARGS
 from chrom_platform.infrastructure.models import AuditEvent, Job, JobAttempt, OutboxEvent
 from chrom_platform.infrastructure.repositories import SQLAlchemyStructureRepository
 from chrom_platform.structure_core.schemas import NormalizeStructureRequest
@@ -96,6 +93,16 @@ from chrom_platform.modules.prediction.schemas import (
     TlcSolventOption,
 )
 from chrom_platform.modules.prediction.schemas import ModelSelection
+
+from .batch_errors import BatchServiceError
+from .batch_models import (
+    BatchPredictionRow, BatchValidationRow, BatchValidationItemRow,
+    BatchRowResultRow, BatchRetryPlanRow, BatchExportRow,
+)
+from .row_prepare import (
+    MAX_BATCH_ROWS, _IDENTITY_FIELDS, _decode_upload_cell, _validated_rows,
+    _parse_csv, _xlsx_cell_value, _parse_xlsx,
+)
 
 
 def _now() -> datetime:
@@ -186,155 +193,6 @@ def _require_batch_cursor_codec(codec: SignedCursorCodec | None) -> SignedCursor
     if not isinstance(codec, SignedCursorCodec):
         raise BatchServiceError(503, "DEPENDENCY_UNAVAILABLE", "批量分页签名配置未就绪")
     return codec
-
-
-_PROJECT_ID = Base.metadata.tables["project"].c.id
-_JOB_ID = Base.metadata.tables["job"].c.id
-_ARTIFACT = Base.metadata.tables["artifact"]
-
-
-class BatchPredictionRow(Base):
-    """Durable draft/projection; row-level details live in child projections."""
-
-    __tablename__ = "batch_prediction"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    actor_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    chromatography_type: Mapped[str] = mapped_column(String(32), nullable=False)
-    tool: Mapped[str] = mapped_column(String(32), nullable=False, default="batch")
-    name: Mapped[str] = mapped_column(String(200), nullable=False)
-    schema_version: Mapped[str] = mapped_column(String(64), nullable=False)
-    model_selection: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    model_snapshot: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    input_artifact_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    template_version: Mapped[str] = mapped_column(String(64), nullable=False)
-    field_mapping: Mapped[dict[str, str]] = mapped_column(JSON, nullable=False)
-    common_input: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    invalid_row_policy: Mapped[str] = mapped_column(String(24), nullable=False)
-    resource_budget: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
-    config_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    etag: Mapped[str] = mapped_column(String(128), nullable=False)
-    draft_status: Mapped[str] = mapped_column(String(16), nullable=False, default="DRAFT")
-    validation_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    job_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    attempt: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    execution_status: Mapped[str | None] = mapped_column(String(20), nullable=True)
-    submitted_at: Mapped[datetime | None] = mapped_column(nullable=True)
-    counts: Mapped[dict[str, int]] = mapped_column(JSON, nullable=False, default=dict)
-    progress: Mapped[float] = mapped_column(nullable=False, default=0.0)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-    updated_at: Mapped[datetime] = mapped_column(nullable=False, default=_now, onupdate=_now)
-
-    __table_args__ = (
-        ForeignKeyConstraint(("project_id",), (_PROJECT_ID,), ondelete="RESTRICT"),
-        ForeignKeyConstraint(("job_id",), (_JOB_ID,), ondelete="RESTRICT"),
-        ForeignKeyConstraint(("project_id", "input_artifact_id"), (_ARTIFACT.c.project_id, _ARTIFACT.c.id), ondelete="RESTRICT"),
-        Index("ix_batch_prediction_project_status", "project_id", "draft_status", "created_at"),
-        MYSQL_TABLE_KWARGS,
-    )
-
-
-class BatchValidationRow(Base):
-    __tablename__ = "batch_validation"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    batch_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    draft_revision: Mapped[int] = mapped_column(Integer, nullable=False)
-    config_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    status: Mapped[str] = mapped_column(String(16), nullable=False)
-    template_version: Mapped[str] = mapped_column(String(64), nullable=False)
-    model_snapshot: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    total_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    valid_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    invalid_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    excluded_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    total_evaluations: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    resource_estimate: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    resolved_input_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    errors_report_artifact_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    warnings: Mapped[list[dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-
-
-class BatchValidationItemRow(Base):
-    __tablename__ = "batch_validation_item"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    validation_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    row_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    source_row_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    status: Mapped[str] = mapped_column(String(16), nullable=False)
-    normalized_input_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    resolved_input_snapshot: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    resolved_input_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    field_errors: Mapped[list[dict[str, str]]] = mapped_column(JSON, nullable=False, default=list)
-    warnings: Mapped[list[dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-
-
-class BatchRowResultRow(Base):
-    __tablename__ = "batch_row_result"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    batch_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    validation_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    row_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    source_row_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    input_snapshot: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
-    result: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    error: Mapped[dict[str, str] | None] = mapped_column(JSON, nullable=True)
-    warnings: Mapped[list[dict[str, Any]]] = mapped_column(JSON, nullable=False, default=list)
-    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
-    status: Mapped[str] = mapped_column(String(16), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-
-
-class BatchRetryPlanRow(Base):
-    __tablename__ = "batch_retry_plan"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    parent_batch_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
-    config_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    etag: Mapped[str] = mapped_column(String(128), nullable=False)
-    row_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False)
-    expected_attempt: Mapped[int] = mapped_column(Integer, nullable=False)
-    estimated_evaluations: Mapped[int] = mapped_column(Integer, nullable=False)
-    validation_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    model_snapshot_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    resolved_input_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-
-
-class BatchExportRow(Base):
-    __tablename__ = "batch_export"
-
-    id: Mapped[str] = mapped_column(String(96), primary_key=True)
-    project_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    batch_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    job_id: Mapped[str] = mapped_column(String(96), nullable=False)
-    format: Mapped[str] = mapped_column(String(16), nullable=False)
-    include: Mapped[list[str]] = mapped_column(JSON, nullable=False)
-    source_snapshot: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    source_snapshot_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    status: Mapped[str] = mapped_column(String(16), nullable=False, default="QUEUED")
-    error: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    artifact_id: Mapped[str | None] = mapped_column(String(96), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(nullable=False, default=_now)
-    completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
-
-
-class BatchServiceError(Exception):
-    def __init__(self, status_code: int, code: str, message: str, *, retryable: bool = False, details: dict[str, Any] | None = None) -> None:
-        self.status_code, self.code, self.message = status_code, code, message
-        self.retryable, self.details = retryable, details or {}
-        super().__init__(message)
 
 
 def _tlc_template_options(capabilities: object | None) -> TlcBatchTemplateOptions | None:
@@ -454,147 +312,6 @@ def build_batch_template_metadata(
     """Return typed template metadata without changing template/runtime health."""
     templates = default_batch_template_registry(capabilities).list(chromatography_type)
     return [BatchTemplateDefinition.model_validate(template.model_dump(mode="python")) for template in templates]
-
-
-MAX_BATCH_ROWS = 10_000
-_IDENTITY_FIELDS = frozenset({"structure_ref", "structure_ref_a", "structure_ref_b", "smiles", "smiles_a", "smiles_b"})
-
-
-def _decode_upload_cell(value: str, target: str) -> object:
-    text = value.strip()
-    if text.lower() == "null":
-        return None
-    if target in {"solvent_components", "modifier_components", "column_ids", "temperature_program"}:
-        try:
-            return json.loads(text)
-        except json.JSONDecodeError as exc:
-            raise ValueError(f"{target} must be JSON") from exc
-    if target in {"sample_mass_mg", "loading_solvent_volume_ul", "flow_rate_ml_min", "isopropanol_fraction", "modifier_total_fraction", "fraction_1", "fraction_2"}:
-        try:
-            return float(text)
-        except ValueError as exc:
-            raise ValueError(f"{target} must be numeric") from exc
-    if target == "top_k":
-        try:
-            return int(text)
-        except ValueError as exc:
-            raise ValueError("top_k must be an integer") from exc
-    return text
-
-
-def _validated_rows(records: list[tuple[int, dict[str, str]]], *, field_mapping: dict[str, str], row_model: type[Any], expected_fields: list[str], common_input: dict[str, Any] | None = None) -> list[tuple[int, dict[str, Any] | None, dict[str, str] | None]]:
-    if len(records) - 1 > MAX_BATCH_ROWS:
-        raise BatchServiceError(422, "BATCH_ROW_LIMIT_EXCEEDED", f"批量行数不能超过 {MAX_BATCH_ROWS}")
-    identity = set(expected_fields) & _IDENTITY_FIELDS
-    if (not set(field_mapping).issubset(expected_fields)
-            or not identity.issubset(field_mapping)
-            or len(set(field_mapping.values())) != len(field_mapping)):
-        raise BatchServiceError(422, "BATCH_FIELDS_INVALID", "字段映射仅可包含模板字段，结构身份列必须来自每一行")
-    common = dict(common_input or {})
-    if not set(common).issubset(set(expected_fields) - identity):
-        raise BatchServiceError(422, "BATCH_COMMON_INPUT_INVALID", "common_input 只能提供模板允许的非身份字段")
-    try:
-        columns = list(records[0][1]) if records else []
-    except Exception as exc:
-        raise BatchServiceError(422, "ARTIFACT_PARSE_FAILED", "批量制品表头无法读取") from exc
-    if len(columns) != len(set(columns)) or set(columns) != set(field_mapping.values()):
-        raise BatchServiceError(422, "UNKNOWN_BATCH_FIELDS", "上传文件列必须与对应模板字段完全一致")
-    rows: list[tuple[int, dict[str, Any] | None, dict[str, str] | None]] = []
-    for source_row_number, source in records[1:]:
-        try:
-            mapped = {}
-            for target, column in field_mapping.items():
-                cell = source.get(column, "")
-                if not cell.strip():
-                    continue
-                mapped[target] = _decode_upload_cell(cell, target)
-            # Merge by presence: a row value, including explicit null, wins;
-            # only an absent/blank cell falls back to common_input.
-            resolved = {**common, **mapped}
-            rows.append((source_row_number, row_model.model_validate(resolved).model_dump(mode="json"), None))
-        except Exception as exc:
-            rows.append((source_row_number, None, {"code": "BATCH_ROW_INVALID", "message": f"第 {source_row_number} 行不符合 {row_model.__name__}"}))
-    if not rows:
-        raise BatchServiceError(422, "BATCH_EMPTY", "批量制品没有数据行")
-    return rows
-
-
-def _parse_csv(content: bytes, *, field_mapping: dict[str, str], row_model: type[Any], expected_fields: list[str], common_input: dict[str, Any] | None = None) -> list[tuple[int, dict[str, Any] | None, dict[str, str] | None]]:
-    try:
-        text = content.decode("utf-8-sig")
-    except UnicodeDecodeError as exc:
-        raise BatchServiceError(422, "ARTIFACT_PARSE_FAILED", "批量制品必须是 UTF-8 CSV") from exc
-    reader = csv.reader(io.StringIO(text, newline=""))
-    raw: list[list[str]] = []
-    for values in reader:
-        raw.append(values)
-        # Header + 10,000 rows is accepted; the next row proves overflow.
-        if len(raw) > MAX_BATCH_ROWS + 1:
-            raise BatchServiceError(422, "BATCH_ROW_LIMIT_EXCEEDED", f"批量行数不能超过 {MAX_BATCH_ROWS}")
-    if not raw:
-        raise BatchServiceError(422, "BATCH_EMPTY", "批量制品没有表头")
-    header = raw[0]
-    if len(header) != len(set(header)):
-        raise BatchServiceError(422, "UNKNOWN_BATCH_FIELDS", "上传文件列名不能重复")
-    records: list[tuple[int, dict[str, str]]] = [(1, {column: column for column in header})]
-    for index, values in enumerate(raw[1:], start=2):
-        records.append((index, dict(zip(header, values)) if len(values) == len(header) else {column: "" for column in header}))
-    return _validated_rows(records, field_mapping=field_mapping, row_model=row_model, expected_fields=expected_fields, common_input=common_input)
-
-
-_XLSX_NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
-
-
-def _xlsx_cell_value(cell: ET.Element, shared: list[str]) -> str:
-    kind = cell.attrib.get("t")
-    if kind == "inlineStr":
-        return "".join(item.text or "" for item in cell.findall(f"{_XLSX_NS}is/{_XLSX_NS}t"))
-    value = cell.find(f"{_XLSX_NS}v")
-    raw = "" if value is None else (value.text or "")
-    if kind == "s":
-        try:
-            return shared[int(raw)]
-        except (ValueError, IndexError):
-            raise BatchServiceError(422, "ARTIFACT_PARSE_FAILED", "XLSX 共享字符串索引无效")
-    return raw
-
-
-def _parse_xlsx(content: bytes, *, field_mapping: dict[str, str], row_model: type[Any], expected_fields: list[str], common_input: dict[str, Any] | None = None) -> list[tuple[int, dict[str, Any] | None, dict[str, str] | None]]:
-    try:
-        archive = zipfile.ZipFile(io.BytesIO(content))
-    except (zipfile.BadZipFile, OSError) as exc:
-        raise BatchServiceError(422, "ARTIFACT_PARSE_FAILED", "XLSX 制品结构无效") from exc
-    with archive:
-        shared: list[str] = []
-        if "xl/sharedStrings.xml" in archive.namelist():
-            root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
-            for item in root.findall(f"{_XLSX_NS}si"):
-                shared.append("".join(text.text or "" for text in item.iter(f"{_XLSX_NS}t")))
-        sheets = sorted(name for name in archive.namelist() if name.startswith("xl/worksheets/") and name.endswith(".xml"))
-        if not sheets:
-            raise BatchServiceError(422, "ARTIFACT_PARSE_FAILED", "XLSX 没有工作表")
-        root = ET.fromstring(archive.read(sheets[0]))
-        records: list[tuple[int, dict[str, str]]] = []
-        for index, row in enumerate(root.findall(f".//{_XLSX_NS}row"), start=1):
-            if index > MAX_BATCH_ROWS + 1:
-                raise BatchServiceError(422, "BATCH_ROW_LIMIT_EXCEEDED", f"批量行数不能超过 {MAX_BATCH_ROWS}")
-            source_number = int(row.attrib.get("r", index))
-            values: dict[str, str] = {}
-            for cell in row.findall(f"{_XLSX_NS}c"):
-                ref = cell.attrib.get("r", "")
-                column = "".join(char for char in ref if char.isalpha())
-                if column:
-                    values[column] = _xlsx_cell_value(cell, shared)
-            if index == 1:
-                header_by_column = values
-                if len(values) != len(set(values.values())):
-                    raise BatchServiceError(422, "UNKNOWN_BATCH_FIELDS", "上传文件列名不能重复")
-                records.append((source_number, {value: value for value in values.values()}))
-            else:
-                records.append((source_number, {header_by_column.get(key, key): value for key, value in values.items()}))
-        if not records:
-            raise BatchServiceError(422, "BATCH_EMPTY", "批量制品没有数据行")
-        return _validated_rows(records, field_mapping=field_mapping, row_model=row_model, expected_fields=expected_fields, common_input=common_input)
 
 
 class BatchPredictionService:

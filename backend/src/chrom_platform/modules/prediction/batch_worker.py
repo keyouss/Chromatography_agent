@@ -29,16 +29,18 @@ from chrom_platform.task_core.service import OperationContext, sync_job_lifecycl
 from chrom_platform.task_core.state import JobStatus
 
 from .batch_service import (
-    BatchExportRow,
-    BatchPredictionRow,
-    BatchValidationItemRow,
-    BatchRowResultRow,
-    BatchValidationRow,
     BatchPredictionService,
     BatchServiceError,
     _etag as _batch_etag,
     _hash,
     default_batch_template_registry,
+)
+from .batch_models import (
+    BatchExportRow,
+    BatchPredictionRow,
+    BatchValidationItemRow,
+    BatchRowResultRow,
+    BatchValidationRow,
 )
 from .batch import BatchResolvedInput, TlcBatchResolvedInputV1, TlcBatchResolvedInputV2
 from .production_worker import _merge_prediction_warnings, _merge_record_warnings, _result_warnings, _warning_items

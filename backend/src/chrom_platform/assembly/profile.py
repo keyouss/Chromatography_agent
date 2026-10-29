@@ -2262,7 +2262,7 @@ def _copy_tree(source_root: Path, target_root: Path, manifest: BuildManifest) ->
         # Batch is not a registered route/worker in the assembled API.  It is
         # deliberately omitted so its unselected DTO imports cannot leak.
         if not batch_enabled:
-            for name in ("batch.py", "batch_health.py", "batch_router.py", "batch_service.py", "batch_worker.py"):
+            for name in ("batch.py", "batch_health.py", "batch_router.py", "batch_service.py", "batch_worker.py", "batch_models.py", "batch_errors.py", "row_prepare.py"):
                 (package / "modules" / "prediction" / name).unlink(missing_ok=True)
         init = package / "modules" / "prediction" / "__init__.py"
         if init.is_file() and not batch_enabled:
@@ -2272,7 +2272,7 @@ def _copy_tree(source_root: Path, target_root: Path, manifest: BuildManifest) ->
             metadata.write_text(
                 metadata.read_text(encoding="utf-8").replace(
                     "    # Importing the batch models registers their tables on the shared M1 Base.\n"
-                    "    from chrom_platform.modules.prediction import batch_service as _batch_service  # noqa: F401\n",
+                    "    from chrom_platform.modules.prediction import batch_models as _batch_models  # noqa: F401\n",
                     "",
                 ),
                 encoding="utf-8",

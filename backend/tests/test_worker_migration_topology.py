@@ -157,6 +157,8 @@ def test_profiles_do_not_assemble_batch_capabilities_or_routes(tmp_path: Path) -
     universal = assemble_profile(builds / "universal-v1.json", tmp_path / "isolated-universal")
     assert (universal / "chrom_platform" / "worker_cli.py").is_file()
     assert not (universal / "chrom_platform" / "modules" / "prediction" / "batch_worker.py").exists()
+    for name in ("batch_models.py", "batch_errors.py", "row_prepare.py"):
+        assert not (universal / "chrom_platform" / "modules" / "prediction" / name).exists()
     generated = generate_package(universal, tmp_path / "isolated-openapi")
     document = json.loads(generated.read_text(encoding="utf-8"))
     assert not any("batch" in path.lower() for path in document["paths"])
@@ -164,6 +166,14 @@ def test_profiles_do_not_assemble_batch_capabilities_or_routes(tmp_path: Path) -
         "structure_refs", "normalized_structures", "input"
     }
     assert "PredictionExecutionInputSnapshot" not in document["components"]["schemas"]
+
+
+def test_non_batch_prediction_profile_removes_batch_support_modules(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[2]
+    package = assemble_profile(root / "builds" / "cc-v1.json", tmp_path / "cc-profile")
+    prediction = package / "chrom_platform" / "modules" / "prediction"
+    for name in ("batch_models.py", "batch_errors.py", "row_prepare.py"):
+        assert not (prediction / name).exists()
 
 
 def test_batch_profile_includes_resolved_snapshot_migration_and_routes(tmp_path: Path) -> None:
@@ -176,6 +186,8 @@ def test_batch_profile_includes_resolved_snapshot_migration_and_routes(tmp_path:
     package = assemble_profile(manifest_path, tmp_path / "packages")
     assert (package / "chrom_platform" / "worker_cli.py").is_file()
     assert (package / "chrom_platform" / "modules" / "prediction" / "batch_worker.py").is_file()
+    for name in ("batch_models.py", "batch_errors.py", "row_prepare.py"):
+        assert (package / "chrom_platform" / "modules" / "prediction" / name).is_file()
     versions = package / "alembic" / "versions"
     selected = {path.name for path in versions.glob("*.py")}
     assert "0014_batch_resolved_snapshot_export.py" in selected

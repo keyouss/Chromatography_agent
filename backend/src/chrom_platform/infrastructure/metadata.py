@@ -44,7 +44,7 @@ def m2_metadata() -> MetaData:
     from chrom_platform.modules.data_center.persistence import DataCenterBase
     from chrom_platform.modules.prediction.persistence import PredictionBase
     # Importing the batch models registers their tables on the shared M1 Base.
-    from chrom_platform.modules.prediction import batch_service as _batch_service  # noqa: F401
+    from chrom_platform.modules.prediction import batch_models as _batch_models  # noqa: F401
 
     result = compose_metadata(Base.metadata, DataCenterBase.metadata, PredictionBase.metadata)
     # This is the one cross-module relationship.  The prediction module only
